@@ -29,3 +29,24 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/movie_catalog_gui/node_modules
+/movie_catalog_gui/.pnp
+/movie_catalog_gui/.pnp.js
+
+# testing
+/movie_catalog_gui/coverage
+
+# production
+/movie_catalog_gui/build
+
+# misc
+/movie_catalog_gui/.DS_Store
+/movie_catalog_gui/.env.local
+/movie_catalog_gui/.env.development.local
+/movie_catalog_gui/.env.test.local
+/movie_catalog_gui/.env.production.local
+
+/movie_catalog_gui/npm-debug.log*
+/movie_catalog_gui/yarn-debug.log*
+/movie_catalog_gui/yarn-error.log*
