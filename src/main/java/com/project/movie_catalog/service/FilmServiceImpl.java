@@ -34,6 +34,57 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
+    public List<FilmSimpleForm> findAllByTitle(String title) {
+        return filmSimpleMapper.mapToDTOList(repo.findAllByTitleContaining(title));
+    }
+
+    @Override
+    public List<FilmSimpleForm> findAllByTitleOrg(String title_org) {
+        return filmSimpleMapper.mapToDTOList(repo.findAllByTitle_orgContaining(title_org));
+    }
+
+    @Override
+    public List<FilmSimpleForm> findAllByRate(String rate, boolean greater) {
+        if(greater){
+            return filmSimpleMapper.mapToDTOList(repo.findAllByRateGreaterThanEqual(rate));
+        } else {
+            return filmSimpleMapper.mapToDTOList(repo.findAllByRateLessThanEqual(rate));
+        }
+    }
+
+    @Override
+    public List<FilmSimpleForm> findAllByVotes(String votes, boolean greater) {
+        if(greater){
+            return filmSimpleMapper.mapToDTOList(repo.findAllByVotesGreaterThanEqual(votes));
+        } else {
+            return filmSimpleMapper.mapToDTOList(repo.findAllByVotesLessThanEqual(votes));
+        }
+    }
+
+    @Override
+    public List<FilmSimpleForm> findAllByGenres(List<String> genres) {
+        return filmSimpleMapper.mapToDTOList(repo.findAllByGenres(genres));
+    }
+
+    @Override
+    public List<FilmSimpleForm> findAllByYear(String year, boolean greater) {
+        if(greater){
+            return filmSimpleMapper.mapToDTOList(repo.findAllByYearGreaterThanEqual(year));
+        } else {
+            return filmSimpleMapper.mapToDTOList(repo.findAllByYearLessThanEqual(year));
+        }
+    }
+
+    @Override
+    public List<FilmSimpleForm> findAllByDuration(String duration, boolean greater) {
+        if(greater){
+            return filmSimpleMapper.mapToDTOList(repo.findAllByDurationGreaterThanEqual(duration));
+        } else {
+            return filmSimpleMapper.mapToDTOList(repo.findAllByDurationLessThanEqual(duration));
+        }
+    }
+
+    @Override
     public long count(){
         return repo.count();
     }

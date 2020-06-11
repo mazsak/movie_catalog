@@ -18,6 +18,4 @@ public class FilmSearchParams {
     private List<String> genres;
     private String year;
     private String duration;
-    private String poster;
-    private String description;
 }
