@@ -3,7 +3,7 @@ package com.project.movie_catalog.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -18,7 +18,8 @@ public class Film {
     @Id
     private String id;
     private String title;
-    private String title_org;
+    @Field(name = "title_org")
+    private String titleOrg;
     private List<Actor> cast;
     private List<Director> directors;
     private String rate;
@@ -28,5 +29,4 @@ public class Film {
     private String duration;
     private String poster;
     private String description;
-
 }

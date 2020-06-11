@@ -10,7 +10,7 @@ import java.util.List;
 public interface FilmRepo extends MongoRepository<Film, String>{
 
     List<Film> findAllByTitleContaining(String title);
-    List<Film> findAllByTitle_orgContaining(String title_org);
+    List<Film> findAllByTitleOrgContaining(String title_org);
     List<Film> findAllByRateGreaterThanEqual(String rate);
     List<Film> findAllByRateLessThanEqual(String rate);
     List<Film> findAllByVotesGreaterThanEqual(String votes);

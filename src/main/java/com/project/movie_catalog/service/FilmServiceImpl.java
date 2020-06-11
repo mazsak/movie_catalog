@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
 
     @Override
     public List<FilmSimpleForm> findAllByTitleOrg(String title_org) {
-        return filmSimpleMapper.mapToDTOList(repo.findAllByTitle_orgContaining(title_org));
+        return filmSimpleMapper.mapToDTOList(repo.findAllByTitleOrgContaining(title_org));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByYear(String year, boolean greater) {
+    public List<FilmSimpleForm> findAllByYear(@RequestParam String year, @RequestParam boolean greater) {
         if(greater){
             return filmSimpleMapper.mapToDTOList(repo.findAllByYearGreaterThanEqual(year));
         } else {
