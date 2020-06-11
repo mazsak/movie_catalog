@@ -58,6 +58,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.sipios</groupId>
+            <artifactId>spring-search</artifactId>
+            <version>0.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>

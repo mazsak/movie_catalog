@@ -19,18 +19,18 @@ public class BasicServiceImpl<
 
     @Override
     public boolean save(final CLASS_FORM object) {
-        repo.insert(mapper.mapToEntity(object));
+        repo.save(mapper.mapToEntity(object));
         return true;
     }
 
     @Override
     public CLASS_FORM saveAndReturn(final CLASS_FORM object) {
-        return mapper.mapToDTO(repo.insert(mapper.mapToEntity(object)));
+        return mapper.mapToDTO(repo.save(mapper.mapToEntity(object)));
     }
 
     @Override
     public List<CLASS_FORM> saveAndReturnList(final List<CLASS_FORM> objects) {
-        return mapper.mapToDTOList(repo.insert(mapper.mapToEntityList(objects)));
+        return mapper.mapToDTOList(repo.saveAll(mapper.mapToEntityList(objects)));
     }
 
     @Override

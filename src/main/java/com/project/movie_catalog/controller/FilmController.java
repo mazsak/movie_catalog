@@ -3,15 +3,14 @@ package com.project.movie_catalog.controller;
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmSimpleForm;
 import com.project.movie_catalog.model.Film;
-import com.project.movie_catalog.model.SearchParam;
+import com.project.movie_catalog.search.FilmSearchParams;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import com.sipios.springsearch.anotation.SearchSpec;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -37,9 +36,10 @@ public class FilmController {
         return filmService.findById(id);
     }
 
-    @PostMapping("/find_film")
-    public List<FilmSimpleForm> findMessage(@RequestBody SearchParam searchParam){
-        return null; //FIXME create method in service and repo
+    @GetMapping("/filter")
+    public ResponseEntity<List<FilmSimpleForm>> searchForFilms(@SearchSpec Specification<Film> specification){
+//        return filmService.searchForFilms(specification);
+        return null;
     }
 
     @PostMapping
@@ -49,7 +49,7 @@ public class FilmController {
 
     @PutMapping("/{id}")
     public FilmForm update(@RequestBody FilmForm filmForm){
-        return filmService.saveAndReturn(filmForm);//FIXME pleas
+        return filmService.saveAndReturn(filmForm);
     }
 
     @DeleteMapping("/{id}")
