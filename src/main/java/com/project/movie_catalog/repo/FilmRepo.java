@@ -2,8 +2,8 @@ package com.project.movie_catalog.repo;
 
 import com.project.movie_catalog.model.Film;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(collectionResourceRel = "Film", path = "films")
+@Repository
 public interface FilmRepo extends MongoRepository<Film, String> {
 }

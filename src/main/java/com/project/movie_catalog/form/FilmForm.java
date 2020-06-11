@@ -1,9 +1,8 @@
-package com.project.movie_catalog.model;
+package com.project.movie_catalog.form;
 
+import com.project.movie_catalog.model.Actor;
+import com.project.movie_catalog.model.Director;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
@@ -13,9 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Builder
-@Document(collection = "Film")
-public class Film {
-    @Id
+public class FilmForm {
     private String id;
     private String title;
     private String title_org;
@@ -28,5 +25,4 @@ public class Film {
     private String duration;
     private String poster;
     private String description;
-
 }
