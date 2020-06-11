@@ -19,5 +19,5 @@ public class FilmSimpleForm {
     private String year;
     private String duration;
     private String poster;
-    private String description;
+    private List<String> genres;
 }
