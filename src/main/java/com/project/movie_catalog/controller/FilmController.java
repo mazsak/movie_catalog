@@ -57,4 +57,8 @@ public class FilmController {
         filmService.delete(id);
     }
 
+    @GetMapping("/count")
+    public long count(){
+        return filmService.count();
+    }
 }

@@ -33,4 +33,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
         return films.hasContent() ? filmSimpleMapper.mapToDTOList(films.getContent()) : new ArrayList<>();
     }
 
+    @Override
+    public long count(){
+        return repo.count();
+    }
 }
