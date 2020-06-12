@@ -16,6 +16,7 @@ public interface FilmService extends BasicService<FilmForm, String> {
     List<FilmSimpleForm> findAllByVotes(String votes, boolean greater);
     List<FilmSimpleForm> findAllByGenres(List<String> genres);
     List<FilmSimpleForm> findAllByYear(String year, boolean greater);
+    List<FilmSimpleForm> findAllByYearBetween(String yearFirst, String yearSecond);
     List<FilmSimpleForm> findAllByDuration(String duration, boolean greater);
     long count();
 }

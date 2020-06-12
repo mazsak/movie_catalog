@@ -16,9 +16,9 @@ public interface FilmRepo extends MongoRepository<Film, String>{
     List<Film> findAllByVotesGreaterThanEqual(String votes);
     List<Film> findAllByVotesLessThanEqual(String votes);
     List<Film> findAllByGenres(List<String> genre);
-    List<Film> findAllByYear(String title);
-    List<Film> findAllByYearGreaterThanEqual(String title);
-    List<Film> findAllByYearLessThanEqual(String title);
-    List<Film> findAllByDurationGreaterThanEqual(String title);
-    List<Film> findAllByDurationLessThanEqual(String title);
+    List<Film> findAllByYearBetween(String yearFirst, String yearSecond);
+    List<Film> findAllByYearGreaterThanEqual(String year);
+    List<Film> findAllByYearLessThanEqual(String year);
+    List<Film> findAllByDurationGreaterThanEqual(String duration);
+    List<Film> findAllByDurationLessThanEqual(String duration);
 }

@@ -6,6 +6,7 @@ import com.project.movie_catalog.mapper.FilmMapper;
 import com.project.movie_catalog.mapper.FilmSimpleMapper;
 import com.project.movie_catalog.model.Film;
 import com.project.movie_catalog.repo.FilmRepo;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Service
 public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, FilmMapper, String>
-        implements FilmService{
+        implements FilmService {
 
     protected final FilmSimpleMapper filmSimpleMapper;
 
@@ -46,7 +47,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
 
     @Override
     public List<FilmSimpleForm> findAllByRate(String rate, boolean greater) {
-        if(greater){
+        if (greater) {
             return filmSimpleMapper.mapToDTOList(repo.findAllByRateGreaterThanEqual(rate));
         } else {
             return filmSimpleMapper.mapToDTOList(repo.findAllByRateLessThanEqual(rate));
@@ -55,7 +56,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
 
     @Override
     public List<FilmSimpleForm> findAllByVotes(String votes, boolean greater) {
-        if(greater){
+        if (greater) {
             return filmSimpleMapper.mapToDTOList(repo.findAllByVotesGreaterThanEqual(votes));
         } else {
             return filmSimpleMapper.mapToDTOList(repo.findAllByVotesLessThanEqual(votes));
@@ -69,7 +70,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
 
     @Override
     public List<FilmSimpleForm> findAllByYear(@RequestParam String year, @RequestParam boolean greater) {
-        if(greater){
+        if (greater) {
             return filmSimpleMapper.mapToDTOList(repo.findAllByYearGreaterThanEqual(year));
         } else {
             return filmSimpleMapper.mapToDTOList(repo.findAllByYearLessThanEqual(year));
@@ -77,8 +78,19 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
+    public List<FilmSimpleForm> findAllByYearBetween(String yearFirst, String yearSecond) {
+        if (NumberUtils.isNumber(yearFirst) && NumberUtils.isNumber(yearSecond)) {
+            yearFirst = String.valueOf(Integer.parseInt(yearFirst) - 1);
+            yearSecond = String.valueOf(Integer.parseInt(yearSecond) + 1);
+            return filmSimpleMapper.mapToDTOList(repo.findAllByYearBetween(yearFirst, yearSecond));
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public List<FilmSimpleForm> findAllByDuration(String duration, boolean greater) {
-        if(greater){
+        if (greater) {
             return filmSimpleMapper.mapToDTOList(repo.findAllByDurationGreaterThanEqual(duration));
         } else {
             return filmSimpleMapper.mapToDTOList(repo.findAllByDurationLessThanEqual(duration));
@@ -86,7 +98,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public long count(){
+    public long count() {
         return repo.count();
     }
 }
