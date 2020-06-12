@@ -1,0 +1,31 @@
+body{
+    background-color: black;
+}
+
+.nav-container{
+    padding: 15px 10px;
+    background-color: black;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: block;
+    transition: top 0.3s;
+}
+
+.container {
+    width: 75%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.color-pag {
+    background-color: #101010;
+    color: white;
+}
+
+.page{
+    background-color: #101010;
+    color: white;
+    margin: 3px;
+}
+

@@ -1,22 +1,26 @@
 import React from 'react';
-import { Navbar, Nav, Button, Form, FormControl } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
+import './styles.css'
 
 class NavBar extends React.Component {
-    renser() {
+
+    render() {
         return (
-            <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home">Movie's Catalog</Navbar.Brand>
-                <Nav className="mr-auto">
-                    <Nav.Link href="#home">Films</Nav.Link>
-                    <Nav.Link href="#features">Top 100</Nav.Link>
-                    <Nav.Link href="#pricing">Pricing</Nav.Link>
-                </Nav>
-                <Nav>
-                    <Nav.Link href="#pricing">Login</Nav.Link>
-                    <Nav.Link href="#pricing">Register</Nav.Link>
-                    <Nav.Link href="#pricing">Account</Nav.Link>
-                </Nav>
-            </Navbar>
+            <div class='nav-container' >
+                <Navbar role='navgation' bg="dark" variant="dark">
+                    <Navbar.Brand href="/">Movie's Catalog</Navbar.Brand>
+                    <Nav className="mr-auto">
+                        <Nav.Link href="/films">Films</Nav.Link>
+                        <Nav.Link href="/top">Top 100</Nav.Link>
+                        <Nav.Link href="/catalog">My catalog</Nav.Link>
+                    </Nav>
+                    <Nav>
+                        <Nav.Link href="/login">Login</Nav.Link>
+                        <Nav.Link href="/register">Register</Nav.Link>
+                        <Nav.Link href="/account">Account</Nav.Link>
+                    </Nav>
+                </Navbar>
+            </div>
         );
     }
 }

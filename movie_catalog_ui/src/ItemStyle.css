@@ -1,0 +1,12 @@
+.item-film{
+    margin: 10px;
+    width: 100%;
+    background-color: #101010;
+    color: white;
+}
+
+.item-film img {
+    padding: 3px 10px;
+    width: 130px;
+    height: 180px;
+}

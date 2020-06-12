@@ -17,6 +17,8 @@ public class FilmSimpleForm {
     private String title;
     private String title_org;
     private String year;
+    private String rate;
+    private String votes;
     private String duration;
     private String poster;
     private List<String> genres;
