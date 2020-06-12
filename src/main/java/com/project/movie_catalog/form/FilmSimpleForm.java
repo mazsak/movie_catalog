@@ -1,7 +1,5 @@
 package com.project.movie_catalog.form;
 
-import com.project.movie_catalog.model.Actor;
-import com.project.movie_catalog.model.Director;
 import lombok.*;
 
 import java.util.List;

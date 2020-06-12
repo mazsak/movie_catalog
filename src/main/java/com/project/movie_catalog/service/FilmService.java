@@ -2,7 +2,6 @@ package com.project.movie_catalog.service;
 
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
-import com.project.movie_catalog.form.FilmSimpleForm;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
