@@ -15,11 +15,14 @@ import java.util.List;
 @Builder
 @Document(collection = "Film")
 public class Film {
+
     @Id
     private String id;
-    private String title;
+
     @Field(name = "title_org")
     private String titleOrg;
+
+    private String title;
     private List<Actor> cast;
     private List<Director> directors;
     private String rate;
