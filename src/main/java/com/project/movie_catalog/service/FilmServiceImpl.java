@@ -1,7 +1,7 @@
 package com.project.movie_catalog.service;
 
 import com.project.movie_catalog.form.FilmForm;
-import com.project.movie_catalog.form.FilmSimpleForm;
+import com.project.movie_catalog.form.FilmPageSimpleForm;
 import com.project.movie_catalog.mapper.FilmMapper;
 import com.project.movie_catalog.mapper.FilmSimpleMapper;
 import com.project.movie_catalog.model.Film;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,72 +28,132 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public List<FilmSimpleForm> findAll(Integer page, Integer size, String sortBy) {
+    public FilmPageSimpleForm findAll(Integer page, Integer size, String sortBy) {
         Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Film> films = repo.findAll(paging);
-        return films.hasContent() ? filmSimpleMapper.mapToDTOList(films.getContent()) : new ArrayList<>();
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByTitle(String title) {
-        return filmSimpleMapper.mapToDTOList(repo.findAllByTitleContaining(title));
+    public FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films = repo.findAllByTitleContaining(paging, title);
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByTitleOrg(String title_org) {
-        return filmSimpleMapper.mapToDTOList(repo.findAllByTitleOrgContaining(title_org));
+    public FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String titleOrg) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films = repo.findAllByTitleOrgContaining(paging, titleOrg);
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByRate(String rate, boolean greater) {
+    public FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films;
         if (greater) {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByRateGreaterThanEqual(rate));
+            films = repo.findAllByRateGreaterThanEqual(paging, rate);
         } else {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByRateLessThanEqual(rate));
+            films = repo.findAllByRateLessThanEqual(paging, rate);
         }
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByVotes(String votes, boolean greater) {
+    public FilmPageSimpleForm findAllByVotes(Integer page, Integer size, String sortBy, String votes, boolean greater) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films;
         if (greater) {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByVotesGreaterThanEqual(votes));
+            films = repo.findAllByVotesGreaterThanEqual(paging, votes);
         } else {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByVotesLessThanEqual(votes));
+            films = repo.findAllByVotesLessThanEqual(paging, votes);
         }
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByGenres(List<String> genres) {
-        return filmSimpleMapper.mapToDTOList(repo.findAllByGenres(genres));
+    public FilmPageSimpleForm findAllByGenres(Integer page, Integer size, String sortBy, List<String> genres) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films = repo.findAllByGenres(paging, genres);
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByYear(@RequestParam String year, @RequestParam boolean greater) {
+    public FilmPageSimpleForm findAllByYear(Integer page, Integer size, String sortBy, String year, boolean greater) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films;
         if (greater) {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByYearGreaterThanEqual(year));
+            films = repo.findAllByYearGreaterThanEqual(paging, year);
         } else {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByYearLessThanEqual(year));
+            films = repo.findAllByYearLessThanEqual(paging, year);
         }
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByYearBetween(String yearFirst, String yearSecond) {
+    public FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond) {
         if (NumberUtils.isNumber(yearFirst) && NumberUtils.isNumber(yearSecond)) {
             yearFirst = String.valueOf(Integer.parseInt(yearFirst) - 1);
             yearSecond = String.valueOf(Integer.parseInt(yearSecond) + 1);
-            return filmSimpleMapper.mapToDTOList(repo.findAllByYearBetween(yearFirst, yearSecond));
+            Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+            Page<Film> films = repo.findAllByYearBetween(paging, yearFirst, yearSecond);
+            return FilmPageSimpleForm.builder()
+                    .totalPages(films.getTotalPages())
+                    .currentPage(page)
+                    .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                    .build();
         } else {
-            return new ArrayList<>();
+            return FilmPageSimpleForm.builder()
+                    .currentPage(0)
+                    .totalPages(0)
+                    .films(new ArrayList<>())
+                    .build();
         }
     }
 
     @Override
-    public List<FilmSimpleForm> findAllByDuration(String duration, boolean greater) {
+    public FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Film> films;
         if (greater) {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByDurationGreaterThanEqual(duration));
+            films = repo.findAllByDurationGreaterThanEqual(paging, duration);
         } else {
-            return filmSimpleMapper.mapToDTOList(repo.findAllByDurationLessThanEqual(duration));
+            films = repo.findAllByDurationLessThanEqual(paging, duration);
         }
+        return FilmPageSimpleForm.builder()
+                .totalPages(films.getTotalPages())
+                .currentPage(page)
+                .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                .build();
     }
 
     @Override

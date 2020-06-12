@@ -1,6 +1,7 @@
 package com.project.movie_catalog.service;
 
 import com.project.movie_catalog.form.FilmForm;
+import com.project.movie_catalog.form.FilmPageSimpleForm;
 import com.project.movie_catalog.form.FilmSimpleForm;
 import org.springframework.stereotype.Service;
 
@@ -9,14 +10,23 @@ import java.util.List;
 @Service
 public interface FilmService extends BasicService<FilmForm, String> {
 
-    List<FilmSimpleForm> findAll(Integer page, Integer size, String sortBy);
-    List<FilmSimpleForm> findAllByTitle(String title);
-    List<FilmSimpleForm> findAllByTitleOrg(String title_org);
-    List<FilmSimpleForm> findAllByRate(String rate, boolean greater);
-    List<FilmSimpleForm> findAllByVotes(String votes, boolean greater);
-    List<FilmSimpleForm> findAllByGenres(List<String> genres);
-    List<FilmSimpleForm> findAllByYear(String year, boolean greater);
-    List<FilmSimpleForm> findAllByYearBetween(String yearFirst, String yearSecond);
-    List<FilmSimpleForm> findAllByDuration(String duration, boolean greater);
+    FilmPageSimpleForm findAll(Integer page, Integer size, String sortBy);
+
+    FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title);
+
+    FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String title_org);
+
+    FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater);
+
+    FilmPageSimpleForm findAllByVotes(Integer page, Integer size, String sortBy, String votes, boolean greater);
+
+    FilmPageSimpleForm findAllByGenres(Integer page, Integer size, String sortBy, List<String> genres);
+
+    FilmPageSimpleForm findAllByYear(Integer page, Integer size, String sortBy, String year, boolean greater);
+
+    FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond);
+
+    FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater);
+
     long count();
 }

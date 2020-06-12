@@ -1,12 +1,10 @@
 package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.FilmForm;
+import com.project.movie_catalog.form.FilmPageSimpleForm;
 import com.project.movie_catalog.form.FilmSimpleForm;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
-import com.sipios.springsearch.anotation.SearchSpec;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +21,9 @@ public class FilmController {
     }
 
     @GetMapping("")
-    public List<FilmSimpleForm> getAllFilms(@RequestParam(defaultValue = "0") Integer page,
-                                            @RequestParam(defaultValue = "10") Integer size,
-                                            @RequestParam(defaultValue = "title") String sortBy){
+    public FilmPageSimpleForm getAllFilms(@RequestParam(defaultValue = "0") Integer page,
+                                          @RequestParam(defaultValue = "10") Integer size,
+                                          @RequestParam(defaultValue = "title") String sortBy){
 
         return filmService.findAll(page, size, sortBy);
     }
@@ -36,43 +34,72 @@ public class FilmController {
     }
 
     @RequestMapping(value = "/filter", params = "title", method = RequestMethod.GET)
-    public List<FilmSimpleForm> findAllByTitle(@RequestParam String title){
-        return filmService.findAllByTitle(title);
+    public FilmPageSimpleForm findAllByTitle(@RequestParam(defaultValue = "0") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer size,
+                                               @RequestParam(defaultValue = "title") String sortBy,
+                                               @RequestParam String title){
+        return filmService.findAllByTitle(page, size, sortBy, title);
     }
 
     @RequestMapping(value = "/filter", params = "titleOrg")
-    public List<FilmSimpleForm> findFilmsByTitleOrg(@RequestParam String titleOrg){
-        return filmService.findAllByTitleOrg(titleOrg);
+    public FilmPageSimpleForm findFilmsByTitleOrg(@RequestParam(defaultValue = "0") Integer page,
+                                                  @RequestParam(defaultValue = "10") Integer size,
+                                                  @RequestParam(defaultValue = "title") String sortBy,
+                                                  @RequestParam String titleOrg){
+        return filmService.findAllByTitleOrg(page, size, sortBy, titleOrg);
     }
 
     @RequestMapping(value = "/filter", params = {"rate", "greater"})
-    public List<FilmSimpleForm> findFilmsByRate(@RequestParam String rate, @RequestParam(defaultValue = "true") boolean greater){
-        return filmService.findAllByRate(rate, greater);
+    public FilmPageSimpleForm findFilmsByRate(@RequestParam(defaultValue = "0") Integer page,
+                                              @RequestParam(defaultValue = "10") Integer size,
+                                              @RequestParam(defaultValue = "title") String sortBy,
+                                              @RequestParam String rate,
+                                              @RequestParam(defaultValue = "true") boolean greater){
+        return filmService.findAllByRate(page, size, sortBy, rate, greater);
     }
 
     @RequestMapping(value = "/filter", params = {"votes", "greater"})
-    public List<FilmSimpleForm> findFilmsByVotes(@RequestParam String votes, @RequestParam(defaultValue = "true") boolean greater){
-        return filmService.findAllByVotes(votes, greater);
+    public FilmPageSimpleForm findFilmsByVotes(@RequestParam(defaultValue = "0") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer size,
+                                               @RequestParam(defaultValue = "title") String sortBy,
+                                               @RequestParam String votes,
+                                               @RequestParam(defaultValue = "true") boolean greater){
+        return filmService.findAllByVotes(page, size, sortBy, votes, greater);
     }
 
     @RequestMapping(value = "/filter", params = "genres")
-    public List<FilmSimpleForm> findFilmsByGenres(@RequestParam List<String> genres){
-        return filmService.findAllByGenres(genres);
+    public FilmPageSimpleForm findFilmsByGenres(@RequestParam(defaultValue = "0") Integer page,
+                                                @RequestParam(defaultValue = "10") Integer size,
+                                                @RequestParam(defaultValue = "title") String sortBy,
+                                                @RequestParam List<String> genres){
+        return filmService.findAllByGenres(page, size, sortBy, genres);
     }
 
     @RequestMapping(value = "/filter", params = {"yearGreater", "greater"})
-    public List<FilmSimpleForm> findFilmsByYear(@RequestParam String yearGreater, @RequestParam(defaultValue = "true") boolean greater){
-        return filmService.findAllByYear(yearGreater, greater);
+    public FilmPageSimpleForm findFilmsByYear(@RequestParam(defaultValue = "0") Integer page,
+                                              @RequestParam(defaultValue = "10") Integer size,
+                                              @RequestParam(defaultValue = "title") String sortBy,
+                                              @RequestParam String yearGreater,
+                                              @RequestParam(defaultValue = "true") boolean greater){
+        return filmService.findAllByYear(page, size, sortBy, yearGreater, greater);
     }
 
     @RequestMapping(value = "/filter", params = {"duration", "greater"})
-    public List<FilmSimpleForm> findFilmsByDuration(@RequestParam String duration, @RequestParam(defaultValue = "true") boolean greater){
-        return filmService.findAllByDuration(duration, greater);
+    public FilmPageSimpleForm findFilmsByDuration(@RequestParam(defaultValue = "0") Integer page,
+                                                  @RequestParam(defaultValue = "10") Integer size,
+                                                  @RequestParam(defaultValue = "title") String sortBy,
+                                                  @RequestParam String duration,
+                                                  @RequestParam(defaultValue = "true") boolean greater){
+        return filmService.findAllByDuration(page, size, sortBy, duration, greater);
     }
 
     @RequestMapping(value = "/filter", params = {"yearFirst", "yearSecond"})
-    public List<FilmSimpleForm> findFilmsByYearBetween(@RequestParam String yearFirst,@RequestParam String yearSecond){
-        return filmService.findAllByYearBetween(yearFirst, yearSecond);
+    public FilmPageSimpleForm findFilmsByYearBetween(@RequestParam(defaultValue = "0") Integer page,
+                                                     @RequestParam(defaultValue = "10") Integer size,
+                                                     @RequestParam(defaultValue = "title") String sortBy,
+                                                     @RequestParam String yearFirst,
+                                                     @RequestParam String yearSecond){
+        return filmService.findAllByYearBetween(page, size, sortBy, yearFirst, yearSecond);
     }
 
     @PostMapping

@@ -1,6 +1,8 @@
 package com.project.movie_catalog.repo;
 
 import com.project.movie_catalog.model.Film;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,16 +11,16 @@ import java.util.List;
 @Repository
 public interface FilmRepo extends MongoRepository<Film, String>{
 
-    List<Film> findAllByTitleContaining(String title);
-    List<Film> findAllByTitleOrgContaining(String title_org);
-    List<Film> findAllByRateGreaterThanEqual(String rate);
-    List<Film> findAllByRateLessThanEqual(String rate);
-    List<Film> findAllByVotesGreaterThanEqual(String votes);
-    List<Film> findAllByVotesLessThanEqual(String votes);
-    List<Film> findAllByGenres(List<String> genre);
-    List<Film> findAllByYearBetween(String yearFirst, String yearSecond);
-    List<Film> findAllByYearGreaterThanEqual(String year);
-    List<Film> findAllByYearLessThanEqual(String year);
-    List<Film> findAllByDurationGreaterThanEqual(String duration);
-    List<Film> findAllByDurationLessThanEqual(String duration);
+    Page<Film> findAllByTitleContaining(Pageable pageable, String title);
+    Page<Film> findAllByTitleOrgContaining(Pageable pageable, String title_org);
+    Page<Film> findAllByRateGreaterThanEqual(Pageable pageable, String rate);
+    Page<Film> findAllByRateLessThanEqual(Pageable pageable, String rate);
+    Page<Film> findAllByVotesGreaterThanEqual(Pageable pageable, String votes);
+    Page<Film> findAllByVotesLessThanEqual(Pageable pageable, String votes);
+    Page<Film> findAllByGenres(Pageable pageable, List<String> genre);
+    Page<Film> findAllByYearBetween(Pageable pageable, String yearFirst, String yearSecond);
+    Page<Film> findAllByYearGreaterThanEqual(Pageable pageable, String year);
+    Page<Film> findAllByYearLessThanEqual(Pageable pageable, String year);
+    Page<Film> findAllByDurationGreaterThanEqual(Pageable pageable, String duration);
+    Page<Film> findAllByDurationLessThanEqual(Pageable pageable, String duration);
 }
