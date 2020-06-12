@@ -22,8 +22,9 @@ class FilmSimpleItem extends React.Component {
     componentDidUpdate(prevProps) {
         if (prevProps != this.props) {
             this.setState({
+                id: this.props.item.id,
                 title: this.props.item.title,
-                titleOrg: this.props.item.title_org,
+                titleOrg: this.props.item.titleOrg,
                 year: this.props.item.year,
                 poster: this.props.item.poster,
                 votes: this.props.item.votes,

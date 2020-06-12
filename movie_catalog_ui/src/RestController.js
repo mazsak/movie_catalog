@@ -18,10 +18,10 @@ class RestController{
         });
     }
 
-    getCountFilms(){
-        console.log('get count films')
+    findFilmsByTitle(title,page, size, sortBy){
+        console.log('find films by title')
         return new Promise(resolve => {
-            fetch(URL + "/films/count")
+            fetch(URL + "/films/filter?title="+title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson);

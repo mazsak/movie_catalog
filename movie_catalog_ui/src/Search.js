@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from './NavBar';
 import FilmSimpleItem from './FilmSimpleItem';
 import RestController from './RestController';
-import { Col, Row, Pagination, ButtonGroup, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Col, Row, Pagination, ButtonGroup, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 
 const rest = new RestController();
 
@@ -14,22 +14,33 @@ class Search extends React.Component {
       page: 0,
       size: 10,
       sortBy: "title",
-      isLoading: true,
       data: [],
-      totalPages: 0
+      totalPages: 0,
+      searchTitle: ""
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.sizeChange = this.sizeChange.bind(this);
     this.sortChange = this.sortChange.bind(this);
+    this.findFilmByTitle = this.findFilmByTitle.bind(this);
   }
 
 
   async getPage() {
-    const items = await rest.getPage(
-      this.state.page,
-      this.state.size,
-      this.state.sortBy,
-    );
+    let items = "";
+    if(this.state.searchTitle == ""){
+      items = await rest.getPage(
+        this.state.page,
+        this.state.size,
+        this.state.sortBy
+      );
+    }else {
+      items = await rest.findFilmsByTitle(
+        this.state.searchTitle,
+        this.state.page,
+        this.state.size,
+        this.state.sortBy
+      );
+    }
     this.setState({
       page: Number(items.currentPage),
       totalPages: Number(items.totalPages),
@@ -61,6 +72,15 @@ class Search extends React.Component {
   async sortChange(e) {
     this.setState({
       sortBy: await e.target.id
+    });
+
+    this.getPage();
+  }
+
+  async findFilmByTitle(e) {
+    console.log(e.target.value)
+    this.setState({
+      searchTitle: await e.target.value
     });
 
     this.getPage();
@@ -101,24 +121,25 @@ class Search extends React.Component {
           <Row>
             <div class='search' >
               <Col xs='auto'>
-              <DropdownButton
-        // as={ButtonGroup}
-        key='Secondary'
-        id={`dropdown-variants-Secondary`}
-        variant='sortby'
-        title='Sort By'
-      >
-        <Dropdown.Item onClick={this.sortChange} id="title">Title</Dropdown.Item>
-        <Dropdown.Item onClick={this.sortChange} id="titleOrg">Title Orginal</Dropdown.Item>
-        <Dropdown.Item onClick={this.sortChange} id="year">Year</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item onClick={this.sortChange} id="title,desc">Title Desc</Dropdown.Item>
-        <Dropdown.Item onClick={this.sortChange} id="titleOrg,desc">Title Orginal Desc</Dropdown.Item>
-        <Dropdown.Item onClick={this.sortChange} id="year,desc">Year Desc</Dropdown.Item>
-      </DropdownButton>
+                <DropdownButton
+                  className='element'
+                  key='Secondary'
+                  title='Sort By'
+                >
+                  <Dropdown.Item onClick={this.sortChange} id="title">Title</Dropdown.Item>
+                  <Dropdown.Item onClick={this.sortChange} id="titleOrg">Title Orginal</Dropdown.Item>
+                  <Dropdown.Item onClick={this.sortChange} id="year">Year</Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={this.sortChange} id="title,desc">Title Desc</Dropdown.Item>
+                  <Dropdown.Item onClick={this.sortChange} id="titleOrg,desc">Title Orginal Desc</Dropdown.Item>
+                  <Dropdown.Item onClick={this.sortChange} id="year,desc">Year Desc</Dropdown.Item>
+                </DropdownButton>
               </Col>
             </div>
             <Col>
+              <div className='search-input'>
+                <Form.Control onChange={this.findFilmByTitle} type="text" placeholder="Search" />
+              </div>
               <div>
                 {Array.isArray(this.state.data) && this.state.data.length > 0 ? (
                   <div>
