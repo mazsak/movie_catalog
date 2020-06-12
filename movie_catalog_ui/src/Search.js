@@ -80,7 +80,8 @@ class Search extends React.Component {
   async findFilmByTitle(e) {
     console.log(e.target.value)
     this.setState({
-      searchTitle: await e.target.value
+      searchTitle: await e.target.value,
+      page: 0
     });
 
     this.getPage();

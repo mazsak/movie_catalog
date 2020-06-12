@@ -4,7 +4,7 @@ const URL = "http://localhost:8080"
 class RestController{
 
     getPage(page, size, sortBy){
-        console.log('get page films')
+        console.log('get page films', URL + "/films?page=" + page + "&size=" + size + "&sortBy=" + sortBy)
         return new Promise(resolve => {
             fetch(URL + "/films?page=" + page + "&size=" + size + "&sortBy=" + sortBy)
                 .then((response) => response.json())
@@ -19,7 +19,7 @@ class RestController{
     }
 
     findFilmsByTitle(title,page, size, sortBy){
-        console.log('find films by title')
+        console.log('find films by title', URL + "/films/filter?title="+title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy)
         return new Promise(resolve => {
             fetch(URL + "/films/filter?title="+title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy)
                 .then((response) => response.json())

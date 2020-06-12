@@ -12,6 +12,7 @@ import Login from './Login';
 import Register from './Register';
 import Top from './Top';
 import Catalog from './Catalog';
+import AdminPanel from './AdminPanel';
 
 
 const routing = (
@@ -28,6 +29,8 @@ const routing = (
       <Route path="/top" component={Top} />
 
       <Route path="/catalog" component={Catalog} />
+
+      <Route path="/admin" component={AdminPanel} />
 
       <Route path="/" component={Home} />
     </Switch>

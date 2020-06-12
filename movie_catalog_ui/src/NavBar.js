@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 import './styles.css'
 
 class NavBar extends React.Component {
@@ -13,6 +13,7 @@ class NavBar extends React.Component {
                         <Nav.Link href="/films">Films</Nav.Link>
                         <Nav.Link href="/top">Top 100</Nav.Link>
                         <Nav.Link href="/catalog">My catalog</Nav.Link>
+                        <Button href="/admin">Admin Panel</Button>
                     </Nav>
                     <Nav>
                         <Nav.Link href="/login">Login</Nav.Link>
