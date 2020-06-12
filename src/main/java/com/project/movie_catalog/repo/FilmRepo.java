@@ -13,7 +13,7 @@ public interface FilmRepo extends MongoRepository<Film, String> {
 
     Page<Film> findAllByTitleContaining(Pageable pageable, String title);
 
-    Page<Film> findAllByTitleOrgContaining(Pageable pageable, String title_org);
+    Page<Film> findAllByTitleOrgContaining(Pageable pageable, String titleOrg);
 
     Page<Film> findAllByRateGreaterThanEqual(Pageable pageable, String rate);
 

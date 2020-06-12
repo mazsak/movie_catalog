@@ -18,12 +18,11 @@ public class Film {
 
     @Id
     private String id;
-
-    @Field(name = "title_org")
-    private String titleOrg;
-
     private String title;
-    private List<Actor> cast;
+    private String titleOrg;
+    private List<FilmActor> cast;
+    private String premiere;
+    private String premiereLocal;
     private List<Director> directors;
     private String rate;
     private String votes;

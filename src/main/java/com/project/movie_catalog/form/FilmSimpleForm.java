@@ -13,7 +13,7 @@ import java.util.List;
 public class FilmSimpleForm {
     private String id;
     private String title;
-    private String title_org;
+    private String titleOrg;
     private String year;
     private String rate;
     private String votes;

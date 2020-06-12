@@ -13,7 +13,7 @@ public interface FilmService extends BasicService<FilmForm, String> {
 
     FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title);
 
-    FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String title_org);
+    FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String titleOrg);
 
     FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater);
 

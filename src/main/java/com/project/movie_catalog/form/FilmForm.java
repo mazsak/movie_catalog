@@ -15,7 +15,7 @@ import java.util.List;
 public class FilmForm {
     private String id;
     private String title;
-    private String title_org;
+    private String titleOrg;
     private List<Actor> cast;
     private List<Director> directors;
     private String rate;

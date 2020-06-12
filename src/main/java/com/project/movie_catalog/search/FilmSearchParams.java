@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 public class FilmSearchParams {
     private String title;
-    private String title_org;
+    private String titleOrg;
     private String rate;
     private String votes;
     private List<String> genres;

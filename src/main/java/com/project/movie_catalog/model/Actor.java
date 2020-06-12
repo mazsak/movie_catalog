@@ -10,8 +10,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @ToString
 @Builder
+@Document(collection = "Actor")
 public class Actor {
     private String name;
+    private String birthDate;
+    private String birthPlace;
+    private String votes;
+    private String rate;
     private String poster;
-    private String role;
+    private String sex;
+    private String nameFull;
+    private String deathDate;
+    private String height;
 }
