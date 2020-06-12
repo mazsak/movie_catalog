@@ -9,23 +9,23 @@ import java.util.List;
 @Service
 public interface FilmService extends BasicService<FilmForm, String> {
 
-    FilmPageSimpleForm findAll(Integer page, Integer size, String sortBy);
+    FilmPageSimpleForm findAll(Integer page, Integer size, String sortBy, boolean desc);
 
-    FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title);
+    FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title, boolean desc);
 
-    FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String titleOrg);
+    FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String titleOrg, boolean desc);
 
-    FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater);
+    FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater, boolean desc);
 
-    FilmPageSimpleForm findAllByVotes(Integer page, Integer size, String sortBy, String votes, boolean greater);
+    FilmPageSimpleForm findAllByVotes(Integer page, Integer size, String sortBy, String votes, boolean greater, boolean desc);
 
-    FilmPageSimpleForm findAllByGenres(Integer page, Integer size, String sortBy, List<String> genres);
+    FilmPageSimpleForm findAllByGenres(Integer page, Integer size, String sortBy, List<String> genres, boolean desc);
 
-    FilmPageSimpleForm findAllByYear(Integer page, Integer size, String sortBy, String year, boolean greater);
+    FilmPageSimpleForm findAllByYear(Integer page, Integer size, String sortBy, String year, boolean greater, boolean desc);
 
-    FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond);
+    FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond, boolean desc);
 
-    FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater);
+    FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater, boolean desc);
 
     long count();
 }

@@ -7,6 +7,7 @@ import com.project.movie_catalog.mapper.FilmSimpleMapper;
 import com.project.movie_catalog.model.Film;
 import com.project.movie_catalog.repo.FilmRepo;
 import org.apache.commons.lang.math.NumberUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +29,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAll(Integer page, Integer size, String sortBy) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAll(Integer page, Integer size, String sortBy, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films = repo.findAll(paging);
         return FilmPageSimpleForm.builder()
                 .totalPages(films.getTotalPages())
@@ -39,8 +40,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByTitle(Integer page, Integer size, String sortBy, String title, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films = repo.findAllByTitleContaining(paging, title);
         return FilmPageSimpleForm.builder()
                 .totalPages(films.getTotalPages())
@@ -50,8 +51,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String titleOrg) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByTitleOrg(Integer page, Integer size, String sortBy, String titleOrg, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films = repo.findAllByTitleOrgContaining(paging, titleOrg);
         return FilmPageSimpleForm.builder()
                 .totalPages(films.getTotalPages())
@@ -61,8 +62,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByRate(Integer page, Integer size, String sortBy, String rate, boolean greater, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films;
         if (greater) {
             films = repo.findAllByRateGreaterThanEqual(paging, rate);
@@ -77,8 +78,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByVotes(Integer page, Integer size, String sortBy, String votes, boolean greater) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByVotes(Integer page, Integer size, String sortBy, String votes, boolean greater, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films;
         if (greater) {
             films = repo.findAllByVotesGreaterThanEqual(paging, votes);
@@ -93,8 +94,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByGenres(Integer page, Integer size, String sortBy, List<String> genres) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByGenres(Integer page, Integer size, String sortBy, List<String> genres, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films = repo.findAllByGenres(paging, genres);
         return FilmPageSimpleForm.builder()
                 .totalPages(films.getTotalPages())
@@ -104,8 +105,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByYear(Integer page, Integer size, String sortBy, String year, boolean greater) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByYear(Integer page, Integer size, String sortBy, String year, boolean greater, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films;
         if (greater) {
             films = repo.findAllByYearGreaterThanEqual(paging, year);
@@ -120,11 +121,11 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond) {
+    public FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond, boolean desc) {
         if (NumberUtils.isNumber(yearFirst) && NumberUtils.isNumber(yearSecond)) {
             yearFirst = String.valueOf(Integer.parseInt(yearFirst) - 1);
             yearSecond = String.valueOf(Integer.parseInt(yearSecond) + 1);
-            Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+            Pageable paging = getPageable(page, size, sortBy, desc);
             Page<Film> films = repo.findAllByYearBetween(paging, yearFirst, yearSecond);
             return FilmPageSimpleForm.builder()
                     .totalPages(films.getTotalPages())
@@ -141,8 +142,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     }
 
     @Override
-    public FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(sortBy));
+    public FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater, boolean desc) {
+        Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films;
         if (greater) {
             films = repo.findAllByDurationGreaterThanEqual(paging, duration);
@@ -159,5 +160,16 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     @Override
     public long count() {
         return repo.count();
+    }
+
+    @NotNull
+    private Pageable getPageable(Integer page, Integer size, String sortBy, boolean desc) {
+        Sort sort = Sort.by(sortBy);
+        if(desc){
+            sort = sort.descending();
+        } else {
+            sort = sort.ascending();
+        }
+        return PageRequest.of(page, size, sort);
     }
 }

@@ -20,6 +20,5 @@ public class Actor {
     private String poster;
     private String sex;
     private String nameFull;
-    private String deathDate;
     private String height;
 }
