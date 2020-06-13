@@ -19,7 +19,7 @@ public interface FilmRepo extends MongoRepository<Film, String> {
 
     Page<Film> findAllByRateLessThanEqual(Pageable pageable, String rate);
 
-    Page<Film> findAllByRateBetween(Pageable pageable, String rateFirst, String rateSecond);
+    Page<Film> findAllByRateBetween(Pageable pageable, float rateFirst, float rateSecond);
 
     Page<Film> findAllByVotesGreaterThanEqual(Pageable pageable, String votes);
 
