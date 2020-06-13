@@ -111,6 +111,16 @@ public class FilmController {
         return filmService.findAllByYearBetween(page, size, sortBy, yearFirst, yearSecond, desc);
     }
 
+    @RequestMapping(value = "/filter", params = {"rateFirst", "rateSecond"})
+    public FilmPageSimpleForm findFilmsByRateBetween(@RequestParam(defaultValue = "0") Integer page,
+                                                     @RequestParam(defaultValue = "10") Integer size,
+                                                     @RequestParam(defaultValue = "title") String sortBy,
+                                                     @RequestParam String rateFirst,
+                                                     @RequestParam String rateSecond,
+                                                     @RequestParam(defaultValue = "true") boolean desc) {
+        return filmService.findAllByRateBetween(page, size, sortBy, rateFirst, rateSecond, desc);
+    }
+
     @PostMapping
     public FilmForm create(@RequestBody FilmForm filmForm) {
         return filmService.saveAndReturn(filmForm);
