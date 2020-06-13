@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface FilmRepo extends MongoRepository<Film, String> {
 
-    Page<Film> findAllByTitleContaining(Pageable pageable, String title);
+    Page<Film> findAllByTitleContainingIgnoreCase(Pageable pageable, String title);
 
     Page<Film> findAllByTitleOrgContaining(Pageable pageable, String titleOrg);
 
@@ -23,9 +23,9 @@ public interface FilmRepo extends MongoRepository<Film, String> {
 
     Page<Film> findAllByVotesLessThanEqual(Pageable pageable, String votes);
 
-    Page<Film> findAllByGenres(Pageable pageable, List<String> genre);
+    Page<Film> findAllByGenresContaining(Pageable pageable, List<String> genre);
 
-    Page<Film> findAllByYearBetween(Pageable pageable, String yearFirst, String yearSecond);
+    Page<Film> findAllByYearBetween(Pageable pageable, int yearFirst, int yearSecond);
 
     Page<Film> findAllByYearGreaterThanEqual(Pageable pageable, String year);
 

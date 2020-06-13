@@ -14,31 +14,55 @@ class Search extends React.Component {
       page: 0,
       size: 10,
       sortBy: "title",
+      desc: false,
       data: [],
       totalPages: 0,
-      searchTitle: ""
+      title: "",
+      yearFirst: 1900,
+      yearSecond: new Date().getFullYear(),
+      genres: []
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.sizeChange = this.sizeChange.bind(this);
     this.sortChange = this.sortChange.bind(this);
     this.findFilmByTitle = this.findFilmByTitle.bind(this);
+    this.findFilmByGenres = this.findFilmByGenres.bind(this);
+    this.findFilmByYearFirst = this.findFilmByYearFirst.bind(this);
+    this.findFilmByYearSecond = this.findFilmByYearSecond.bind(this);
   }
 
+  componentDidUpdate(preProps) {
+    if (preProps != this.props) {
+      this.getPage();
+    }
+  }
 
   async getPage() {
     let items = "";
-    if(this.state.searchTitle == ""){
-      items = await rest.getPage(
+    if (this.state.genres.length != 0) {
+      items = await rest.findFilmsBetweenGenres(
+        this.state.genres,
         this.state.page,
         this.state.size,
-        this.state.sortBy
+        this.state.sortBy,
+        this.state.desc
       );
-    }else {
-      items = await rest.findFilmsByTitle(
-        this.state.searchTitle,
+    } else if (this.state.year != 1900 || this.state.yearSecond != new Date().getFullYear()) {
+      items = await rest.findFilmsBetweenYear(
+        this.state.yearFirst,
+        this.state.yearSecond,
         this.state.page,
         this.state.size,
-        this.state.sortBy
+        this.state.sortBy,
+        this.state.desc
+      );
+    } else {
+      items = await rest.findFilmsByTitle(
+        this.state.title,
+        this.state.page,
+        this.state.size,
+        this.state.sortBy,
+        this.state.desc
       );
     }
     this.setState({
@@ -70,18 +94,89 @@ class Search extends React.Component {
   }
 
   async sortChange(e) {
-    this.setState({
-      sortBy: await e.target.id
-    });
+    switch (await Number(e.target.id)) {
+      case 0:
+        this.setState({
+          sortBy: "title",
+          desc: false
+        });
+        break;
+      case 1:
+        this.setState({
+          sortBy: "titleOrg",
+          desc: false
+        });
+        break;
+      case 2:
+        this.setState({
+          sortBy: "year",
+          desc: false
+        });
+        break;
+      case 3:
+        this.setState({
+          sortBy: "title",
+          desc: true
+        });
+        break;
+      case 4:
+        this.setState({
+          sortBy: "titleOrg",
+          desc: true
+        });
+        break;
+      case 5:
+        this.setState({
+          sortBy: "year",
+          desc: true
+        });
+        break;
+
+    }
 
     this.getPage();
   }
 
   async findFilmByTitle(e) {
-    console.log(e.target.value)
     this.setState({
-      searchTitle: await e.target.value,
+      title: await e.target.value,
+      yearFirst: 1900,
+      yearSecond: new Date().getFullYear(),
+      genres: [],
       page: 0
+    });
+
+    this.getPage();
+  }
+
+  async findFilmByGenres(e) {
+    const index = this.state.genres.indexOf(e.target.id)
+    if (index > -1) {
+      this.state.genres.splice(index, 1);
+    } else {
+      this.state.genres.push(e.target.id);
+      this.setState({
+        yearFirst: 1900,
+        yearSecond: new Date().getFullYear()
+      });
+    }
+    this.getPage();
+    console.log(this.state.genres)
+  }
+
+  async findFilmByYearFirst(e) {
+    this.setState({
+      yearFirst: await Number(e.target.id),
+      genres: []
+    });
+
+    this.getPage();
+  }
+
+  async findFilmByYearSecond(e) {
+    this.setState({
+      yearSecond: await Number(e.target.id),
+      genres: []
     });
 
     this.getPage();
@@ -89,7 +184,11 @@ class Search extends React.Component {
 
   viewPagination() {
     const items = []
-    if (this.state.page > this.state.totalPages - 4) {
+    if (this.state.totalPages <= 5) {
+      for (var i = 0; i < this.state.totalPages; i++) {
+        items.push(<Pagination.Item class={i != this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
+      }
+    } else if (this.state.page > this.state.totalPages - 4) {
       items.push(<Pagination.Item class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={0}>{1}</Pagination.Item>);
       items.push(<Pagination.Ellipsis class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} disabled />);
       for (var i = 5; i > 0; i--) {
@@ -115,27 +214,116 @@ class Search extends React.Component {
     return items
   }
 
+
+  viewSearchGenres() {
+    const items = []
+    let genres = ["Short", "Documentary", "Western", "Drama", "Adventure", "Comedy", "Action", "Sports", "Crime", "Romance", "Mystery", "Spy", "Fantasy", "War", "Horror", "Silent", "Thriller", "Historical", "Musical", "Animated", "Science Fiction"]
+    const columnsFirst = [];
+    for (var i = 0; i < 11; i++) {
+      columnsFirst.push(
+        <Row>
+          <div class={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
+            {genres[i]}
+          </div>
+        </Row>
+      );
+    }
+    items.push(<Col>{columnsFirst}</Col>);
+    const columnsSecond = [];
+    for (let i = 11; i < genres.length; i++) {
+      columnsSecond.push(
+        <Row>
+          <div class={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
+            {genres[i]}
+          </div>
+        </Row>
+      );
+
+    }
+    items.push(<Col>{columnsSecond}</Col>);
+    return items;
+  }
+
+  viewYearFirst() {
+    const items = [];
+    for (var i = 1900; i < this.state.yearSecond + 1; i++) {
+      items.push(<Dropdown.Item onClick={this.findFilmByYearFirst} active={i == this.state.yearFirst} id={i}>{i}</Dropdown.Item>);
+    }
+
+    return items;
+  }
+
+  viewYearSecond() {
+    const items = [];
+    for (var i = this.state.yearFirst; i < new Date().getFullYear() + 1; i++) {
+      items.push(<Dropdown.Item onClick={this.findFilmByYearSecond} active={i == this.state.yearSecond} id={i}>{i}</Dropdown.Item>);
+    }
+
+    return items;
+  }
+
   render() {
     return (
       <div >
         <div class='container'>
           <Row>
             <div class='search' >
-              <Col xs='auto'>
-                <DropdownButton
-                  className='element'
+              <h4 style={{ display: 'flex', justifyContent: 'center' }}>Sort By</h4>
+              <DropdownButton
+                as={ButtonGroup}
+                className='sort'
+                size="xs"
+                title={this.state.desc == true ? this.state.sortBy.replace(this.state.sortBy.charAt(0), this.state.sortBy.charAt(0).toUpperCase()) + " Desc" : this.state.sortBy.replace(this.state.sortBy.charAt(0), this.state.sortBy.charAt(0).toUpperCase())}
+                key='Secondary'
+                variant='secondary'
+              >
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && !this.state.desc} id="0">Title</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && !this.state.desc} id="1">Title Orginal</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && !this.state.desc} id="2">Year</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && this.state.desc} id="3">Title Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && this.state.desc} id="4">Title Orginal Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && this.state.desc} id="5">Year Desc</Dropdown.Item>
+              </DropdownButton>
+              <h4 style={{ display: 'flex', justifyContent: 'center' }}>Filters</h4>
+              <div style={{ display: 'flex', justifyContent: 'left', paddingLeft: '10px' }} >
+                {this.viewSearchGenres()}
+              </div>
+              <h4 style={{ display: 'flex', justifyContent: 'center',  marginTop: "20px" }}>Years</h4>
+
+              <Row>
+                <Col>
+                <h4 style={{ display: 'flex', justifyContent: 'center' }}>For:</h4>
+                </Col>
+                <Col>
+                <h4 style={{ display: 'flex', justifyContent: 'center' }}>To:</h4>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <DropdownButton
+                    as={ButtonGroup}
+                    className='sort'
+                    size="xs"
+                    title={this.state.yearFirst}
+                    key='Secondary'
+                    variant='secondary'
+                  >
+                    {this.viewYearFirst()}
+                  </DropdownButton>
+                </Col>
+                <Col><DropdownButton
+                  as={ButtonGroup}
+                  className='sort'
+                  size="xs"
+                  title={this.state.yearSecond}
                   key='Secondary'
-                  title='Sort By'
+                  variant='secondary'
                 >
-                  <Dropdown.Item onClick={this.sortChange} id="title">Title</Dropdown.Item>
-                  <Dropdown.Item onClick={this.sortChange} id="titleOrg">Title Orginal</Dropdown.Item>
-                  <Dropdown.Item onClick={this.sortChange} id="year">Year</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={this.sortChange} id="title,desc">Title Desc</Dropdown.Item>
-                  <Dropdown.Item onClick={this.sortChange} id="titleOrg,desc">Title Orginal Desc</Dropdown.Item>
-                  <Dropdown.Item onClick={this.sortChange} id="year,desc">Year Desc</Dropdown.Item>
-                </DropdownButton>
-              </Col>
+                  {this.viewYearSecond()}
+
+                </DropdownButton></Col>
+              </Row>
             </div>
             <Col>
               <div className='search-input'>

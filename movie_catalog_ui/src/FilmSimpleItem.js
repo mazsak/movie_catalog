@@ -2,6 +2,7 @@ import React from 'react';
 import './ItemStyle.css';
 import { Row, Col } from 'react-bootstrap';
 import { BsFilm } from "react-icons/bs";
+import { BsFillStarFill } from "react-icons/bs";
 
 class FilmSimpleItem extends React.Component {
     constructor(props) {
@@ -31,7 +32,6 @@ class FilmSimpleItem extends React.Component {
                 rate: this.props.item.rate,
                 genres: this.props.item.genres,
                 duration: this.props.item.duration,
-                description: this.props.item.description
             });
         }
     }
@@ -59,6 +59,15 @@ class FilmSimpleItem extends React.Component {
                         <h6>
                             | {this.state.genres.toString().replace(',', ' | ')} | ( {this.state.year} )
                     </h6>
+                    </Col>
+                    <Col xs='auto'>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '80px', height: '180px' }}>
+                            <div>
+                                <BsFillStarFill color="gray" size="40px" />
+                                <p style={{ fontSize: '10px' }}>{this.state.rate != "NaN" ? Number(parseFloat(this.state.rate)).toFixed(2) : "0.0"}</p>
+                            </div>
+                            <p style={{ fontSize: '10px' }}>{this.state.votes}</p>
+                        </div>
                     </Col>
                 </Row>
             </div>

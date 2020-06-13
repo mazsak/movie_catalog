@@ -1,12 +1,12 @@
 
 
 const URL = "http://localhost:8080"
-class RestController{
+class RestController {
 
-    getPage(page, size, sortBy){
-        console.log('get page films', URL + "/films?page=" + page + "&size=" + size + "&sortBy=" + sortBy)
-        return new Promise(resolve => {
-            fetch(URL + "/films?page=" + page + "&size=" + size + "&sortBy=" + sortBy)
+    async getPage(page, size, sortBy, desc) {
+        console.log('get page films', URL + "/films?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/films?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson);
@@ -18,10 +18,40 @@ class RestController{
         });
     }
 
-    findFilmsByTitle(title,page, size, sortBy){
-        console.log('find films by title', URL + "/films/filter?title="+title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy)
-        return new Promise(resolve => {
-            fetch(URL + "/films/filter?title="+title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy)
+    async findFilmsByTitle(title, page, size, sortBy, desc) {
+        console.log('find films by title', URL + "/films/filter?title=" + title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/films/filter?title=" + title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async findFilmsBetweenYear(yearFirst, yearSecond, page, size, sortBy, desc) {
+        console.log('find films by year', URL + "/films/filter?yearFirst=" + yearFirst + "&yearSecond=" + yearSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/films/filter?yearFirst=" + yearFirst + "&yearSecond=" + yearSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async findFilmsBetweenGenres(genres, page, size, sortBy, desc) {
+        console.log('find films by year', URL + "/films/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/films/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson);
