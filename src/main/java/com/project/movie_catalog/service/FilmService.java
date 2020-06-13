@@ -25,6 +25,8 @@ public interface FilmService extends BasicService<FilmForm, String> {
 
     FilmPageSimpleForm findAllByYearBetween(Integer page, Integer size, String sortBy, String yearFirst, String yearSecond, boolean desc);
 
+    FilmPageSimpleForm findAllByRateBetween(Integer page, Integer size, String sortBy, String rateFirst, String rateSecond, boolean desc);
+
     FilmPageSimpleForm findAllByDuration(Integer page, Integer size, String sortBy, String duration, boolean greater, boolean desc);
 
     long count();

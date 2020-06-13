@@ -34,7 +34,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
         Pageable paging = getPageable(page, size, sortBy, desc);
         Page<Film> films = repo.findAll(paging);
         int totalPages = films.getTotalPages();
-        if (totalPages <= page) {
+        if (totalPages <= page && totalPages != 0) {
             page = totalPages - 1;
             paging = getPageable(page, size, sortBy, desc);
             films = repo.findAll(paging);
@@ -115,7 +115,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
         if (greater) {
             films = repo.findAllByVotesGreaterThanEqual(paging, votes);
             int totalPages = films.getTotalPages();
-            if (totalPages <= page) {
+            if (totalPages <= page && totalPages != 0) {
                 page = totalPages - 1;
                 paging = getPageable(page, size, sortBy, desc);
                 films = repo.findAllByVotesGreaterThanEqual(paging, votes);
@@ -123,7 +123,7 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
         } else {
             films = repo.findAllByVotesLessThanEqual(paging, votes);
             int totalPages = films.getTotalPages();
-            if (totalPages <= page) {
+            if (totalPages <= page && totalPages != 0) {
                 page = totalPages - 1;
                 paging = getPageable(page, size, sortBy, desc);
                 films = repo.findAllByVotesLessThanEqual(paging, votes);
@@ -193,6 +193,33 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
                 page = totalPages - 1;
                 paging = getPageable(page, size, sortBy, desc);
                 films = repo.findAllByYearBetween(paging, yearF, yearS);
+            }
+            return FilmPageSimpleForm.builder()
+                    .totalPages(totalPages)
+                    .currentPage(page)
+                    .films(filmSimpleMapper.mapToDTOList(films.getContent()))
+                    .build();
+        } else {
+            return FilmPageSimpleForm.builder()
+                    .currentPage(0)
+                    .totalPages(0)
+                    .films(new ArrayList<>())
+                    .build();
+        }
+    }
+
+    @Override
+    public FilmPageSimpleForm findAllByRateBetween(Integer page, Integer size, String sortBy, String rateFirst, String rateSecond, boolean desc) {
+        if (NumberUtils.isNumber(rateFirst) && NumberUtils.isNumber(rateSecond)) {
+            rateFirst = String.valueOf(Integer.parseInt(rateFirst));
+            rateSecond = String.valueOf(Integer.parseInt(rateSecond));
+            Pageable paging = getPageable(page, size, sortBy, desc);
+            Page<Film> films = repo.findAllByRateBetween(paging, rateFirst, rateSecond);
+            int totalPages = films.getTotalPages();
+            if (totalPages <= page && totalPages!=0) {
+                page = totalPages - 1;
+                paging = getPageable(page, size, sortBy, desc);
+                films = repo.findAllByRateBetween(paging, rateFirst, rateSecond);
             }
             return FilmPageSimpleForm.builder()
                     .totalPages(totalPages)
