@@ -10,5 +10,5 @@ import java.util.List;
 @Service
 public interface ActorService extends BasicService<ActorForm, String> {
 
-    ActorForm findAll(Integer page, Integer size, String sortBy);
+    List<ActorForm> findAll(Integer page, Integer size, String sortBy);
 }
