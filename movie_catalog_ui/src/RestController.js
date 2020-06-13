@@ -48,10 +48,25 @@ class RestController {
         });
     }
 
-    async findFilmsBetweenGenres(genres, page, size, sortBy, desc) {
-        console.log('find films by year', URL + "/films/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+    async findFilmsByGenres(genres, page, size, sortBy, desc) {
+        console.log('find films by geners', URL + "/films/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
         return await new Promise(resolve => {
             fetch(URL + "/films/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async findFilmsBetweenRate(rateFirst, rateSecond, page, size, sortBy, desc) {
+        console.log('find films by rate', URL + "/films/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/films/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson);

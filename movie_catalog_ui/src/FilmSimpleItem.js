@@ -50,7 +50,7 @@ class FilmSimpleItem extends React.Component {
                             )}
                     </Col>
                     <Col>
-                        <h3>
+                        <h3 style={{marginTop: '20px'}}>
                             {this.state.title}
                         </h3>
                         <h6>
@@ -61,12 +61,16 @@ class FilmSimpleItem extends React.Component {
                     </h6>
                     </Col>
                     <Col xs='auto'>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '80px', height: '180px' }}>
-                            <div>
-                                <BsFillStarFill color="gray" size="40px" />
-                                <p style={{ fontSize: '10px' }}>{this.state.rate != "NaN" ? Number(parseFloat(this.state.rate)).toFixed(2) : "0.0"}</p>
-                            </div>
-                            <p style={{ fontSize: '10px' }}>{this.state.votes}</p>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100px', height: '180px' }}>
+                            <Row>
+                                <div>
+                                    <BsFillStarFill  color="gray" size="40px" />
+                                    <p style={{ position:'relative', bottom: '28px', textAlign: 'center' }}>{this.state.rate != "NaN" ? Number(parseFloat(this.state.rate)).toFixed(2) : "0.0"}</p>
+                                </div>
+                            </Row>
+                            <Row>
+                                <p style={{ fontSize: '12px', marginTop:'30px', textAlign: 'center'}}>{this.state.votes}</p>
+                            </Row>
                         </div>
                     </Col>
                 </Row>

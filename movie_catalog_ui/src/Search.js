@@ -20,7 +20,9 @@ class Search extends React.Component {
       title: "",
       yearFirst: 1900,
       yearSecond: new Date().getFullYear(),
-      genres: []
+      genres: [],
+      rateFor: 0,
+      rateTo: 10
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.sizeChange = this.sizeChange.bind(this);
@@ -29,6 +31,8 @@ class Search extends React.Component {
     this.findFilmByGenres = this.findFilmByGenres.bind(this);
     this.findFilmByYearFirst = this.findFilmByYearFirst.bind(this);
     this.findFilmByYearSecond = this.findFilmByYearSecond.bind(this);
+    this.findFilmByRateFor = this.findFilmByRateFor.bind(this);
+    this.findFilmByRateTo = this.findFilmByRateTo.bind(this);
   }
 
   componentDidUpdate(preProps) {
@@ -40,17 +44,26 @@ class Search extends React.Component {
   async getPage() {
     let items = "";
     if (this.state.genres.length != 0) {
-      items = await rest.findFilmsBetweenGenres(
+      items = await rest.findFilmsByGenres(
         this.state.genres,
         this.state.page,
         this.state.size,
         this.state.sortBy,
         this.state.desc
       );
-    } else if (this.state.year != 1900 || this.state.yearSecond != new Date().getFullYear()) {
+    } else if (this.state.yearFirst != 1900 || this.state.yearSecond != new Date().getFullYear()) {
       items = await rest.findFilmsBetweenYear(
         this.state.yearFirst,
         this.state.yearSecond,
+        this.state.page,
+        this.state.size,
+        this.state.sortBy,
+        this.state.desc
+      );
+    } else if (this.state.rateFor != 0 || this.state.rateTo != 10) {
+      items = await rest.findFilmsBetweenRate(
+        this.state.rateFor,
+        this.state.rateTo,
         this.state.page,
         this.state.size,
         this.state.sortBy,
@@ -182,6 +195,32 @@ class Search extends React.Component {
     this.getPage();
   }
 
+  async findFilmByRateFor(e) {
+    this.setState({
+      rateFor: e.target.value,
+      title: "",
+      yearFirst: 1900,
+      yearSecond: new Date().getFullYear(),
+      genres: [],
+      page: 0
+    });
+
+    this.getPage();
+  }
+
+  async findFilmByRateTo(e) {
+    this.setState({
+      rateTo: e.target.value,
+      title: "",
+      yearFirst: 1900,
+      yearSecond: new Date().getFullYear(),
+      genres: [],
+      page: 0
+    });
+
+    this.getPage();
+  }
+
   viewPagination() {
     const items = []
     if (this.state.totalPages <= 5) {
@@ -289,14 +328,13 @@ class Search extends React.Component {
               <div style={{ display: 'flex', justifyContent: 'left', paddingLeft: '10px' }} >
                 {this.viewSearchGenres()}
               </div>
-              <h4 style={{ display: 'flex', justifyContent: 'center',  marginTop: "20px" }}>Years</h4>
-
+              <h4 style={{ display: 'flex', justifyContent: 'center', marginTop: "20px" }}>Years</h4>
               <Row>
                 <Col>
-                <h4 style={{ display: 'flex', justifyContent: 'center' }}>For:</h4>
+                  <h4 style={{ display: 'flex', justifyContent: 'center' }}>For:</h4>
                 </Col>
                 <Col>
-                <h4 style={{ display: 'flex', justifyContent: 'center' }}>To:</h4>
+                  <h4 style={{ display: 'flex', justifyContent: 'center' }}>To:</h4>
                 </Col>
               </Row>
               <Row>
@@ -322,7 +360,21 @@ class Search extends React.Component {
                 >
                   {this.viewYearSecond()}
 
-                </DropdownButton></Col>
+                </DropdownButton>
+                </Col>
+              </Row>
+              <h4 style={{ display: 'flex', justifyContent: 'center', marginTop: "20px" }}>Rate</h4>
+              <Row>
+                <Col>
+                  <div>
+                    <Form.Control onChange={this.findFilmByRateFor} min={0} max={10} type="number" placeholder="For" />
+                  </div>
+                </Col>
+                <Col>
+                  <div>
+                    <Form.Control onChange={this.findFilmByRateTo} min={0} max={10} type="number" placeholder="To" />
+                  </div>
+                </Col>
               </Row>
             </div>
             <Col>
