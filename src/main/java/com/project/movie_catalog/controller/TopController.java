@@ -4,6 +4,8 @@ import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
+import com.project.movie_catalog.service.TopService;
+import com.project.movie_catalog.service.TopServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,10 +15,10 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class TopController {
 
-    private final FilmService filmService;
+    private final TopService topService;
 
-    public TopController(FilmServiceImpl filmService) {
-        this.filmService = filmService;
+    public TopController(TopServiceImpl topService) {
+        this.topService = topService;
     }
 
     @GetMapping("")
@@ -25,7 +27,7 @@ public class TopController {
                                           @RequestParam(defaultValue = "title") String sortBy,
                                           @RequestParam(defaultValue = "true") boolean desc) {
 
-        return filmService.findAll(page, size, sortBy, desc);
+        return topService.findAll(page, size, sortBy, desc);
     }
 
     @RequestMapping(value = "/filter", params = "title", method = RequestMethod.GET)
@@ -34,7 +36,7 @@ public class TopController {
                                              @RequestParam(defaultValue = "title") String sortBy,
                                              @RequestParam String title,
                                              @RequestParam(defaultValue = "true") boolean desc) {
-        return filmService.findAllByTitle(page, size, sortBy, title, desc);
+        return topService.findAllByTitle(page, size, sortBy, title, desc);
     }
 
     @RequestMapping(value = "/filter", params = "genres")
@@ -43,7 +45,7 @@ public class TopController {
                                                 @RequestParam(defaultValue = "title") String sortBy,
                                                 @RequestParam List<String> genres,
                                                 @RequestParam(defaultValue = "true") boolean desc) {
-        return filmService.findAllByGenres(page, size, sortBy, genres, desc);
+        return topService.findAllByGenres(page, size, sortBy, genres, desc);
     }
 
     @RequestMapping(value = "/filter", params = {"yearFirst", "yearSecond"})
@@ -53,7 +55,7 @@ public class TopController {
                                                      @RequestParam String yearFirst,
                                                      @RequestParam String yearSecond,
                                                      @RequestParam(defaultValue = "true") boolean desc) {
-        return filmService.findAllByYearBetween(page, size, sortBy, yearFirst, yearSecond, desc);
+        return topService.findAllByYearBetween(page, size, sortBy, yearFirst, yearSecond, desc);
     }
 
     @RequestMapping(value = "/filter", params = {"rateFirst", "rateSecond"})
@@ -63,6 +65,6 @@ public class TopController {
                                                      @RequestParam String rateFirst,
                                                      @RequestParam String rateSecond,
                                                      @RequestParam(defaultValue = "true") boolean desc) {
-        return filmService.findAllByRateBetween(page, size, sortBy, rateFirst, rateSecond, desc);
+        return topService.findAllByRateBetween(page, size, sortBy, rateFirst, rateSecond, desc);
     }
 }
