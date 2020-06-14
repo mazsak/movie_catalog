@@ -427,7 +427,7 @@ class Search extends React.Component {
                     </Row>
                   </div>
                 ) : (
-                    <h1>No item</h1>
+                    <h1 style={{ display: 'flex', justifyContent: 'center' }}>No movies</h1>
                   )
                 }
               </div>

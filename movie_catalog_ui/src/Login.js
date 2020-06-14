@@ -5,10 +5,10 @@ class Login extends React.Component {
   render() {
     return (
       <div >
+        <div class='container'>
+          <div ></div>
+        </div>
           <NavBar />
-
-        <div class='container'></div>
-        <h1>Login</h1>
       </div>
     );
   }

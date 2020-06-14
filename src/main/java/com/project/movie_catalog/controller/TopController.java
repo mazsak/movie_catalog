@@ -2,7 +2,6 @@ package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
-import com.project.movie_catalog.search.FilmSearchParams;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/films")
+@RequestMapping("/top")
 @CrossOrigin(origins = "http://localhost:3000")
-public class FilmController {
+public class TopController {
 
     private final FilmService filmService;
 
-    public FilmController(FilmServiceImpl filmService) {
+    public TopController(FilmServiceImpl filmService) {
         this.filmService = filmService;
     }
 
@@ -27,11 +26,6 @@ public class FilmController {
                                           @RequestParam(defaultValue = "true") boolean desc) {
 
         return filmService.findAll(page, size, sortBy, desc);
-    }
-
-    @GetMapping("/{id}")
-    public FilmForm getFilm(@PathVariable String id) {
-        return filmService.findById(id);
     }
 
     @RequestMapping(value = "/filter", params = "title", method = RequestMethod.GET)
@@ -70,20 +64,5 @@ public class FilmController {
                                                      @RequestParam String rateSecond,
                                                      @RequestParam(defaultValue = "true") boolean desc) {
         return filmService.findAllByRateBetween(page, size, sortBy, rateFirst, rateSecond, desc);
-    }
-
-    @PostMapping
-    public FilmForm create(@RequestBody FilmForm filmForm) {
-        return filmService.saveAndReturn(filmForm);
-    }
-
-    @PutMapping("/{id}")
-    public FilmForm update(@RequestBody FilmForm filmForm) {
-        return filmService.saveAndReturn(filmForm);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        filmService.delete(id);
     }
 }

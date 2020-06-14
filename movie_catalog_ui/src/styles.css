@@ -90,3 +90,8 @@ body{
     padding: 10px;
     cursor: pointer;
 }
+
+.panel{
+    justify-content: center;
+    align-items: center;
+}
