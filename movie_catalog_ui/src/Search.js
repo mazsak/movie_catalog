@@ -14,7 +14,7 @@ class Search extends React.Component {
       page: 0,
       size: 10,
       sortBy: "title",
-      desc: false,
+      desc: true,
       data: [],
       totalPages: 0,
       title: "",
@@ -126,25 +126,36 @@ class Search extends React.Component {
           desc: false
         });
         break;
-      case 3:
-        this.setState({
-          sortBy: "title",
-          desc: true
-        });
-        break;
-      case 4:
-        this.setState({
-          sortBy: "titleOrg",
-          desc: true
-        });
-        break;
-      case 5:
-        this.setState({
-          sortBy: "year",
-          desc: true
-        });
-        break;
-
+        case 3:
+          this.setState({
+            sortBy: "rate",
+            desc: false
+          });
+          break;
+        case 4:
+          this.setState({
+            sortBy: "title",
+            desc: true
+          });
+          break;
+        case 5:
+          this.setState({
+            sortBy: "titleOrg",
+            desc: true
+          });
+          break;
+        case 6:
+          this.setState({
+            sortBy: "year",
+            desc: true
+          });
+          break;
+        case 7:
+          this.setState({
+            sortBy: "Rate",
+            desc: true
+          });
+          break;
     }
 
     this.getPage();
@@ -319,10 +330,12 @@ class Search extends React.Component {
                 <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && !this.state.desc} id="0">Title</Dropdown.Item>
                 <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && !this.state.desc} id="1">Title Orginal</Dropdown.Item>
                 <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && !this.state.desc} id="2">Year</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "rate" && !this.state.desc} id="3">Rate</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && this.state.desc} id="3">Title Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && this.state.desc} id="4">Title Orginal Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && this.state.desc} id="5">Year Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && this.state.desc} id="4">Title Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && this.state.desc} id="5">Title Orginal Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && this.state.desc} id="6">Year Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "rate" && this.state.desc} id="7">Rate Desc</Dropdown.Item>
               </DropdownButton>
               <h4 style={{ display: 'flex', justifyContent: 'center' }}>Filters</h4>
               <div style={{ display: 'flex', justifyContent: 'left', paddingLeft: '10px' }} >

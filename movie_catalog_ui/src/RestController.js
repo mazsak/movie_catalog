@@ -78,6 +78,81 @@ class RestController {
         });
     }
 
+    async findFilmsTopByTitle(title, page, size, sortBy, desc) {
+        console.log('find films by title', URL + "/top/filter?title=" + title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/top/filter?title=" + title + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async findFilmsBetweenTopYear(yearFirst, yearSecond, page, size, sortBy, desc) {
+        console.log('find films by year', URL + "/top/filter?yearFirst=" + yearFirst + "&yearSecond=" + yearSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/top/filter?yearFirst=" + yearFirst + "&yearSecond=" + yearSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async findFilmsTopByGenres(genres, page, size, sortBy, desc) {
+        console.log('find films by geners', URL + "/top/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/top/filter?genres=" + genres + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async findFilmsTopBetweenRate(rateFirst, rateSecond, page, size, sortBy, desc) {
+        console.log('find films by rate', URL + "/top/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/top/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
+    async getPageTop(page, size, sortBy, desc) {
+        console.log('get page films', URL + "/top?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await new Promise(resolve => {
+            fetch(URL + "/top?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson);
+                    resolve(responseJson);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        });
+    }
+
 
 }
 
