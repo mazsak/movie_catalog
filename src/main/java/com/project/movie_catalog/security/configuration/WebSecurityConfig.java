@@ -1,21 +1,18 @@
 package com.project.movie_catalog.security.configuration;
 
-import com.project.movie_catalog.service.JwtUserDetailsService;
+import com.project.movie_catalog.service.UserServiceImpl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@NonNull
-	private UserDetailsService jwtUserDetailsService;
+	private UserServiceImpl userServiceImpl;
 
 	@NonNull
 	private JwtRequestFilter jwtRequestFilter;
@@ -42,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// configure AuthenticationManager so that it knows from where to load
 		// user for matching credentials
 		// Use BCryptPasswordEncoder
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userServiceImpl).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -61,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// We don't need CSRF for this example
 		httpSecurity.csrf().disable().cors().and().headers().frameOptions().disable().and()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/authenticate","/favicon.ico", "/login/authenticate", "/login/addUser","/index.html","/h2-console/**").permitAll().
+				.authorizeRequests().antMatchers("/users/register","/authenticate","/favicon.ico", "/users/login", "/login/addUser","/index.html","/h2-console/**").permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to
@@ -79,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				@Override
 				public void addCorsMappings(CorsRegistry registry) {
 					registry
-							.addMapping("/login/**")
+							.addMapping("/*")
 							.allowedOrigins("http://localhost:3000")
 							.allowedHeaders("*").allowedMethods("POST", "GET", "OPTIONS", "PUT")
 							.allowCredentials(true).maxAge(3600);

@@ -1,28 +1,42 @@
 package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.UserForm;
-import com.project.movie_catalog.service.UserService;
+import com.project.movie_catalog.security.configuration.JwtTokenUtil;
+import com.project.movie_catalog.security.models.JwtRequest;
+import com.project.movie_catalog.security.models.JwtResponse;
 import com.project.movie_catalog.service.UserServiceImpl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
-    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
+    private final UserServiceImpl userServiceImpl;
+    private final JwtTokenUtil jwtTokenUtil;
+
+    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil) {
+        this.authenticationManager = authenticationManager;
+        this.userServiceImpl = userServiceImpl;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @GetMapping("")
-    public List<UserForm> getAllFilms(@RequestParam(defaultValue = "0") Integer page,
-                                      @RequestParam(defaultValue = "10") Integer size,
-                                      @RequestParam(defaultValue = "title") String sortBy) {
 
-        return userService.findAll(page, size, sortBy);
+    @RequestMapping(method = RequestMethod.POST, value = "/register")
+    public void register(@RequestBody UserForm userForm){
+        userServiceImpl.register(userForm);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/login")
+    public ResponseEntity<?> login(@RequestBody JwtRequest user){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        UserDetails userDetails = userServiceImpl.loadUserByUsername(user.getUsername());
+        return ResponseEntity.ok(new JwtResponse(jwtTokenUtil.generateToken(userDetails)));
     }
 }

@@ -1,6 +1,6 @@
 package com.project.movie_catalog.security.configuration;
 
-import com.project.movie_catalog.service.JwtUserDetailsService;
+import com.project.movie_catalog.service.UserServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@NonNull
-	private JwtUserDetailsService jwtUserDetailsService;
+	private UserServiceImpl userServiceImpl;
 
 	@NonNull
 	private JwtTokenUtil jwtTokenUtil;
@@ -56,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		// Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+			UserDetails userDetails = this.userServiceImpl.loadUserByUsername(username);
 
 			// if token is valid configure Spring Security to manually set
 			// authentication
