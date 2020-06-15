@@ -29,8 +29,8 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public void register(@RequestBody UserForm userForm){
-        userServiceImpl.register(userForm);
+    public boolean register(@RequestBody UserForm userForm){
+        return userServiceImpl.register(userForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")

@@ -14,6 +14,7 @@ public class UserForm {
     private String username;
     private String password;
     private String mail;
+    private String role;
     private List<FilmSimpleForm> filmsWatched;
     private List<FilmSimpleForm> filmsToWatch;
 }

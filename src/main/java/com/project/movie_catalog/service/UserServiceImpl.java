@@ -32,10 +32,14 @@ public class UserServiceImpl implements UserDetailsService {
         return user;
     }
 
-    public void register(UserForm userForm){
+    public boolean register(UserForm userForm){
+        if (userRepo.existsByUsername(userForm.getUsername())){
+            return false;
+        }
         userForm.setPassword(passwordEncoder.encode(userForm.getPassword()));
         User user = userMapper.mapToEntity(userForm);
         userRepo.save(user);
+        return true;
     }
 
 }

@@ -25,6 +25,7 @@ public class User implements UserDetails, Serializable {
     private String username;
     private String password;
     private String mail;
+    private String role;
     private List<FilmSimpleForm> filmsWatched;
     private List<FilmSimpleForm> filmsToWatch;
 
