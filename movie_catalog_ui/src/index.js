@@ -12,11 +12,14 @@ import Login from './Login';
 import Top from './Top';
 import Catalog from './Catalog';
 import AdminPanel from './AdminPanel';
+import FilmDetails from './FilmDetails';
 
 
 const routing = (
   <Router>
     <Switch>
+      <Route path="/film" component={FilmDetails} />
+
       <Route path="/films" component={Search} />
 
       <Route path="/account" component={Account} />
