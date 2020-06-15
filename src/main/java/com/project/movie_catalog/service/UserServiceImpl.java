@@ -1,6 +1,5 @@
 package com.project.movie_catalog.service;
 
-import com.project.movie_catalog.form.ActorForm;
 import com.project.movie_catalog.form.UserForm;
 import com.project.movie_catalog.mapper.UserMapper;
 import com.project.movie_catalog.model.User;
@@ -8,6 +7,7 @@ import com.project.movie_catalog.repo.UserRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl extends BasicServiceImpl<User, UserForm, UserRepo, UserMapper, String>
@@ -20,5 +20,10 @@ public class UserServiceImpl extends BasicServiceImpl<User, UserForm, UserRepo, 
     @Override
     public List<UserForm> findAll(Integer page, Integer size, String sortBy) {
         return mapper.mapToDTOList(repo.findAll());
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return repo.findByUsername(username);
     }
 }
