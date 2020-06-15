@@ -73,7 +73,7 @@ class Login extends React.Component {
                           <Form.Control onChange={pass => this.setState({ passwordR: pass.target.value })} type="password" placeholder="Password" />
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                          <span>Password</span>
+                          <span>Password repetition</span>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
                           <Form.Control onChange={pass => this.setState({ passwordRepetitionR: pass.target.value })}type="password" placeholder="Password repetition" />
