@@ -9,7 +9,6 @@ import Home from './Home';
 import Search from "./Search";
 import Account from "./Account";
 import Login from './Login';
-import Register from './Register';
 import Top from './Top';
 import Catalog from './Catalog';
 import AdminPanel from './AdminPanel';
@@ -23,8 +22,6 @@ const routing = (
       <Route path="/account" component={Account} />
 
       <Route path="/login" component={Login} />
-
-      <Route path="/register" component={Register} />
 
       <Route path="/top" component={Top} />
 

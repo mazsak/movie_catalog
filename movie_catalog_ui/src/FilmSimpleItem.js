@@ -21,7 +21,7 @@ class FilmSimpleItem extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps != this.props) {
+        if (prevProps !== this.props) {
             this.setState({
                 id: this.props.item.id,
                 title: this.props.item.title,
@@ -41,12 +41,12 @@ class FilmSimpleItem extends React.Component {
             <div class='item-film'>
                 <Row>
                     <Col xs='auto'>
-                        {this.state.poster == "null" ? (
+                        {this.state.poster === "null" ? (
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '130px', height: '180px' }}>
                                 <BsFilm />
                             </div>
                         ) : (
-                                <img src={this.state.poster} />
+                                <img src={this.state.poster} alt="" />
                             )}
                     </Col>
                     <Col>
@@ -65,7 +65,7 @@ class FilmSimpleItem extends React.Component {
                             <Row>
                                 <div>
                                     <BsFillStarFill  color="gray" size="40px" />
-                                    <p style={{ position:'relative', bottom: '28px', textAlign: 'center' }}>{this.state.rate != "NaN" ? Number(parseFloat(this.state.rate)).toFixed(2) : "0.0"}</p>
+                                    <p style={{ position:'relative', bottom: '28px', textAlign: 'center' }}>{this.state.rate !== "NaN" ? Number(parseFloat(this.state.rate)).toFixed(2) : "0.0"}</p>
                                 </div>
                             </Row>
                             <Row>

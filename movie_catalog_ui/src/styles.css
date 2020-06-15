@@ -92,6 +92,22 @@ body{
 }
 
 .panel{
-    justify-content: center;
-    align-items: center;
+    background-color: #101010;
+    margin: auto;
+    height: 100%;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.info{
+    height: 100%;
+    color: white;
+    background-color: #101010;
+    justify-content:center;
+    display:flex;
+    align-items:center;
+    text-align: center;
+    padding: 40px;
+    margin-top: 20px;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from './NavBar';
 import FilmSimpleItem from './FilmSimpleItem';
 import RestController from './RestController';
-import { Col, Row, Pagination, ButtonGroup, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import { Col, Row, Pagination, ButtonGroup, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 
 const rest = new RestController();
 
@@ -36,14 +36,14 @@ class Search extends React.Component {
   }
 
   componentDidUpdate(preProps) {
-    if (preProps != this.props) {
+    if (preProps !== this.props) {
       this.getPage();
     }
   }
 
   async getPage() {
     let items = "";
-    if (this.state.genres.length != 0) {
+    if (this.state.genres.length !== 0) {
       items = await rest.findFilmsByGenres(
         this.state.genres,
         this.state.page,
@@ -51,7 +51,7 @@ class Search extends React.Component {
         this.state.sortBy,
         this.state.desc
       );
-    } else if (this.state.yearFirst != 1900 || this.state.yearSecond != new Date().getFullYear()) {
+    } else if (this.state.yearFirst !== 1900 || this.state.yearSecond !== new Date().getFullYear()) {
       items = await rest.findFilmsBetweenYear(
         this.state.yearFirst,
         this.state.yearSecond,
@@ -60,7 +60,7 @@ class Search extends React.Component {
         this.state.sortBy,
         this.state.desc
       );
-    } else if (this.state.rateFor != 0 || this.state.rateTo != 10) {
+    } else if (this.state.rateFor !== 0 || this.state.rateTo !== 10) {
       items = await rest.findFilmsBetweenRate(
         this.state.rateFor,
         this.state.rateTo,
@@ -126,36 +126,42 @@ class Search extends React.Component {
           desc: false
         });
         break;
-        case 3:
-          this.setState({
-            sortBy: "rate",
-            desc: false
-          });
-          break;
-        case 4:
-          this.setState({
-            sortBy: "title",
-            desc: true
-          });
-          break;
-        case 5:
-          this.setState({
-            sortBy: "titleOrg",
-            desc: true
-          });
-          break;
-        case 6:
-          this.setState({
-            sortBy: "year",
-            desc: true
-          });
-          break;
-        case 7:
-          this.setState({
-            sortBy: "Rate",
-            desc: true
-          });
-          break;
+      case 3:
+        this.setState({
+          sortBy: "rate",
+          desc: false
+        });
+        break;
+      case 4:
+        this.setState({
+          sortBy: "title",
+          desc: true
+        });
+        break;
+      case 5:
+        this.setState({
+          sortBy: "titleOrg",
+          desc: true
+        });
+        break;
+      case 6:
+        this.setState({
+          sortBy: "year",
+          desc: true
+        });
+        break;
+      case 7:
+        this.setState({
+          sortBy: "Rate",
+          desc: true
+        });
+        break;
+      default:
+        this.setState({
+          sortBy: "title",
+          desc: false
+        });
+        break;
     }
 
     this.getPage();
@@ -236,27 +242,27 @@ class Search extends React.Component {
     const items = []
     if (this.state.totalPages <= 5) {
       for (var i = 0; i < this.state.totalPages; i++) {
-        items.push(<Pagination.Item class={i != this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
+        items.push(<Pagination.Item className={i !== this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
       }
     } else if (this.state.page > this.state.totalPages - 4) {
-      items.push(<Pagination.Item class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={0}>{1}</Pagination.Item>);
-      items.push(<Pagination.Ellipsis class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} disabled />);
-      for (var i = 5; i > 0; i--) {
+      items.push(<Pagination.Item className={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={0}>{1}</Pagination.Item>);
+      items.push(<Pagination.Ellipsis class={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} disabled />);
+      for (i = 5; i > 0; i--) {
         items.push(<Pagination.Item id={
-          this.state.totalPages - i} class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'}>{this.state.totalPages - i + 1}</Pagination.Item>);
+          this.state.totalPages - i} class={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'}>{this.state.totalPages - i + 1}</Pagination.Item>);
       }
     } else if (this.state.page <= 2) {
-      for (var i = 0; i < 5; i++) {
-        items.push(<Pagination.Item class={i != this.state.page ? 'item-paging' : 'item-paging-active'} id={
+      for (i = 0; i < 5; i++) {
+        items.push(<Pagination.Item class={i !== this.state.page ? 'item-paging' : 'item-paging-active'} id={
           i}>{i + 1}</Pagination.Item>);
       }
-      items.push(<Pagination.Ellipsis class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} disabled />);
-      items.push(<Pagination.Item class={this.state.page != this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={this.state.totalPages - 1}>{this.state.totalPages}</Pagination.Item>);
+      items.push(<Pagination.Ellipsis class={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} disabled />);
+      items.push(<Pagination.Item class={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={this.state.totalPages - 1}>{this.state.totalPages}</Pagination.Item>);
     } else {
       items.push(<Pagination.Item class='item-paging' id={0}>{1}</Pagination.Item>);
       items.push(<Pagination.Ellipsis class='item-paging' disabled />);
-      for (var i = this.state.page - 2; i < this.state.page + 3; i++) {
-        items.push(<Pagination.Item class={i != this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
+      for (i = this.state.page - 2; i < this.state.page + 3; i++) {
+        items.push(<Pagination.Item class={i !== this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
       }
       items.push(<Pagination.Ellipsis class='item-paging' disabled />);
       items.push(<Pagination.Item class='item-paging' id={this.state.totalPages - 1}>{this.state.totalPages}</Pagination.Item>);
@@ -272,7 +278,7 @@ class Search extends React.Component {
     for (var i = 0; i < 11; i++) {
       columnsFirst.push(
         <Row>
-          <div class={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
+          <div className={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
             {genres[i]}
           </div>
         </Row>
@@ -283,7 +289,7 @@ class Search extends React.Component {
     for (let i = 11; i < genres.length; i++) {
       columnsSecond.push(
         <Row>
-          <div class={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
+          <div className={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
             {genres[i]}
           </div>
         </Row>
@@ -297,7 +303,7 @@ class Search extends React.Component {
   viewYearFirst() {
     const items = [];
     for (var i = 1900; i < this.state.yearSecond + 1; i++) {
-      items.push(<Dropdown.Item onClick={this.findFilmByYearFirst} active={i == this.state.yearFirst} id={i}>{i}</Dropdown.Item>);
+      items.push(<Dropdown.Item onClick={this.findFilmByYearFirst} active={i === this.state.yearFirst} id={i}>{i}</Dropdown.Item>);
     }
 
     return items;
@@ -306,7 +312,7 @@ class Search extends React.Component {
   viewYearSecond() {
     const items = [];
     for (var i = this.state.yearFirst; i < new Date().getFullYear() + 1; i++) {
-      items.push(<Dropdown.Item onClick={this.findFilmByYearSecond} active={i == this.state.yearSecond} id={i}>{i}</Dropdown.Item>);
+      items.push(<Dropdown.Item onClick={this.findFilmByYearSecond} active={i === this.state.yearSecond} id={i}>{i}</Dropdown.Item>);
     }
 
     return items;
@@ -315,27 +321,27 @@ class Search extends React.Component {
   render() {
     return (
       <div >
-        <div class='container'>
+        <div className='container'>
           <Row>
-            <div class='search' >
+            <div className='search' >
               <h4 style={{ display: 'flex', justifyContent: 'center' }}>Sort By</h4>
               <DropdownButton
                 as={ButtonGroup}
                 className='sort'
                 size="xs"
-                title={this.state.desc == true ? this.state.sortBy.replace(this.state.sortBy.charAt(0), this.state.sortBy.charAt(0).toUpperCase()) + " Desc" : this.state.sortBy.replace(this.state.sortBy.charAt(0), this.state.sortBy.charAt(0).toUpperCase())}
+                title={this.state.desc === true ? this.state.sortBy.replace(this.state.sortBy.charAt(0), this.state.sortBy.charAt(0).toUpperCase()) + " Desc" : this.state.sortBy.replace(this.state.sortBy.charAt(0), this.state.sortBy.charAt(0).toUpperCase())}
                 key='Secondary'
                 variant='secondary'
               >
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && !this.state.desc} id="0">Title</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && !this.state.desc} id="1">Title Orginal</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && !this.state.desc} id="2">Year</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "rate" && !this.state.desc} id="3">Rate</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "title" && !this.state.desc} id="0">Title</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "titleOrg" && !this.state.desc} id="1">Title Orginal</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "year" && !this.state.desc} id="2">Year</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "rate" && !this.state.desc} id="3">Rate</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "title" && this.state.desc} id="4">Title Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "titleOrg" && this.state.desc} id="5">Title Orginal Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "year" && this.state.desc} id="6">Year Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy == "rate" && this.state.desc} id="7">Rate Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "title" && this.state.desc} id="4">Title Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "titleOrg" && this.state.desc} id="5">Title Orginal Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "year" && this.state.desc} id="6">Year Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "rate" && this.state.desc} id="7">Rate Desc</Dropdown.Item>
               </DropdownButton>
               <h4 style={{ display: 'flex', justifyContent: 'center' }}>Filters</h4>
               <div style={{ display: 'flex', justifyContent: 'left', paddingLeft: '10px' }} >
@@ -408,9 +414,9 @@ class Search extends React.Component {
                       <Col xs='auto'>
                         <div style={{ display: 'flex', justifyContent: 'left' }}>
                           <Pagination onClick={this.sizeChange}>
-                            <Pagination.Item class={this.state.size != 10 ? 'item-paging' : 'item-paging-active'} active={this.state.size == 10} id={10}>{10}</Pagination.Item>
-                            <Pagination.Item class={this.state.size != 25 ? 'item-paging' : 'item-paging-active'} active={this.state.size == 25} id={25}>{25}</Pagination.Item>
-                            <Pagination.Item class={this.state.size != 50 ? 'item-paging' : 'item-paging-active'} active={this.state.size == 50} id={50}>{50}</Pagination.Item>
+                            <Pagination.Item class={this.state.size !== 10 ? 'item-paging' : 'item-paging-active'} active={this.state.size === 10} id={10}>{10}</Pagination.Item>
+                            <Pagination.Item class={this.state.size !== 25 ? 'item-paging' : 'item-paging-active'} active={this.state.size === 25} id={25}>{25}</Pagination.Item>
+                            <Pagination.Item class={this.state.size !== 50 ? 'item-paging' : 'item-paging-active'} active={this.state.size === 50} id={50}>{50}</Pagination.Item>
                           </Pagination>
                         </div>
                       </Col>
@@ -431,9 +437,9 @@ class Search extends React.Component {
                       <Col xs='auto'>
                         <div style={{ display: 'flex', justifyContent: 'left', marginTop: '30px' }}>
                           <Pagination onClick={this.sizeChange}>
-                            <Pagination.Item class={this.state.size != 10 ? 'item-paging' : 'item-paging-active'} active={this.state.size == 10} id={10}>{10}</Pagination.Item>
-                            <Pagination.Item class={this.state.size != 25 ? 'item-paging' : 'item-paging-active'} active={this.state.size == 25} id={25}>{25}</Pagination.Item>
-                            <Pagination.Item class={this.state.size != 50 ? 'item-paging' : 'item-paging-active'} active={this.state.size == 50} id={50}>{50}</Pagination.Item>
+                            <Pagination.Item class={this.state.size !== 10 ? 'item-paging' : 'item-paging-active'} active={this.state.size === 10} id={10}>{10}</Pagination.Item>
+                            <Pagination.Item class={this.state.size !== 25 ? 'item-paging' : 'item-paging-active'} active={this.state.size === 25} id={25}>{25}</Pagination.Item>
+                            <Pagination.Item class={this.state.size !== 50 ? 'item-paging' : 'item-paging-active'} active={this.state.size === 50} id={50}>{50}</Pagination.Item>
                           </Pagination>
                         </div>
                       </Col>

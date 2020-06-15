@@ -16,8 +16,7 @@ class NavBar extends React.Component {
                         <Button href="/admin">Admin Panel</Button>
                     </Nav>
                     <Nav>
-                        <Nav.Link href="/login">Login</Nav.Link>
-                        <Nav.Link href="/register">Register</Nav.Link>
+                        <Nav.Link href="/login">Login / Register</Nav.Link>
                         <Nav.Link href="/account">Account</Nav.Link>
                     </Nav>
                 </Navbar>

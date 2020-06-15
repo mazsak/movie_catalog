@@ -153,6 +153,15 @@ class RestController {
         });
     }
 
+    async login(login, password){
+        console.log('login', URL)
+        // TODO
+    }
+
+    async register(user){
+        console.log('register', URL)
+        // TODO
+    }
 
 }
 
