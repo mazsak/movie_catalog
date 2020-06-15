@@ -350,7 +350,11 @@ public class TopServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, F
     }
 
     private List<Film> findTop() {
-        return repo.findAll(PageRequest.of(1, 100, Sort.by("rate").descending())).getContent();
+        return repo.findAll().stream()
+                .filter(film -> NumberUtils.isNumber(film.getRate()))
+                .sorted(Comparator.comparing(Film::getRate).reversed())
+                .limit(100)
+                .collect(Collectors.toList());
     }
 
 
