@@ -1,25 +1,20 @@
 import axios from 'axios';
+import Cookie from "js-cookie"
 
 const URL = "http://localhost:8080"
 
-const user = {
-    username: "",
-    token: "",
-    role: ""
-};
 
 class RestController {
 
 
     async checkLogin() {
-        console.log(
-            user,
-            user.token !== "",
-            user.role === "admin"
-        )
-        return await {
-            isLogin: user.token !== "",
-            isAdmin: user.role === "admin"
+        const user = Cookie.get("user") ? Cookie.get("user"): null;
+        if (user !== null){
+            console.log("user", user);
+            return await {
+                isLogin: user.token !== "",
+                isAdmin: user.role === "admin"
+            }
         }
     }
 
@@ -100,12 +95,18 @@ class RestController {
             const response = await axios.post(URL + '/users/login', {
                 username: login,
                 password: password
-            })
-            console.log("Response", response);
-            user.username = await login;
-            user.token = await response.data.token;
-            user.role = await response.data.role;
-            console.log("State in rest", this.state);
+            }).then((r) => {
+                const user = {
+                    username: "",
+                    token: "",
+                    role: ""
+                };
+                Cookie.set("user", {
+                    username: login,
+                    token: r.data.token,
+                    role: r.data.role
+                });
+            });
             return true;
         } catch (error) {
             console.error("ERROR", error);
