@@ -1,7 +1,9 @@
 package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.FilmForm;
+import com.project.movie_catalog.form.FilmFormWithComments;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
+import com.project.movie_catalog.service.CommentService;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.List;
 public class FilmController {
 
     private final FilmService filmService;
+    private final CommentService commentService;
 
-    public FilmController(FilmServiceImpl filmService) {
+    public FilmController(FilmServiceImpl filmService, CommentService commentService) {
         this.filmService = filmService;
+        this.commentService = commentService;
     }
 
     @GetMapping("")
@@ -29,8 +33,11 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public FilmForm getFilm(@PathVariable String id) {
-        return filmService.findById(id);
+    public FilmFormWithComments getFilm(@PathVariable String id) {
+        FilmFormWithComments filmFormWithComments = new FilmFormWithComments();
+        filmFormWithComments.setFilm(filmService.findById(id));
+        filmFormWithComments.setComments(commentService.findAllByIdFilm(filmFormWithComments.getFilm().getId()));
+        return filmFormWithComments;
     }
 
     @RequestMapping(value = "/filter", params = "title", method = RequestMethod.GET)
