@@ -44,6 +44,8 @@ class FilmDetails extends React.Component {
         date: this.state.date,
         idFilm: this.state.id
       });
+      // window.location= "http://localhost:3000/films/details/"+this.state.id;
+      this.getFilm();
     }
   }
 

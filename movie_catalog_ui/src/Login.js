@@ -49,7 +49,7 @@ class Login extends React.Component {
         errorLogin: true
       });
     }else{
-      // window.location= "http://localhost:3000/";
+      window.location= "http://localhost:3000/";
     }
   }
 

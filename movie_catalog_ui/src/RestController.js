@@ -28,10 +28,10 @@ class RestController {
         }
     }
 
-    async POST(path, body, heders) {
+    async POST(path, body, headers) {
         try {
             const response = await axios.post(URL + path,
-                body, heders)
+                body, headers)
             console.log("Response", response);
             return response.data
         } catch (error) {
@@ -139,6 +139,23 @@ class RestController {
             await this.POST("/comments", comment , config);
         }
     }
+    async getCommentsByUsername() {
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        const username = Cookie.get("username") ? Cookie.get("username") : null;
+        
+        if (username !== null && token !== null) {
+            const config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    Authorization: token
+                }
+            };
+        console.log('get links by username', URL + "/users/links", username)
+        console.log("token "+ token)
+        return await this.POST("/users/links", {username: username}, config);
+    
+    }
+}
 
 }
 
