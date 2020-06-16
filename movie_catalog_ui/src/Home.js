@@ -7,7 +7,7 @@ class Home extends React.Component {
       <div >
           <NavBar />
         <div class='container'></div>
-        <h1>blee</h1>
+      
       </div>
     );
   }

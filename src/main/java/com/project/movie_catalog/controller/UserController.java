@@ -3,7 +3,7 @@ package com.project.movie_catalog.controller;
 import com.project.movie_catalog.form.CommentForm;
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.UserForm;
-import com.project.movie_catalog.mapper.FilmMapper;
+import com.project.movie_catalog.mapper.UserMapper;
 import com.project.movie_catalog.model.User;
 import com.project.movie_catalog.security.configuration.JwtTokenUtil;
 import com.project.movie_catalog.security.models.JwtRequest;
@@ -32,13 +32,15 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
     private final CommentService commentService;
     private final FilmService filmService;
+    private final UserMapper userMapper;
 
-    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil, CommentService commentService, FilmService filmService) {
+    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil, CommentService commentService, FilmService filmService, UserMapper userMapper) {
         this.authenticationManager = authenticationManager;
         this.userServiceImpl = userServiceImpl;
         this.jwtTokenUtil = jwtTokenUtil;
         this.commentService = commentService;
         this.filmService = filmService;
+        this.userMapper = userMapper;
     }
 
 
@@ -57,6 +59,15 @@ public class UserController {
     @GetMapping("/links/{userId}")
     public UserForm getUserWithLinks(@PathVariable String userId){
         UserForm byUsername = userServiceImpl.findById(userId);
+        List<CommentForm> allByName = commentService.findAllByName(byUsername.getUsername());
+        allByName.forEach(commentForm ->
+                byUsername.add(WebMvcLinkBuilder.linkTo(CommentController.class).slash(commentForm.getId()).withSelfRel()));
+        return byUsername;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/links")
+    public UserForm getUserWithLinksByUsername(@RequestBody User username){
+        UserForm byUsername = userMapper.mapToDTO(userServiceImpl.loadUserByUsername(username.getUsername()));
         List<CommentForm> allByName = commentService.findAllByName(byUsername.getUsername());
         allByName.forEach(commentForm ->
                 byUsername.add(WebMvcLinkBuilder.linkTo(CommentController.class).slash(commentForm.getId()).withSelfRel()));

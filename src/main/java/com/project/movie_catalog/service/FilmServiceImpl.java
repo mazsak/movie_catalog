@@ -210,8 +210,8 @@ public class FilmServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, 
     @Override
     public FilmPageSimpleForm findAllByRateBetween(Integer page, Integer size, String sortBy, String rateFirst, String rateSecond, boolean desc) {
         if (NumberUtils.isNumber(rateFirst) && NumberUtils.isNumber(rateSecond)) {
-            float rateF = Float.parseFloat(rateFirst)-1;
-            float rateS = Float.parseFloat(rateSecond)+1;
+            float rateF = Float.parseFloat(rateFirst)-0.01F;
+            float rateS = Float.parseFloat(rateSecond)+0.01F;
             Pageable paging = getPageable(page, size, sortBy, desc);
             Page<Film> films = repo.findAllByRateBetween(paging, rateF, rateS);
             int totalPages = films.getTotalPages();
