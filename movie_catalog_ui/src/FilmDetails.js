@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from './NavBar';
 import rest from './index';
 import './ItemStyle.css';
-import { Row, Col, Button, Carousel, Card } from 'react-bootstrap';
+import { Row, Col, Button, Carousel, Card, Form } from 'react-bootstrap';
 import { BsFilm } from "react-icons/bs";
 import { BsFillStarFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
@@ -26,6 +26,7 @@ class FilmDetails extends React.Component {
     });
 
     console.log(this.state)
+    console.log(item)
   }
 
   viewActors() {
@@ -47,27 +48,25 @@ class FilmDetails extends React.Component {
   }
 
   viewComments() {
-    if (Object.keys(this.state.comments).length !== 0 && this.state.comments.constructor === Object) {
     const items = [];
     for (var i = 0; i < this.state.comments.length; i++) {
       items.push(
         <Row>
-        <Card bg='dark' text='white'>
-          <Card.Header>{this.state.comments[i].name}</Card.Header>
-          <Card.Body>
-            {/* <Card.Title>{variant} Card Title </Card.Title> */}
-            <Card.Text>{this.state.comments[i].comment}</Card.Text>
-            <Card.Text>
-              <small className="text-muted">{this.state.comments[i].date}</small>
-            </Card.Text>
-          </Card.Body>
-        </Card>
+          <Card bg='dark' text='white' style={{ width: '100%', margin: '5px' }}>
+            <Card.Header style={{ fontWeight: 'bold' }} >{this.state.comments[i].name}</Card.Header>
+            <Card.Body>
+              {/* <Card.Title>{variant} Card Title </Card.Title> */}
+              <Card.Text>{this.state.comments[i].comment}</Card.Text>
+              <Card.Text>
+                <small style={{ float: 'right' }} className="text-muted">{this.state.comments[i].date}</small>
+              </Card.Text>
+            </Card.Body>
+          </Card>
         </Row>
       );
     }
     return items;
-  }
-  return null;
+
   }
 
   render() {
@@ -147,7 +146,21 @@ class FilmDetails extends React.Component {
             {this.viewActors()}
           </Row>
           <div class='container'>
-            {this.viewComments()}
+            <Row>
+              <Card bg='dark' text='white' style={{ width: '100%', margin: '5px' }}>
+                <Card.Header style={{ fontWeight: 'bold' }} >My name</Card.Header>
+                <Card.Body>
+                  <Card.Text>
+                    <Form.Control as="textarea" rows="3" />
+                    <Button style={{ marginTop: '15px', float: 'reight' }} variant="secondary" onClick={this.register}>Register</Button>
+                    <small style={{ float: 'right', marginTop: '20px' }} className="text-muted">{new Date().getDate()+"-"+(parseInt(new Date().getMonth())+1)+"-"+ new Date().getFullYear() }</small>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Row>
+            <Col>
+              {this.viewComments()}
+            </Col>
           </div>
           <NavBar />
         </div>
