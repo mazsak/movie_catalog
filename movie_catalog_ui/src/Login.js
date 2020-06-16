@@ -24,10 +24,6 @@ class Login extends React.Component {
     this.login = this.login.bind(this);
   }
 
-  componentDidUpdate() {
-    console.log(this.state)
-  }
-
   async register(){
     const response = await rest.register({ mail: this.state.loginR, password: this.state.passwordR, username: this.state.nameR, role: "normal"});
     if (response) {
