@@ -84,6 +84,11 @@ class RestController {
         return await this.GET("/top/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc);
     }
 
+    async getFilm(id) {
+        console.log('find films by rate', URL + "/films/" + id)
+        return await this.GET("/films/" + id);
+    }
+
     async getPageTop(page, size, sortBy, desc) {
         console.log('get page films', URL + "/top?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
         return await this.GET("/top?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc);
@@ -92,7 +97,7 @@ class RestController {
     async login(login, password) {
         console.log('register', URL + '/users/login')
         try {
-            const response = await axios.post(URL + '/users/login', {
+            await axios.post(URL + '/users/login', {
                 username: login,
                 password: password
             }).then((r) => {
@@ -103,7 +108,7 @@ class RestController {
                 };
                 Cookie.set("user", {
                     username: login,
-                    token: r.data.token,
+                    token: "Bearer "+ r.data.token,
                     role: r.data.role
                 });
             });

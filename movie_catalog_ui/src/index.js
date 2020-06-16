@@ -23,7 +23,7 @@ export default rest;
 const routing = (
   <Router>
     <Switch>
-      <Route path="/film" component={<FilmDetails />} />
+      <Route path="/films/details/:id" component={FilmDetails} />
 
       <Route path="/films" component={Search} />
 
