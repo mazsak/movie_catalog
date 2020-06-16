@@ -1,10 +1,8 @@
 import React from 'react';
 import NavBar from './NavBar';
 import FilmSimpleItem from './FilmSimpleItem';
-import RestController from './RestController';
 import { Col, Row, Pagination, ButtonGroup, DropdownButton, Dropdown, Form } from 'react-bootstrap';
-
-const rest = new RestController();
+import rest from './index';
 
 class Top extends React.Component {
   constructor(props) {
