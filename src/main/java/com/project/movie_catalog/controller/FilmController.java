@@ -2,7 +2,6 @@ package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
-import com.project.movie_catalog.search.FilmSearchParams;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
 import org.springframework.web.bind.annotation.*;

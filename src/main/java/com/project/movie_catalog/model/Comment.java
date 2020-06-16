@@ -4,24 +4,18 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Builder
-@Document(collection = "Actor")
-public class Actor {
+@Document(collection = "Comment")
+public class Comment {
     @Id
     private String id;
     private String name;
-    private String birthDate;
-    private String birthPlace;
-    private String votes;
-    private String rate;
-    private String poster;
-    private String sex;
-    private String nameFull;
-    private String height;
+    private String comment;
+    private String date;
+    private String idFilm;
 }
