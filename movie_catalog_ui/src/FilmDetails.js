@@ -13,9 +13,18 @@ class FilmDetails extends React.Component {
     super(props);
     this.state = {
       id: this.props.match.params.id,
+      date: new Date().getDate() + "-" + (parseInt(new Date().getMonth()) + 1) + "-" + new Date().getFullYear(),
+      comment: "",
+      rate: 0,
       item: {}
     };
     this.getFilm();
+
+    this.addComment = this.addComment.bind(this);
+  }
+
+  componentDidUpdate() {
+    console.log(this.state)
   }
 
   async getFilm() {
@@ -24,9 +33,18 @@ class FilmDetails extends React.Component {
       item: item.film,
       comments: item.comments
     });
+  }
 
-    console.log(this.state)
-    console.log(item)
+  async addComment() {
+    if (this.state.comment !== "") {
+      await rest.addComment({
+        name: "",
+        rate: this.state.rate,
+        comment: this.state.comment,
+        date: this.state.date,
+        idFilm: this.state.id
+      });
+    }
   }
 
   viewActors() {
@@ -151,9 +169,9 @@ class FilmDetails extends React.Component {
                 <Card.Header style={{ fontWeight: 'bold' }} >My name</Card.Header>
                 <Card.Body>
                   <Card.Text>
-                    <Form.Control as="textarea" rows="3" />
-                    <Button style={{ marginTop: '15px', float: 'reight' }} variant="secondary" onClick={this.register}>Register</Button>
-                    <small style={{ float: 'right', marginTop: '20px' }} className="text-muted">{new Date().getDate()+"-"+(parseInt(new Date().getMonth())+1)+"-"+ new Date().getFullYear() }</small>
+                    <Form.Control as="textarea" rows="3" onChange={comment => this.setState({ comment: comment.target.value })} />
+                    <Button style={{ marginTop: '15px', float: 'reight' }} variant="secondary" onClick={this.addComment}>Add comment</Button>
+                    <small style={{ float: 'right', marginTop: '20px' }} className="text-muted">{this.state.date}</small>
                   </Card.Text>
                 </Card.Body>
               </Card>

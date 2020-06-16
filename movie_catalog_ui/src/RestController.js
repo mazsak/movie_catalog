@@ -8,12 +8,12 @@ class RestController {
 
 
     async checkLogin() {
-        const user = Cookie.get("user") ? Cookie.get("user"): null;
-        if (user !== null){
-            console.log("user", user);
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        const role = Cookie.get("role") ? Cookie.get("role") : null;
+        if (token !== null) {
             return await {
-                isLogin: user.token !== "",
-                isAdmin: user.role === "admin"
+                isLogin: token !== "",
+                isAdmin: role === "admin"
             }
         }
     }
@@ -28,10 +28,10 @@ class RestController {
         }
     }
 
-    async POST(path, body) {
+    async POST(path, body, heders) {
         try {
             const response = await axios.post(URL + path,
-                body)
+                body, heders)
             console.log("Response", response);
             return response.data
         } catch (error) {
@@ -97,21 +97,14 @@ class RestController {
     async login(login, password) {
         console.log('register', URL + '/users/login')
         try {
-            await axios.post(URL + '/users/login', {
+            const response = await axios.post(URL + '/users/login', {
                 username: login,
                 password: password
-            }).then((r) => {
-                const user = {
-                    username: "",
-                    token: "",
-                    role: ""
-                };
-                Cookie.set("user", {
-                    username: login,
-                    token: "Bearer "+ r.data.token,
-                    role: r.data.role
-                });
-            });
+            })
+            console.log("r", response)
+            Cookie.set("username", login);
+            Cookie.set("token", "Bearer " + response.data.jwttoken);
+            Cookie.set("role", response.data.role);
             return true;
         } catch (error) {
             console.error("ERROR", error);
@@ -122,7 +115,29 @@ class RestController {
     async register(user) {
         console.log('register', URL + '/users/register')
         return await this.POST("/users/register",
-            user);
+            user, {});
+    }
+
+    async addComment(comment) {
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        const username = Cookie.get("username") ? Cookie.get("username") : null;
+        if (username !== null && token !== null) {
+            const config = {
+                headers: {
+                    "Content-Type": 'application/json',
+                    Authorization: token
+                }
+            };
+            const commentNew = {
+                name: username,
+                rate: comment.rate,
+                comment: comment.comment,
+                date: comment.date,
+                idFilm: comment.id
+            };
+            console.log("token", token, "username", username, "comment", comment, "config", config)
+            await this.POST("/comments", comment , config);
+        }
     }
 
 }
