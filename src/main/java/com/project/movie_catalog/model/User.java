@@ -1,5 +1,6 @@
 package com.project.movie_catalog.model;
 
+import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmSimpleForm;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -27,8 +28,8 @@ public class User implements UserDetails, Serializable {
     private String password;
     private String mail;
     private String role;
-    private List<FilmSimpleForm> filmsWatched;
-    private List<FilmSimpleForm> filmsToWatch;
+    private List<FilmForm> filmsWatched;
+    private List<FilmForm> filmsToWatch;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

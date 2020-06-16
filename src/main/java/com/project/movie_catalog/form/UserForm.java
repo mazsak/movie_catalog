@@ -18,6 +18,6 @@ public class UserForm extends RepresentationModel<UserForm> {
     private String password;
     private String mail;
     private String role;
-    private List<FilmSimpleForm> filmsWatched;
-    private List<FilmSimpleForm> filmsToWatch;
+    private List<FilmForm> filmsWatched;
+    private List<FilmForm> filmsToWatch;
 }
