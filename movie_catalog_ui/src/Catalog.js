@@ -2,6 +2,7 @@ import React from 'react';
 import NavBar from './NavBar';
 import { Tabs, Tab } from 'react-bootstrap';
 import FilmSimpleItem from './FilmSimpleItem';
+import rest from './index';
 
 class Catalog extends React.Component {
 
@@ -12,6 +13,10 @@ class Catalog extends React.Component {
       dataToWatch: [],
       dataWatched: []
     };
+  }
+
+  componentDidMount(){
+    
   }
 
   render() {

@@ -1,10 +1,9 @@
 import React from 'react';
 import NavBar from './NavBar';
 import FilmSimpleItem from './FilmSimpleItem';
-import RestController from './RestController';
 import { Col, Row, Pagination, ButtonGroup, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import rest from './index';
 
-const rest = new RestController();
 
 class Search extends React.Component {
 
@@ -43,6 +42,7 @@ class Search extends React.Component {
 
   async getPage() {
     let items = "";
+    console.log("check login", rest.checkLogin())
     if (this.state.genres.length !== 0) {
       items = await rest.findFilmsByGenres(
         this.state.genres,
@@ -242,10 +242,10 @@ class Search extends React.Component {
     const items = []
     if (this.state.totalPages <= 5) {
       for (var i = 0; i < this.state.totalPages; i++) {
-        items.push(<Pagination.Item className={i !== this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
+        items.push(<Pagination.Item class={i !== this.state.page ? 'item-paging' : 'item-paging-active'} id={i} >{i + 1}</Pagination.Item>);
       }
     } else if (this.state.page > this.state.totalPages - 4) {
-      items.push(<Pagination.Item className={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={0}>{1}</Pagination.Item>);
+      items.push(<Pagination.Item class={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} id={0}>{1}</Pagination.Item>);
       items.push(<Pagination.Ellipsis class={this.state.page !== this.state.totalPages - i ? 'item-paging' : 'item-paging-active'} disabled />);
       for (i = 5; i > 0; i--) {
         items.push(<Pagination.Item id={

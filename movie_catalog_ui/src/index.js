@@ -13,12 +13,17 @@ import Top from './Top';
 import Catalog from './Catalog';
 import AdminPanel from './AdminPanel';
 import FilmDetails from './FilmDetails';
+import RestController from './RestController';
+
+const rest = new RestController()
+
+export default rest;
 
 
 const routing = (
   <Router>
     <Switch>
-      <Route path="/film" component={FilmDetails} />
+      <Route path="/film" component={<FilmDetails />} />
 
       <Route path="/films" component={Search} />
 

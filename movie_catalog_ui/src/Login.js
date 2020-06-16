@@ -1,9 +1,8 @@
 import React from 'react';
 import NavBar from './NavBar';
-import { Col, Row, Form, Button, Tabs, Tab } from 'react-bootstrap';
-import RestController from './RestController';
+import { Col, Row, Form, Button, Tabs, Tab, Alert } from 'react-bootstrap';
+import rest from './index';
 
-const rest = new RestController();
 
 class Login extends React.Component {
 
@@ -13,15 +12,49 @@ class Login extends React.Component {
       login: "",
       password: "",
       key: "login",
-      nameR:"",
-      loginR:"",
+      nameR: "",
+      loginR: "",
       passwordR: "",
-      passwordRepetitionR: ""
+      passwordRepetitionR: "",
+      errorLogin: false,
+      errorRegister: false,
+      register: false
     };
+    this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
   }
 
   componentDidUpdate() {
     console.log(this.state)
+  }
+
+  async register(){
+    const response = await rest.register({ mail: this.state.loginR, password: this.state.passwordR, username: this.state.nameR, role: "normal"});
+    if (response) {
+      this.setState({
+        register: true,
+        errorRegister: false,
+        loginR:"",
+        passwordR: "",
+        nameR:""
+      });
+    }else{
+      this.setState({
+        register: false,
+        errorRegister: true
+      });
+    }
+  }
+
+  async login(){
+    const response = await rest.login(this.state.login, this.state.password);
+    if (!response){
+      this.setState({
+        errorLogin: true
+      });
+    }else{
+      window.location= "http://localhost:3000/";
+    }
   }
 
   render() {
@@ -34,12 +67,17 @@ class Login extends React.Component {
                 <div class="panel">
                   <Tabs defaultActiveKey="profile" activeKey={this.state.key} onSelect={(key) => this.setState({ key: key })}>
                     <Tab class="panel" eventKey="login" title="Login">
-                      <div style={{backgroundColor: '#101010'}}>
-                        <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                          <span>Email</span>
+                      <div style={{ backgroundColor: '#101010' }}>
+                        <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <Alert key='error-login' show={this.state.errorLogin} variant="danger">
+                            Username or password is incorrect!
+                          </Alert>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                          <Form.Control onChange={email => this.setState({ login: email.target.value })} type="email" placeholder="Email" />
+                          <span>Name</span>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <Form.Control onChange={name => this.setState({ login: name.target.value })} type="text" placeholder="Name" />
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
                           <span>Password</span>
@@ -48,17 +86,27 @@ class Login extends React.Component {
                           <Form.Control onChange={pass => this.setState({ password: pass.target.value })} type="password" placeholder="Password" />
                         </Row>
                         <Row style={{ marginRight: '10px', marginTop: '20px', float: 'right', backgroundColor: '#101010' }}>
-                          <Button variant="secondary" disabled={this.state.password === "" || this.state.login === ""} onClick={event => rest.login(this.state.login, this.state.password)} >Login</Button>
+                          <Button variant="secondary" disabled={this.state.password === "" || this.state.login === ""} onClick={this.login} >Login</Button>
                         </Row>
                       </div>
                     </Tab>
                     <Tab class="panel" eventKey="register" title="Register">
                       <div>
-                        <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                          <span>Name and surname</span>
+                        <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <Alert key='error-register' show={this.state.errorRegister} variant="danger">
+                            User with this username already exists!
+                          </Alert>
+                        </Row>
+                        <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <Alert show={this.state.register} variant="success">
+                            User successfully created!
+                          </Alert>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                          <Form.Control onChange={name =>  this.setState({ nameR: name.target.value })} type="text" placeholder="Name and surname" />
+                          <span>Name</span>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <Form.Control onChange={name => this.setState({ nameR: name.target.value })} type="text" placeholder="Name" />
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
                           <span>Email</span>
@@ -76,10 +124,10 @@ class Login extends React.Component {
                           <span>Password repetition</span>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                          <Form.Control onChange={pass => this.setState({ passwordRepetitionR: pass.target.value })}type="password" placeholder="Password repetition" />
+                          <Form.Control onChange={pass => this.setState({ passwordRepetitionR: pass.target.value })} type="password" placeholder="Password repetition" />
                         </Row>
                         <Row style={{ marginRight: '10px', marginTop: '20px', float: 'right' }}>
-                          <Button variant="secondary" disabled={this.state.passwordR === "" || this.state.loginR === "" || this.state.passwordR < 6 || this.state.passwordR !== this.state.passwordRepetitionR} onClick={event => rest.register({email:this.state.loginR, password:this.state.passwordR, name: this.state.nameR})} >Register</Button>
+                          <Button variant="secondary" disabled={this.state.passwordR === "" || this.state.nameR === "" || this.state.passwordR < 6 || this.state.passwordR !== this.state.passwordRepetitionR} onClick={this.register}>Register</Button>
                         </Row>
                       </div>
                     </Tab>
