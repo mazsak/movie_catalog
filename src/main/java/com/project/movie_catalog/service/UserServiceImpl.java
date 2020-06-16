@@ -5,14 +5,16 @@ import com.project.movie_catalog.mapper.UserMapper;
 import com.project.movie_catalog.model.User;
 import com.project.movie_catalog.repo.UserRepo;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl extends BasicServiceImpl<User, UserForm, UserRepo, UserMapper, String>
+        implements UserDetailsService {
 
     private final UserRepo userRepo;
 
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserDetailsService {
     private final UserMapper userMapper;
 
     public UserServiceImpl(UserRepo userRepo, @Lazy PasswordEncoder passwordEncoder, UserMapper userMapper) {
+        super(userRepo, userMapper);
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
@@ -40,6 +43,10 @@ public class UserServiceImpl implements UserDetailsService {
         User user = userMapper.mapToEntity(userForm);
         userRepo.save(user);
         return true;
+    }
+
+    public User findByUsername(String username){
+        return userRepo.findByUsername(username).orElse(null);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.UserForm;
+import com.project.movie_catalog.model.User;
 import com.project.movie_catalog.security.configuration.JwtTokenUtil;
 import com.project.movie_catalog.security.models.JwtRequest;
 import com.project.movie_catalog.security.models.JwtResponse;
@@ -8,7 +9,6 @@ import com.project.movie_catalog.service.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +36,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity<?> login(@RequestBody JwtRequest user){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        UserDetails userDetails = userServiceImpl.loadUserByUsername(user.getUsername());
-        return ResponseEntity.ok(new JwtResponse(jwtTokenUtil.generateToken(userDetails)));
+        User userDetails = userServiceImpl.loadUserByUsername(user.getUsername());
+        return ResponseEntity.ok(new JwtResponse(jwtTokenUtil.generateToken(userDetails), userDetails.getRole()));
     }
 }
