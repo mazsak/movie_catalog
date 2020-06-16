@@ -21,4 +21,9 @@ public class CommentServiceImpl extends BasicServiceImpl<Comment, CommentForm, C
     public List<CommentForm> findAllByIdFilm(String idFilm) {
         return mapper.mapToDTOList(repo.findAllByIdFilm(idFilm));
     }
+
+    @Override
+    public List<CommentForm> findAllByName(String userName) {
+        return mapper.mapToDTOList(repo.findAllByName(userName));
+    }
 }

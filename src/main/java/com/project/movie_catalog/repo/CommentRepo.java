@@ -10,4 +10,5 @@ import java.util.List;
 public interface CommentRepo extends MongoRepository<Comment, String> {
 
     List<Comment> findAllByIdFilm(String idFilm);
+    List<Comment> findAllByName(String userName);
 }

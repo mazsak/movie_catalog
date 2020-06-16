@@ -1,6 +1,8 @@
 package com.project.movie_catalog.form;
 
+import com.project.movie_catalog.model.User;
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
@@ -10,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Builder
-public class UserForm {
+public class UserForm extends RepresentationModel<UserForm> {
+    private String id;
     private String username;
     private String password;
     private String mail;

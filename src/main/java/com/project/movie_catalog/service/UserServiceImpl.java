@@ -44,9 +44,4 @@ public class UserServiceImpl extends BasicServiceImpl<User, UserForm, UserRepo, 
         userRepo.save(user);
         return true;
     }
-
-    public User findByUsername(String username){
-        return userRepo.findByUsername(username).orElse(null);
-    }
-
 }

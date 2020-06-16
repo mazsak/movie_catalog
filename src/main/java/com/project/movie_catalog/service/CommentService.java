@@ -9,4 +9,5 @@ import java.util.List;
 public interface CommentService extends BasicService<CommentForm, String> {
 
     List<CommentForm> findAllByIdFilm(String idFilm);
+    List<CommentForm> findAllByName(String userName);
 }
