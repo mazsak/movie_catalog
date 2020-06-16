@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class CommentForm {
     private String id;
+    private String rate;
     private String name;
     private String comment;
     private String date;
