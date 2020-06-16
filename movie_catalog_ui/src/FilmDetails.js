@@ -34,7 +34,7 @@ class FilmDetails extends React.Component {
       items.push(
         <Col>
           <Card bg='dark' style={{ width: '180px' }} class='item-film' text='white'>
-                <Card.Img style={{width: '180px' , height:'200px'}} src={this.state.item.cast[i].poster} />
+            <Card.Img style={{ width: '180px', height: '200px' }} src={this.state.item.cast[i].poster} />
             <Card.Body>
               <Card.Title style={{ justifyContent: 'center' }} xs='auto'>{this.state.item.cast[i].name}</Card.Title>
               <Card.Text style={{ justifyContent: 'center' }} xs='auto'>{this.state.item.cast[i].role}</Card.Text>
@@ -44,6 +44,30 @@ class FilmDetails extends React.Component {
       );
     }
     return items;
+  }
+
+  viewComments() {
+    if (Object.keys(this.state.comments).length !== 0 && this.state.comments.constructor === Object) {
+    const items = [];
+    for (var i = 0; i < this.state.comments.length; i++) {
+      items.push(
+        <Row>
+        <Card bg='dark' text='white'>
+          <Card.Header>{this.state.comments[i].name}</Card.Header>
+          <Card.Body>
+            {/* <Card.Title>{variant} Card Title </Card.Title> */}
+            <Card.Text>{this.state.comments[i].comment}</Card.Text>
+            <Card.Text>
+              <small className="text-muted">{this.state.comments[i].date}</small>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+        </Row>
+      );
+    }
+    return items;
+  }
+  return null;
   }
 
   render() {
@@ -119,9 +143,12 @@ class FilmDetails extends React.Component {
               </Row>
             </div>
           </div>
-              <Row>
-                {this.viewActors()}
-              </Row>
+          <Row>
+            {this.viewActors()}
+          </Row>
+          <div class='container'>
+            {this.viewComments()}
+          </div>
           <NavBar />
         </div>
       );
