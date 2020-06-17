@@ -191,31 +191,9 @@ class RestController {
         }
     }
 
-    async getCommentsByUsername() {
-        const token = Cookie.get("token") ? Cookie.get("token") : null;
-        const username = Cookie.get("username") ? Cookie.get("username") : null;
-        const item = await this.decodeUser().then((r) => {
-            if (Object.keys(r).length !== 0 && r.constructor === Object) {
-                return {
-                    user: r,
-                };
-            }
-            return null;
-        });
-        console.log("item", item);
-        return item;
-        if (username !== null && token !== null) {
-            const config = {
-                headers: {
-                    "Content-Type": 'application/json',
-                    Authorization: token
-                }
-            };
-            console.log('get links by username', URL + "/users/links", username)
-            console.log("token " + token)
-            return await this.POST("/users/links", { username: username }, config);
-
-        }
+    async findActorsByName(name, page, size, sortBy, desc) {
+        console.log('find films by title', URL + "/films/filter?title=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await this.GET("/actors/filter?name=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
     }
 
     async getFilmsToWatch() {

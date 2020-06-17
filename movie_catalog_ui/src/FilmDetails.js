@@ -93,11 +93,6 @@ class FilmDetails extends React.Component {
     rest.addFilmsWatched(this.state.id);
   }
 
-  async removeFilm() {
-    console.log('remove film')
-    //TODO
-  }
-
   viewActors() {
     const items = [];
     for (var i = 0; i < this.state.item.cast.length; i++) {

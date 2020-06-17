@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 @Builder
 public class ActorForm {
+    private String id;
     private String name;
     private String birthDate;
     private String birthPlace;

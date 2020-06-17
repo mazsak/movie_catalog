@@ -3,6 +3,7 @@ import NavBar from './NavBar';
 import { Row, Col, ListGroup, Tab, Tabs, Alert, Button, Form, Pagination } from 'react-bootstrap';
 import rest from './index';
 import ListUpdateFilms from './ListUpdateFilms';
+import ListUpdateActors from './ListUpdateActors';
 
 class AdminPanel extends React.Component {
 
@@ -24,7 +25,7 @@ class AdminPanel extends React.Component {
               <ListUpdateFilms />
             </Tab>
             <Tab class="panel" eventKey="list_actors" title="List actors">
-              <h6>casd3</h6>
+              <ListUpdateActors />
             </Tab>
             <Tab class="panel" eventKey="add_film" title="Add film">
               <h6>casd1</h6>

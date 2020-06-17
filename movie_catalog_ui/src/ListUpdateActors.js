@@ -1,18 +1,18 @@
 import React from 'react';
 import { Row, Col, Button, Form, Pagination } from 'react-bootstrap';
-import FilmSimpleItem from './FilmSimpleItem';
+import ActorSimpleItem from './ActorSimpleItem';
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import rest from './index';
 
-class ListUpdateFilms extends React.Component {
+class ListUpdateActors extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       page: 0,
       size: 10,
-      sortBy: "title",
-      title: "",
+      sortBy: "name",
+      name: "",
       desc: true,
       data: [],
       totalPages: 0
@@ -22,8 +22,8 @@ class ListUpdateFilms extends React.Component {
 
     this.pageChanged = this.pageChanged.bind(this);
     this.sizeChange = this.sizeChange.bind(this);
-    this.findFilmByTitle = this.findFilmByTitle.bind(this);
-    this.removeFilm = this.removeFilm.bind(this);
+    this.findFilmByName = this.findFilmByName.bind(this);
+    this.removeActor = this.removeActor.bind(this);
   }
 
   componentDidUpdate(preProps) {
@@ -49,32 +49,37 @@ class ListUpdateFilms extends React.Component {
   }
 
   async getPage() {
-    let items = await rest.findFilmsByTitle(
-      this.state.title,
+    let items = await rest.findActorsByName(
+      this.state.name,
       this.state.page,
       this.state.size,
       this.state.sortBy,
       this.state.desc
     );
+    console.log(items);
     this.setState({
       page: Number(items.currentPage),
       totalPages: Number(items.totalPages),
-      data: items.films
+      data: items.actors
     });
   }
 
-  async findFilmByTitle(e) {
+  async findFilmByName(e) {
     this.setState({
-      title: await e.target.value
+      name: await e.target.value
     });
     this.getPage();
   }
 
-  async removeFilm(e) {
+  async removeActor(e) {
     console.log("remove", e.target.id)
-    await rest.removeFilm( await e.target.id);
+    await rest.removeActor( await e.target.id);
 
     this.getPage();
+  }
+
+  async editActor(e){
+
   }
 
   viewPagination() {
@@ -113,7 +118,7 @@ class ListUpdateFilms extends React.Component {
     return (
       <div style={{ marginTop: '20px' }}>
         <div className='search-input'>
-          <Form.Control onChange={this.findFilmByTitle} type="text" placeholder="Search" />
+          <Form.Control onChange={this.findFilmByName} type="text" placeholder="Search" />
         </div>
         <div>
           {Array.isArray(this.state.data) && this.state.data.length > 0 ? (
@@ -136,16 +141,16 @@ class ListUpdateFilms extends React.Component {
                   </div>
                 </Col>
               </Row>
-              {this.state.data.map(film => (
+              {this.state.data.map(actor => (
                 <Row style={{ backgroundColor: '#101010', margin: '10px' }}>
                   <Col>
-                    <FilmSimpleItem item={film} />
+                    <ActorSimpleItem item={actor} />
                   </Col>
                   <Col xs='auto' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px' }}>
-                    <Button variant='danger' onClick={this.removeFilm} id={film.id}><AiFillDelete /></Button>
+                    <Button variant='danger' onClick={this.removeActor} id={actor.id}><AiFillDelete /></Button>
                   </Col>
                   <Col xs='auto' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px' }}>
-                    <Button><AiFillEdit /></Button>
+                    <Button onClick={this.editActor} id={actor.id}><AiFillEdit /></Button>
                   </Col>
                 </Row>
               ))}
@@ -177,4 +182,4 @@ class ListUpdateFilms extends React.Component {
 
 }
 
-export default ListUpdateFilms;
+export default ListUpdateActors;
