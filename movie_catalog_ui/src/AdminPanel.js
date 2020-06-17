@@ -5,6 +5,7 @@ import rest from './index';
 import ListUpdateFilms from './ListUpdateFilms';
 import ListUpdateActors from './ListUpdateActors';
 import AddActor from './AddActor';
+import AddFilm from './AddFilm';
 
 class AdminPanel extends React.Component {
 
@@ -15,7 +16,6 @@ class AdminPanel extends React.Component {
     }
 
   }
-
 
   render() {
     return (
@@ -29,7 +29,7 @@ class AdminPanel extends React.Component {
               <ListUpdateActors />
             </Tab>
             <Tab class="panel" eventKey="add_film" title="Add film">
-              <h6>casd1</h6>
+              <AddFilm/>
             </Tab>
             <Tab class="panel" eventKey="add_actor" title="Add actor">
               <AddActor />
