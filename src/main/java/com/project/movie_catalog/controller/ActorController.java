@@ -1,7 +1,6 @@
 package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.ActorForm;
-import com.project.movie_catalog.form.FilmPageSimpleForm;
 import com.project.movie_catalog.service.ActorService;
 import com.project.movie_catalog.service.ActorServiceImpl;
 import org.springframework.web.bind.annotation.*;

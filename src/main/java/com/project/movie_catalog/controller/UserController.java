@@ -11,10 +11,12 @@ import com.project.movie_catalog.security.models.JwtResponse;
 import com.project.movie_catalog.service.CommentService;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.UserServiceImpl;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,14 +35,16 @@ public class UserController {
     private final CommentService commentService;
     private final FilmService filmService;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil, CommentService commentService, FilmService filmService, UserMapper userMapper) {
+    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil, CommentService commentService, FilmService filmService, UserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userServiceImpl = userServiceImpl;
         this.jwtTokenUtil = jwtTokenUtil;
         this.commentService = commentService;
         this.filmService = filmService;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -72,6 +76,31 @@ public class UserController {
         allByName.forEach(commentForm ->
                 byUsername.add(WebMvcLinkBuilder.linkTo(CommentController.class).slash(commentForm.getId()).withSelfRel()));
         return byUsername;
+    }
+
+    @PutMapping("/{id}")
+    public UserForm update(@PathVariable String id, @RequestBody UserForm userToUpdate) {
+        UserForm user = userServiceImpl.findById(id);
+        String userToUpdateUsername = userToUpdate.getUsername();
+        String userToUpdateMail = userToUpdate.getMail();
+
+        if(userToUpdateUsername!=null){
+            user.setUsername(userToUpdateUsername);
+        }
+
+        if(userToUpdateMail!=null){
+            user.setMail(userToUpdateMail);
+        }
+
+        if(userToUpdate.getPassword()!=null){
+            user.setPassword(passwordEncoder.encode(userToUpdate.getPassword()));
+        }
+        return userServiceImpl.saveAndReturn(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        userServiceImpl.delete(id);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/toWatch/{userId}/{filmId}")
