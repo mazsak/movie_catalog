@@ -1,21 +1,41 @@
 import axios from 'axios';
 import Cookie from "js-cookie"
+import jwt_decode from 'jwt-decode'
 
 const URL = "http://localhost:8080"
 
 
 class RestController {
 
+    async decodeUser() {
+        const token = Cookie.get("token") ? Cookie.get("token").replace("Bearer ", "") : null;
+        if (token !== null) {
+            var decoded = jwt_decode(token).sub.split(",");
+            console.log("decode",decoded);
+            return await {
+                username: decoded[0],
+                mail: decoded[1],
+                role: decoded[2]
+        }
+        }
+        return await null;
+    }
 
     async checkLogin() {
-        const token = Cookie.get("token") ? Cookie.get("token") : null;
-        const role = Cookie.get("role") ? Cookie.get("role") : null;
-        if (token !== null) {
-            return await {
-                isLogin: token !== "",
-                isAdmin: role === "admin"
+        const item = await this.decodeUser().then((r)=>{
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return {
+                    isLogin: r !== null,
+                    isAdmin: r.role === "admin"
+                };
             }
-        }
+            return {
+                isLogin: false,
+                isAdmin: false
+            };
+        });
+        console.log("item", item);
+        return item;
     }
 
     async GET(path) {
@@ -102,9 +122,7 @@ class RestController {
                 password: password
             })
             console.log("r", response)
-            Cookie.set("username", login);
             Cookie.set("token", "Bearer " + response.data.jwttoken);
-            Cookie.set("role", response.data.role);
             return true;
         } catch (error) {
             console.error("ERROR", error);
@@ -120,6 +138,14 @@ class RestController {
 
     async addComment(comment) {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
+        const item = await this.decodeUser().then((r)=>{
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return {
+                    user: r,
+                };
+            }
+            return null;
+        });
         if (comment.name !== null && token !== null) {
             const config = {
                 headers: {
@@ -127,14 +153,23 @@ class RestController {
                     Authorization: token
                 }
             };
-            console.log("add comment","username", comment.name, "comment", comment, "config", config)
-            await this.POST("/comments", comment , config);
+            console.log("add comment", "username", comment.name, "comment", comment, "config", config)
+            await this.POST("/comments", comment, config);
         }
     }
     async getCommentsByUsername() {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
         const username = Cookie.get("username") ? Cookie.get("username") : null;
-        
+        const item = await this.decodeUser().then((r)=>{
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return {
+                    user: r,
+                };
+            }
+            return null;
+        });
+        console.log("item", item);
+        return item;
         if (username !== null && token !== null) {
             const config = {
                 headers: {
@@ -142,12 +177,12 @@ class RestController {
                     Authorization: token
                 }
             };
-        console.log('get links by username', URL + "/users/links", username)
-        console.log("token "+ token)
-        return await this.POST("/users/links", {username: username}, config);
-    
+            console.log('get links by username', URL + "/users/links", username)
+            console.log("token " + token)
+            return await this.POST("/users/links", { username: username }, config);
+
+        }
     }
-}
 
 }
 

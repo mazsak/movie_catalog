@@ -53,7 +53,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody JwtRequest user){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         User userDetails = userServiceImpl.loadUserByUsername(user.getUsername());
-        return ResponseEntity.ok(new JwtResponse(jwtTokenUtil.generateToken(userDetails), userDetails.getRole()));
+        return ResponseEntity.ok(new JwtResponse(jwtTokenUtil.generateToken(userDetails)));
     }
 
     @GetMapping("/links/{userId}")
