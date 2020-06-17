@@ -1,64 +1,88 @@
 import React from 'react';
 import NavBar from './NavBar';
+import { Col, Row, Form, Button, Tabs, Tab, Alert } from 'react-bootstrap';
 import rest from './index';
-import { Row, Card} from 'react-bootstrap';
-
 
 
 class Account extends React.Component {
 
   constructor(props) {
     super(props);
+    
     this.state = {
-      item: {}
+      oldPassword:"",
+      newPassword:"",
+      newPasswordRepetition:"",
+      newMail:"",
+      errorUpdate: false,
+      user:null
     };
-    this.getLinkByUsername();
-  }
-
-  async getLinkByUsername() {
-    let item = await rest.getCommentsByUsername();
-    if (Object.keys(item).length !== 0 && item.constructor === Object){
-    this.setState({
-      item: item._links.self
-    });
-  }
-
-    console.log("state ", this.state)
-    console.log(item)
-  }
-
-  viewComments() {
-    const items = [];
-    for (var i = 0; i < this.state.item.length; i++) {
-      items.push(
-        <Row>
-          <Card bg='dark' text='white' style={{ width: '100%', margin: '5px' }}>
-            <Card.Header style={{ fontWeight: 'bold' }} >Link</Card.Header>
-            <Card.Body>
-              {/* <Card.Title>{variant} Card Title </Card.Title> */}
-              <Card.Text>{this.state.item[i].href}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Row>
-      );
+      this.getUser();
     }
-    return items;
 
-  }
+    async getUser() {
+
+      let userDetails = await rest.decodeUser();
+      console.log("user",userDetails);
+      this.setState({
+        user: userDetails,
+      });
+    }  
 
   render() {
-    if (Object.keys(this.state.item).length !== 0 && this.state.item.constructor === Object) {
     return (
       <div >
         <div class='container'>
-          {this.viewComments()}
+        <div style={{ marginTop: "20px", textAlign: "center", color:"white"}}>
+              Username
+        </div>
+      <div style={{ marginTop: "200px" }}>
+            <Row>
+              <Col xs>
+                <div class="panel">
+                      <div style={{ backgroundColor: '#101010' }}>
+                        <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <Alert key='error-login' show={this.state.errorUpdate} variant="danger">
+                            Password is incorrect!
+                          </Alert>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <span>mail</span>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <Form.Control onChange={pass => this.setState({ newMail: pass.target.value })} type="email" placeholder="mail" />
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <span>New Password</span>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <Form.Control onChange={pass => this.setState({ newPassword: pass.target.value })} type="password" placeholder="Password" />
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <span>Repeat Password</span>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <Form.Control onChange={pass => this.setState({ newPasswordRepetition: pass.target.value })} type="password" placeholder="Password" />
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
+                          <span>Old Password</span>
+                        </Row>
+                        <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
+                          <Form.Control onChange={pass => this.setState({ oldPassword: pass.target.value })} type="password" placeholder="Password" />
+                        </Row>
+                        <Row style={{ marginRight: '10px', marginTop: '20px', float: 'right', backgroundColor: '#101010' }}>
+                          <Button variant="secondary" disabled={this.state.password === "" || this.state.login === ""} onClick={this.login} >Update</Button>
+                        </Row>
+                      </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </div>
         <NavBar />
       </div>
     );
   }
-  return null;
-}
 }
 
 export default Account;
