@@ -191,6 +191,19 @@ class RestController {
         }
     }
 
+    async removeActor(id) {
+        console.log('removw', id)
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        if (token !== null) {
+            const config = {
+                headers: {
+                    Authorization: token
+                }
+            };
+            await this.DELETE("/actors/" + id, {}, config);
+        }
+    }
+
     async findActorsByName(name, page, size, sortBy, desc) {
         console.log('find films by title', URL + "/actors/filter?name=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
         return await this.GET("/actors/filter?name=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
@@ -223,11 +236,6 @@ class RestController {
 
     async addFilmsToWatch(filmId) {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
-        if(token!==null){
-            const config = {headers:{
-                Authorization:token
-            }}
-        }
         const item = await this.decodeUser().then((r) => {
             if (Object.keys(r).length !== 0 && r.constructor === Object) {
                 return {
@@ -246,11 +254,6 @@ class RestController {
 
     async addFilmsWatched(filmId) {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
-        if(token!==null){
-            const config = {headers:{
-                Authorization:token
-            }}
-        }
         const item = await this.decodeUser().then((r) => {
             if (Object.keys(r).length !== 0 && r.constructor === Object) {
                 return {
@@ -264,6 +267,16 @@ class RestController {
                 Authorization:token
             }}
             this.POST("/users/watched/" + item.username + "/" + filmId, {}, config)
+        }
+    }
+
+    async createActor(actor){
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        if(token!==null && actor!==null){
+            const config = {headers:{
+                Authorization:token
+            }}
+            this.POST("/actors", actor, config)
         }
     }
 

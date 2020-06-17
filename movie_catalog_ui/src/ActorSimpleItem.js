@@ -61,7 +61,7 @@ class ActorSimpleItem extends React.Component {
                             {this.state.nameFull !== "null" ? this.state.nameFull : ""}
                         </h6>
                         <h6>
-                            ( {this.state.birthDate!== "null"? this.state.birthDate: "Unknown"},  {this.state.birthPlace !== "null"? this.state.birthPlace : "Unknown"})
+                            ( {this.state.birthDate!== "null"? this.state.birthDate.replace(/-/g, "."): "Unknown"},  {this.state.birthPlace !== "null"? this.state.birthPlace : "Unknown"})
                     </h6>
                     </Col>
                     <Col xs='auto'>

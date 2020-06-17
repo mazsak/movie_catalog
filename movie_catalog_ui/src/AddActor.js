@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Alert, Form, Button, Col } from 'react-bootstrap';
 import { BsPersonFill } from "react-icons/bs";
+import rest from "./index";
 
 class AddActor extends React.Component {
 
@@ -10,34 +11,36 @@ class AddActor extends React.Component {
             name: "",
             birthDate: "",
             birthPlace: "",
+            rate: "0.00",
             poster: "",
-            sex: "W",
+            sex: "M",
             nameFull: "",
             height: 0,
-            error: false,
-            success: false
         };
 
         this.addActor = this.addActor.bind(this);
     }
 
     async addActor(){
-        console.log("actor", this.state);
+        this.setState({
+            height: String(this.state.height)
+        });
+        await rest.createActor(this.state);
+        this.setState({
+            name: "",
+            birthDate: "",
+            birthPlace: "",
+            rate: "0.00",
+            poster: "",
+            sex: "M",
+            nameFull: "",
+            height: 0,
+        });
     }
 
     render() {
         return (
             <div class="panel">
-                <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                    <Alert key='error-register' show={this.state.error} variant="danger">
-                        Actor with this name already exists!
-                          </Alert>
-                </Row>
-                <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                    <Alert show={this.state.success} variant="success">
-                        Actor successfully created!
-                          </Alert>
-                </Row>
                 <Row>
                     <Col xs="auto">
                         {this.state.poster === "" ? (
@@ -53,19 +56,19 @@ class AddActor extends React.Component {
                             <span>Link to poster</span>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                            <Form.Control onChange={poster => this.setState({ poster: poster.target.value })} type="text" placeholder="Link to poster" />
+                            <Form.Control value={this.state.poster} onChange={poster => this.setState({ poster: poster.target.value })} type="text" placeholder="Link to poster" />
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px'  }}>
                             <span>Name</span>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                            <Form.Control onChange={name => this.setState({ name: name.target.value })} type="text" placeholder="Name" />
+                            <Form.Control value={this.state.name} onChange={name => this.setState({ name: name.target.value })} type="text" placeholder="Name" />
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
                             <span>Name Full</span>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                            <Form.Control onChange={nameF => this.setState({ nameFull: nameF.target.value })} type="text" placeholder="Name Full" />
+                            <Form.Control value={this.state.nameFull} onChange={nameF => this.setState({ nameFull: nameF.target.value })} type="text" placeholder="Name Full" />
                         </Row>
                     </Col>
                 </Row>
@@ -79,10 +82,10 @@ class AddActor extends React.Component {
                 </Row>
                 <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
                     <Col>
-                        <Form.Control onChange={birthD => this.setState({ birthPlace: birthD.target.value })} type="date" placeholder="Birth Date" />
+                        <Form.Control value={this.state.birthDate} onChange={birthD => this.setState({ birthDate: birthD.target.value })} type="date" placeholder="Birth Date" />
                     </Col>
                     <Col>
-                        <Form.Control onChange={birthP => this.setState({ birthPlace: birthP.target.value })} type="text" placeholder="Birth Place" />
+                        <Form.Control value={this.state.birthPlace} onChange={birthP => this.setState({ birthPlace: birthP.target.value })} type="text" placeholder="Birth Place" />
                     </Col>
                 </Row>
                 <Row style={{ marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
@@ -95,9 +98,9 @@ class AddActor extends React.Component {
                 </Row>
                 <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
                     <Col>
-                        <Form.Control as="select" onInput={value  => this.setState({sex: value})} type="password" placeholder="Password repetition" >
-                            <option value="M">Men</option>
-                            <option value="W">Women</option>
+                        <Form.Control as="select" type="password" placeholder="Password repetition" >
+                            <option onClick={value  => this.setState({sex: value})} value="M">Male</option>
+                            <option onClick={value  => this.setState({sex: value})} value="F">Female</option>
                         </Form.Control>
                     </Col>
                     <Col>
