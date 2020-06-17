@@ -12,9 +12,11 @@ class AdminPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      key: "list_films"
+      type: this.props.match.params.type,
+      id: this.props.match.params.id,
+      key: Object.keys(this.props.match.params).length !== 0 && this.props.match.params.constructor === Object ? "add_" + this.props.match.params.type : "list_films"
     }
-
+    console.log("in constructir", this.state)
   }
 
   render() {
@@ -29,10 +31,18 @@ class AdminPanel extends React.Component {
               <ListUpdateActors />
             </Tab>
             <Tab class="panel" eventKey="add_film" title="Add film">
-              <AddFilm/>
+              {this.state.type === "actor" ? (
+                <AddFilm id={this.state.id} />
+              ) : (
+                  <AddFilm id={null} />
+                )}
             </Tab>
             <Tab class="panel" eventKey="add_actor" title="Add actor">
-              <AddActor />
+              {this.state.type === "actor" ? (
+                <AddActor id={this.state.id} />
+              ) : (
+                  <AddActor  id={null} />
+                )}
             </Tab>
           </Tabs>
         </div>

@@ -4,7 +4,7 @@ import FilmSimpleItem from './FilmSimpleItem';
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import rest from './index';
 
-class ListUpdateFilms extends React.Component {
+class ListUpdate extends React.Component {
 
   constructor(props) {
     super(props);
@@ -145,7 +145,7 @@ class ListUpdateFilms extends React.Component {
                     <Button variant='danger' onClick={this.removeFilm} id={film.id}><AiFillDelete /></Button>
                   </Col>
                   <Col xs='auto' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px' }}>
-                    <Button><AiFillEdit /></Button>
+                    <Button href={"/admin/film/"+film.id}><AiFillEdit /></Button>
                   </Col>
                 </Row>
               ))}
@@ -177,4 +177,4 @@ class ListUpdateFilms extends React.Component {
 
 }
 
-export default ListUpdateFilms;
+export default ListUpdate;

@@ -38,16 +38,16 @@ class FilmDetails extends React.Component {
     console.log(this.state)
   }
 
-  
 
-  async getUsername(){
-    await rest.decodeUser().then((r)=>{
+
+  async getUsername() {
+    await rest.decodeUser().then((r) => {
       if (Object.keys(r).length !== 0 && r.constructor === Object) {
-        this.setState({username: r.username});
-      }else{
-        this.setState({username: "Unknown"});
+        this.setState({ username: r.username });
+      } else {
+        this.setState({ username: "Unknown" });
       }
-  });
+    });
   }
 
   componentDidUpdate() {
@@ -57,7 +57,7 @@ class FilmDetails extends React.Component {
   async getFilm() {
 
     let item = await rest.getFilm(this.state.id);
-    console.log("item",item);
+    console.log("item", item);
     this.setState({
       item: item.film,
       comments: item.comments
@@ -112,21 +112,26 @@ class FilmDetails extends React.Component {
 
   viewComments() {
     const items = [];
-    for (var i = 0; i < this.state.comments.length; i++) {
+    for (var i = this.state.comments.length - 1; i >= 0; i--) {
       items.push(
         <Row>
-          <Card bg='dark' text='white' style={{ width: '100%', margin: '5px' }}>
-            <Card.Header style={{ fontWeight: 'bold' }} >{this.state.comments[i].name}({this.state.comments[i].date.replace(/-/g, ".")})</Card.Header>
-            <Card.Body>
-              {/* <Card.Title>{variant} Card Title </Card.Title> */}
+          <div class='item-film' style={{ padding: '30px', paddingBottom: '10px' }}>
+            <h5>
+              {this.state.comments[i].name}  ({this.state.comments[i].date.replace(/-/g, ".")})
+            </h5>
+            <h6>
               <Card.Text>{this.state.comments[i].comment}</Card.Text>
-            </Card.Body>
-          </Card>
+            </h6>
+          </div>
         </Row>
       );
     }
     return items;
 
+  }
+
+  async viewChangeRate() { 
+    return [(<div/>)];
   }
 
   render() {
@@ -189,17 +194,28 @@ class FilmDetails extends React.Component {
               </div>
               {this.state.isLogin ? (
                 <div class='item-film'>
-                  <Form.Group controlId="exampleForm.ControlTextarea1" style={{ padding: '30px', paddingBottom: '10px'}}>
-                    <Form.Label>{this.state.username}</Form.Label>
-                    <Form.Control as="textarea" />
-                    <Button style={{margin:'10px', float: 'right', width:'100px'}} variant='secondary' type="submit">Add</Button>
+                  <Form.Group controlId="exampleForm.ControlTextarea1" style={{ padding: '30px', paddingBottom: '10px' }}>
+                    <Col>
+                    <Form.Label>
+                        <h5>
+                          {this.state.username}
+                        </h5>
+                    </Form.Label>
+                    </Col>
+                    {/* <Col>
+                    <Form.Label>
+                    {this.viewChangeRate()}
+                    </Form.Label>
+                    </Col> */}
+                    <Form.Control as="textarea" rows="3" value={this.state.comment} onChange={comment => this.setState({ comment: comment.target.value })} />
+                    <Button style={{ margin: '10px', float: 'right', width: '100px' }} variant='secondary' type="submit" onClick={this.addComment}>Add</Button>
                   </Form.Group>
                 </div>
               ) : (
                   <div />
                 )}
             </Row>
-            {/* {this.viewComments()} */}
+            {this.viewComments()}
           </div>
           <NavBar />
         </div >

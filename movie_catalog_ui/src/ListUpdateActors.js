@@ -78,10 +78,6 @@ class ListUpdateActors extends React.Component {
     this.getPage();
   }
 
-  async editActor(e){
-
-  }
-
   viewPagination() {
     const items = []
     if (this.state.totalPages <= 5) {
@@ -150,7 +146,7 @@ class ListUpdateActors extends React.Component {
                     <Button variant='danger' onClick={this.removeActor} id={actor.id}><AiFillDelete /></Button>
                   </Col>
                   <Col xs='auto' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px' }}>
-                    <Button onClick={this.editActor} id={actor.id}><AiFillEdit /></Button>
+                    <Button href={"/admin/actor/"+actor.id}><AiFillEdit /></Button>
                   </Col>
                 </Row>
               ))}

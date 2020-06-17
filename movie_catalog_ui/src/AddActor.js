@@ -8,6 +8,7 @@ class AddActor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: this.props.id,
             name: "",
             birthDate: "",
             birthPlace: "",

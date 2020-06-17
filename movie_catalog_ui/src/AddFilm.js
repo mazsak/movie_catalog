@@ -7,6 +7,7 @@ class AddFilm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: this.props.id,
             title: "",
             titleOrg: "",
             premiere: "",
@@ -20,9 +21,12 @@ class AddFilm extends React.Component {
             allGenres:"",
             cast:[],
             description:"",
-            error: false,
-            success: false
         };
+console.log("add film",this.state);
+
+        // if (Object.keys(this.state.id === String){
+
+        // }
 
         this.addFilm = this.addFilm.bind(this);
     }
@@ -52,16 +56,6 @@ class AddFilm extends React.Component {
     render() {
         return (
             <div class="panel">
-                <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                    <Alert key='error-register' show={this.state.error} variant="danger">
-                        Film with this title already exists!
-                          </Alert>
-                </Row>
-                <Row style={{ justifyContent: 'center', marginLeft: '10px', marginRight: '10px', marginTop: '20px' }}>
-                    <Alert show={this.state.success} variant="success">
-                        Film successfully created!
-                          </Alert>
-                </Row>
                 <Row>
                     <Col xs="auto">
                         {this.state.poster === "" ? (

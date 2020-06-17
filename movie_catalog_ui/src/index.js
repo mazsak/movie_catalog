@@ -37,6 +37,8 @@ const routing = (
 
       <Route path="/catalog" component={Catalog} />
 
+      <Route path="/admin/:type/:id" component={AdminPanel} />
+      
       <Route path="/admin" component={AdminPanel} />
 
       <Route path="/" component={Home} />
