@@ -39,6 +39,8 @@ class FilmDetails extends React.Component {
     console.log(this.state)
   }
 
+  
+
   async getUsername(){
     await rest.decodeUser().then((r)=>{
       if (Object.keys(r).length !== 0 && r.constructor === Object) {
