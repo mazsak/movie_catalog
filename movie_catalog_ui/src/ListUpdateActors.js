@@ -73,7 +73,7 @@ class ListUpdateActors extends React.Component {
 
   async removeActor(e) {
     console.log("remove", e.target.id)
-    await rest.removeActor( await e.target.id);
+    await rest.removeActor(e.target.id);
 
     this.getPage();
   }
