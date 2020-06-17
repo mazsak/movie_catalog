@@ -28,8 +28,8 @@ public class User implements UserDetails, Serializable {
     private String password;
     private String mail;
     private String role;
-    private List<FilmForm> filmsWatched;
-    private List<FilmForm> filmsToWatch;
+    private List<FilmSimpleForm> filmsWatched;
+    private List<FilmSimpleForm> filmsToWatch;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

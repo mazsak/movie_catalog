@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookie from "js-cookie"
 import jwt_decode from 'jwt-decode'
+import rest from '.';
 
 const URL = "http://localhost:8080"
 
@@ -52,6 +53,16 @@ class RestController {
         try {
             const response = await axios.post(URL + path,
                 body, headers)
+            console.log("Response", response);
+            return response.data
+        } catch (error) {
+            console.error("ERROR", error);
+        }
+    }
+
+    async PUT(path, body, headers) {
+        try {
+            const response = await axios.get(URL + path)
             console.log("Response", response);
             return response.data
         } catch (error) {
@@ -204,6 +215,72 @@ class RestController {
             console.log("token " + token)
             return await this.POST("/users/links", { username: username }, config);
 
+        }
+    }
+
+    async getFilmsToWatch() {
+        const item = await this.decodeUser().then((r) => {
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return this.GET("/users/toWatch/" + r.username)
+            }
+            return {};
+        });
+        return item;
+    }
+
+    async getFilmsWatched() {
+        const item = await this.decodeUser().then((r) => {
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return this.GET("/users/watched/" + r.username)
+            }
+            return {};
+        });
+        return item;
+    }
+
+    async addFilmsToWatch(filmId) {
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        if(token!==null){
+            const config = {headers:{
+                Authorization:token
+            }}
+        }
+        const item = await this.decodeUser().then((r) => {
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return {
+                    username: r.username,
+                };
+            }
+            return null;
+        });
+        if(token!==null && item!==null){
+            const config = {headers:{
+                Authorization:token
+            }}
+            this.POST("/users/toWatch/" + item.username + "/" + filmId, {}, config)
+        }
+    }
+
+    async addFilmsWatched(filmId) {
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        if(token!==null){
+            const config = {headers:{
+                Authorization:token
+            }}
+        }
+        const item = await this.decodeUser().then((r) => {
+            if (Object.keys(r).length !== 0 && r.constructor === Object) {
+                return {
+                    username: r.username,
+                };
+            }
+            return null;
+        });
+        if(token!==null && item!==null){
+            const config = {headers:{
+                Authorization:token
+            }}
+            this.POST("/users/watched/" + item.username + "/" + filmId, {}, config)
         }
     }
 

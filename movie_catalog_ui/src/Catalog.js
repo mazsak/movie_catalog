@@ -13,6 +13,15 @@ class Catalog extends React.Component {
       dataToWatch: [],
       dataWatched: []
     };
+    this.getUserFilms();
+  }
+
+  async getUserFilms(){
+    this.setState({
+      dataToWatch: await rest.getFilmsToWatch(),
+      dataWatched: await rest.getFilmsWatched()
+    })
+    console.log("userFilms", this.state)
   }
 
   componentDidMount(){

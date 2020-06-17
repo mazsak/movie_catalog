@@ -2,7 +2,10 @@ package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.CommentForm;
 import com.project.movie_catalog.form.FilmForm;
+import com.project.movie_catalog.form.FilmSimpleForm;
 import com.project.movie_catalog.form.UserForm;
+import com.project.movie_catalog.mapper.FilmMapper;
+import com.project.movie_catalog.mapper.FilmSimpleMapper;
 import com.project.movie_catalog.mapper.UserMapper;
 import com.project.movie_catalog.model.User;
 import com.project.movie_catalog.security.configuration.JwtTokenUtil;
@@ -35,15 +38,19 @@ public class UserController {
     private final CommentService commentService;
     private final FilmService filmService;
     private final UserMapper userMapper;
+    private final FilmMapper filmMapper;
+    private final FilmSimpleMapper filmSimpleMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil, CommentService commentService, FilmService filmService, UserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
+    public UserController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl, JwtTokenUtil jwtTokenUtil, CommentService commentService, FilmService filmService, UserMapper userMapper, FilmMapper filmMapper, FilmSimpleMapper filmSimpleMapper, @Lazy PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userServiceImpl = userServiceImpl;
         this.jwtTokenUtil = jwtTokenUtil;
         this.commentService = commentService;
         this.filmService = filmService;
         this.userMapper = userMapper;
+        this.filmMapper = filmMapper;
+        this.filmSimpleMapper = filmSimpleMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -103,59 +110,71 @@ public class UserController {
         userServiceImpl.delete(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/toWatch/{userId}/{filmId}")
-    public UserForm addFilmToWatch(@PathVariable String userId, @PathVariable String filmId){
-        UserForm user = userServiceImpl.findById(userId);
-        FilmForm film = filmService.findById(filmId);
-        List<FilmForm> filmsToWatch = user.getFilmsToWatch();
+    @RequestMapping(method = RequestMethod.POST, value = "/toWatch/{username}/{filmId}")
+    public UserForm addFilmToWatch(@PathVariable String username, @PathVariable String filmId){
+        User user = userServiceImpl.loadUserByUsername(username);
+        FilmSimpleForm film = filmSimpleMapper.mapToDTO(filmMapper.mapToEntity(filmService.findById(filmId)));
+        List<FilmSimpleForm> filmsToWatch = user.getFilmsToWatch();
         if (filmsToWatch==null){
             filmsToWatch = new ArrayList<>();
         }
         filmsToWatch.add(film);
         user.setFilmsToWatch(filmsToWatch);
-        return userServiceImpl.saveAndReturn(user);
+        return userServiceImpl.saveAndReturn(userMapper.mapToDTO(user));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/watched/{userId}/{filmId}")
-    public UserForm addFilmWatched(@PathVariable String userId, @PathVariable String filmId){
-        UserForm user = userServiceImpl.findById(userId);
-        FilmForm film = filmService.findById(filmId);
-        List<FilmForm> filmsWatched = user.getFilmsWatched();
+    @RequestMapping(method = RequestMethod.POST, value = "/watched/{username}/{filmId}")
+    public UserForm addFilmWatched(@PathVariable String username, @PathVariable String filmId){
+        User user = userServiceImpl.loadUserByUsername(username);
+        FilmSimpleForm film = filmSimpleMapper.mapToDTO(filmMapper.mapToEntity(filmService.findById(filmId)));
+        List<FilmSimpleForm> filmsWatched = user.getFilmsWatched();
         if (filmsWatched==null){
             filmsWatched = new ArrayList<>();
         }
         filmsWatched.add(film);
-        user.setFilmsToWatch(filmsWatched);
-        return userServiceImpl.saveAndReturn(user);
+        user.setFilmsWatched(filmsWatched);
+        return userServiceImpl.saveAndReturn(userMapper.mapToDTO(user));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/toWatch/remove/{userId}/{filmId}")
-    public UserForm removeFilmToWatch(@PathVariable String userId, @PathVariable String filmId){
-        UserForm user = userServiceImpl.findById(userId);
-        FilmForm film = filmService.findById(filmId);
-        List<FilmForm> filmsToWatch = user.getFilmsToWatch();
+    @RequestMapping(method = RequestMethod.POST, value = "/toWatch/remove/{username}/{filmId}")
+    public UserForm removeFilmToWatch(@PathVariable String username, @PathVariable String filmId){
+        User user = userServiceImpl.loadUserByUsername(username);
+        FilmSimpleForm film = filmSimpleMapper.mapToDTO(filmMapper.mapToEntity(filmService.findById(filmId)));
+        List<FilmSimpleForm> filmsToWatch = user.getFilmsToWatch();
         if (filmsToWatch==null){
             filmsToWatch = new ArrayList<>();
         }
-        List<FilmForm> filmsToRemove = filmsToWatch.stream().filter(filmForm -> filmForm.getId().equals(film.getId())).collect(Collectors.toList());
-        List<FilmForm> finalFilmsToWatch = filmsToWatch;
+        List<FilmSimpleForm> filmsToRemove = filmsToWatch.stream().filter(filmForm -> filmForm.getId().equals(film.getId())).collect(Collectors.toList());
+        List<FilmSimpleForm> finalFilmsToWatch = filmsToWatch;
         filmsToRemove.forEach(finalFilmsToWatch::remove);
         user.setFilmsToWatch(finalFilmsToWatch);
-        return userServiceImpl.saveAndReturn(user);
+        return userServiceImpl.saveAndReturn(userMapper.mapToDTO(user));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/watched/remove/{userId}/{filmId}")
-    public UserForm removeFilmWatched(@PathVariable String userId, @PathVariable String filmId){
-        UserForm user = userServiceImpl.findById(userId);
-        FilmForm film = filmService.findById(filmId);
-        List<FilmForm> filmsToWatch = user.getFilmsWatched();
+    @RequestMapping(method = RequestMethod.POST, value = "/watched/remove/{username}/{filmId}")
+    public UserForm removeFilmWatched(@PathVariable String username, @PathVariable String filmId){
+        User user = userServiceImpl.loadUserByUsername(username);
+        FilmSimpleForm film = filmSimpleMapper.mapToDTO(filmMapper.mapToEntity(filmService.findById(filmId)));
+        List<FilmSimpleForm> filmsToWatch = user.getFilmsWatched();
         if (filmsToWatch==null){
             filmsToWatch = new ArrayList<>();
         }
-        List<FilmForm> filmsToRemove = filmsToWatch.stream().filter(filmForm -> filmForm.getId().equals(film.getId())).collect(Collectors.toList());
-        List<FilmForm> finalFilmsToWatch = filmsToWatch;
+        List<FilmSimpleForm> filmsToRemove = filmsToWatch.stream().filter(filmForm -> filmForm.getId().equals(film.getId())).collect(Collectors.toList());
+        List<FilmSimpleForm> finalFilmsToWatch = filmsToWatch;
         filmsToRemove.forEach(finalFilmsToWatch::remove);
         user.setFilmsToWatch(finalFilmsToWatch);
-        return userServiceImpl.saveAndReturn(user);
+        return userServiceImpl.saveAndReturn(userMapper.mapToDTO(user));
+    }
+
+    @GetMapping("/toWatch/{name}")
+    public List<FilmSimpleForm> getUsersFilmsToWatch(@PathVariable String name){
+        User user = userServiceImpl.loadUserByUsername(name);
+        return user.getFilmsToWatch();
+    }
+
+    @GetMapping("/watched/{name}")
+    public List<FilmSimpleForm> getUsersFilmsWatched(@PathVariable String name){
+        User user = userServiceImpl.loadUserByUsername(name);
+        return user.getFilmsWatched();
     }
 }

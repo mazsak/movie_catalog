@@ -16,8 +16,8 @@ public class UserForm extends RepresentationModel<UserForm> {
     private String password;
     private String mail;
     private String role;
-    private List<FilmForm> filmsWatched;
-    private List<FilmForm> filmsToWatch;
+    private List<FilmSimpleForm> filmsWatched;
+    private List<FilmSimpleForm> filmsToWatch;
 
     public String getId() {
         return id;
@@ -59,19 +59,19 @@ public class UserForm extends RepresentationModel<UserForm> {
         this.role = role;
     }
 
-    public List<FilmForm> getFilmsWatched() {
+    public List<FilmSimpleForm> getFilmsWatched() {
         return filmsWatched;
     }
 
-    public void setFilmsWatched(List<FilmForm> filmsWatched) {
+    public void setFilmsWatched(List<FilmSimpleForm> filmsWatched) {
         this.filmsWatched = filmsWatched;
     }
 
-    public List<FilmForm> getFilmsToWatch() {
+    public List<FilmSimpleForm> getFilmsToWatch() {
         return filmsToWatch;
     }
 
-    public void setFilmsToWatch(List<FilmForm> filmsToWatch) {
+    public void setFilmsToWatch(List<FilmSimpleForm> filmsToWatch) {
         this.filmsToWatch = filmsToWatch;
     }
 }

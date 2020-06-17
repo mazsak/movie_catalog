@@ -85,12 +85,12 @@ class FilmDetails extends React.Component {
 
   async toWatch() {
     console.log('add to watch')
-    //TODO
+    rest.addFilmsToWatch(this.state.id);
   }
 
   async watched() {
     console.log('add watched')
-    //TODO
+    rest.addFilmsWatched(this.state.id);
   }
 
   async removeFilm() {
