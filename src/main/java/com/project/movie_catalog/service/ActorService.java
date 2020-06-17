@@ -12,5 +12,6 @@ import java.util.List;
 public interface ActorService extends BasicService<ActorForm, String> {
 
     ActorPageSimpleForm findAll(Integer page, Integer size, String sortBy);
-    ActorPageSimpleForm findAllByName(Integer page, Integer size, String sortBy, String name);
+    ActorPageSimpleForm findAllByName(Integer page, Integer size, String sortBy, String name, boolean desc);
+    ActorPageSimpleForm findAllByRateBetween(Integer page, Integer size, String sortBy, String rateFirst, String rateSecond, boolean desc);
 }

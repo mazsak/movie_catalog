@@ -31,7 +31,6 @@ class FilmDetails extends React.Component {
     this.addComment = this.addComment.bind(this);
     this.toWatch = this.toWatch.bind(this);
     this.watched = this.watched.bind(this);
-    this.removeFilm = this.removeFilm.bind(this);
   }
 
   async check() {

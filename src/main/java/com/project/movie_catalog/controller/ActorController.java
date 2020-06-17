@@ -1,11 +1,10 @@
 package com.project.movie_catalog.controller;
 
-import com.project.movie_catalog.form.*;
+import com.project.movie_catalog.form.ActorForm;
+import com.project.movie_catalog.form.ActorPageSimpleForm;
 import com.project.movie_catalog.service.ActorService;
 import com.project.movie_catalog.service.ActorServiceImpl;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/actors")
@@ -33,10 +32,23 @@ public class ActorController {
 
     @RequestMapping(value = "/filter", params = "name", method = RequestMethod.GET)
     public ActorPageSimpleForm findAllByName(@RequestParam(defaultValue = "0") Integer page,
-                                         @RequestParam(defaultValue = "10") Integer size,
-                                         @RequestParam(defaultValue = "name") String sortBy,
-                                         @RequestParam String name) {
-        return actorService.findAllByName(page, size, sortBy, name);
+                                             @RequestParam(defaultValue = "10") Integer size,
+                                             @RequestParam(defaultValue = "name") String sortBy,
+                                             @RequestParam String name,
+                                             @RequestParam(defaultValue = "true") boolean desc) {
+        return actorService.findAllByName(page, size, sortBy, name, desc);
+    }
+
+    @RequestMapping(value = "/filter", params = {"rateFirst", "rateSecond"}, method = RequestMethod.GET)
+    public ActorPageSimpleForm findFilmsByRateBetween(@RequestParam(defaultValue = "0") Integer page,
+                                                      @RequestParam(defaultValue = "10") Integer size,
+                                                      @RequestParam(defaultValue = "name") String sortBy,
+                                                      @RequestParam String rateFirst,
+                                                      @RequestParam String rateSecond,
+                                                      @RequestParam(defaultValue = "true") boolean desc
+
+    ) {
+        return actorService.findAllByRateBetween(page, size, sortBy, rateFirst, rateSecond, desc);
     }
 
     @PostMapping

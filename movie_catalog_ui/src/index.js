@@ -14,6 +14,7 @@ import Catalog from './Catalog';
 import AdminPanel from './AdminPanel';
 import FilmDetails from './FilmDetails';
 import RestController from './RestController';
+import SearchActors from './SearchActors';
 
 const rest = new RestController()
 
@@ -26,6 +27,7 @@ const routing = (
       <Route path="/films/details/:id" component={FilmDetails} />
 
       <Route path="/films" component={Search} />
+      <Route path="/actors" component={SearchActors} />
 
       <Route path="/account" component={Account} />
 

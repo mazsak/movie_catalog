@@ -192,8 +192,13 @@ class RestController {
     }
 
     async findActorsByName(name, page, size, sortBy, desc) {
-        console.log('find films by title', URL + "/films/filter?title=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        console.log('find films by title', URL + "/actors/filter?name=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
         return await this.GET("/actors/filter?name=" + name + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+    }
+
+    async findActorsBetweenRate(rateFirst, rateSecond, page, size, sortBy, desc) {
+        console.log('find films by rate', URL + "/actors/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc)
+        return await this.GET("/actors/filter?rateFirst=" + rateFirst + "&rateSecond=" + rateSecond + "&page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc);
     }
 
     async getFilmsToWatch() {

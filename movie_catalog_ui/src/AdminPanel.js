@@ -4,6 +4,7 @@ import { Row, Col, ListGroup, Tab, Tabs, Alert, Button, Form, Pagination } from 
 import rest from './index';
 import ListUpdateFilms from './ListUpdateFilms';
 import ListUpdateActors from './ListUpdateActors';
+import AddActor from './AddActor';
 
 class AdminPanel extends React.Component {
 
@@ -31,7 +32,7 @@ class AdminPanel extends React.Component {
               <h6>casd1</h6>
             </Tab>
             <Tab class="panel" eventKey="add_actor" title="Add actor">
-              <h6>casd3</h6>
+              <AddActor />
             </Tab>
           </Tabs>
         </div>

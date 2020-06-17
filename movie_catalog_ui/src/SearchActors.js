@@ -1,35 +1,29 @@
 import React from 'react';
 import NavBar from './NavBar';
-import FilmSimpleItem from './FilmSimpleItem';
 import { Col, Row, Pagination, ButtonGroup, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 import rest from './index';
+import ActorSimpleItem from './ActorSimpleItem';
 
 
-class Search extends React.Component {
+class SearchActors extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       page: 0,
       size: 10,
-      sortBy: "title",
+      sortBy: "name",
       desc: true,
       data: [],
       totalPages: 0,
-      title: "",
-      yearFirst: 1900,
-      yearSecond: new Date().getFullYear(),
-      genres: [],
+      name: "",
       rateFor: 0,
       rateTo: 10
     };
     this.pageChanged = this.pageChanged.bind(this);
     this.sizeChange = this.sizeChange.bind(this);
     this.sortChange = this.sortChange.bind(this);
-    this.findFilmByTitle = this.findFilmByTitle.bind(this);
-    this.findFilmByGenres = this.findFilmByGenres.bind(this);
-    this.findFilmByYearFirst = this.findFilmByYearFirst.bind(this);
-    this.findFilmByYearSecond = this.findFilmByYearSecond.bind(this);
+    this.findActorsByName = this.findActorsByName.bind(this);
     this.findFilmByRateFor = this.findFilmByRateFor.bind(this);
     this.findFilmByRateTo = this.findFilmByRateTo.bind(this);
   }
@@ -43,25 +37,8 @@ class Search extends React.Component {
   async getPage() {
     let items = "";
     console.log("check login", rest.checkLogin())
-    if (this.state.genres.length !== 0) {
-      items = await rest.findFilmsByGenres(
-        this.state.genres,
-        this.state.page,
-        this.state.size,
-        this.state.sortBy,
-        this.state.desc
-      );
-    } else if (this.state.yearFirst !== 1900 || this.state.yearSecond !== new Date().getFullYear()) {
-      items = await rest.findFilmsBetweenYear(
-        this.state.yearFirst,
-        this.state.yearSecond,
-        this.state.page,
-        this.state.size,
-        this.state.sortBy,
-        this.state.desc
-      );
-    } else if (this.state.rateFor !== 0 || this.state.rateTo !== 10) {
-      items = await rest.findFilmsBetweenRate(
+    if (this.state.rateFor !== 0 || this.state.rateTo !== 10) {
+      items = await rest.findActorsBetweenRate(
         this.state.rateFor,
         this.state.rateTo,
         this.state.page,
@@ -70,8 +47,8 @@ class Search extends React.Component {
         this.state.desc
       );
     } else {
-      items = await rest.findFilmsByTitle(
-        this.state.title,
+      items = await rest.findActorsByName(
+        this.state.name,
         this.state.page,
         this.state.size,
         this.state.sortBy,
@@ -81,7 +58,7 @@ class Search extends React.Component {
     this.setState({
       page: Number(items.currentPage),
       totalPages: Number(items.totalPages),
-      data: items.films
+      data: items.actors
     });
     console.log("In get page", this.state)
   }
@@ -110,19 +87,19 @@ class Search extends React.Component {
     switch (await Number(e.target.id)) {
       case 0:
         this.setState({
-          sortBy: "title",
+          sortBy: "name",
           desc: false
         });
         break;
       case 1:
         this.setState({
-          sortBy: "titleOrg",
+          sortBy: "nameFull",
           desc: false
         });
         break;
       case 2:
         this.setState({
-          sortBy: "year",
+          sortBy: "birthDate",
           desc: false
         });
         break;
@@ -134,19 +111,19 @@ class Search extends React.Component {
         break;
       case 4:
         this.setState({
-          sortBy: "title",
+          sortBy: "name",
           desc: true
         });
         break;
       case 5:
         this.setState({
-          sortBy: "titleOrg",
+          sortBy: "nameFull",
           desc: true
         });
         break;
       case 6:
         this.setState({
-          sortBy: "year",
+          sortBy: "birthDate",
           desc: true
         });
         break;
@@ -158,7 +135,7 @@ class Search extends React.Component {
         break;
       default:
         this.setState({
-          sortBy: "title",
+          sortBy: "name",
           desc: false
         });
         break;
@@ -167,11 +144,9 @@ class Search extends React.Component {
     this.getPage();
   }
 
-  async findFilmByTitle(e) {
+  async findActorsByName(e) {
     this.setState({
-      title: await e.target.value,
-      yearFirst: 1900,
-      yearSecond: new Date().getFullYear(),
+      name: await e.target.value,
       genres: [],
       rateFor: 0,
       rateTo:10,
@@ -181,46 +156,10 @@ class Search extends React.Component {
     this.getPage();
   }
 
-  async findFilmByGenres(e) {
-    const index = this.state.genres.indexOf(e.target.id)
-    if (index > -1) {
-      this.state.genres.splice(index, 1);
-    } else {
-      this.state.genres.push(e.target.id);
-      this.setState({
-        yearFirst: 1900,
-        yearSecond: new Date().getFullYear()
-      });
-    }
-    this.getPage();
-    console.log(this.state.genres)
-  }
-
-  async findFilmByYearFirst(e) {
-    this.setState({
-      yearFirst: await Number(e.target.id),
-      genres: []
-    });
-
-    this.getPage();
-  }
-
-  async findFilmByYearSecond(e) {
-    this.setState({
-      yearSecond: await Number(e.target.id),
-      genres: []
-    });
-
-    this.getPage();
-  }
-
   async findFilmByRateFor(e) {
     this.setState({
-      rateFor: e.target.value,
-      title: "",
-      yearFirst: 1900,
-      yearSecond: new Date().getFullYear(),
-      genres: [],
+      rateFor: await  e.target.value,
+      name: "",
       page: 0
     });
 
@@ -229,11 +168,8 @@ class Search extends React.Component {
 
   async findFilmByRateTo(e) {
     this.setState({
-      rateTo: e.target.value,
-      title: "",
-      yearFirst: 1900,
-      yearSecond: new Date().getFullYear(),
-      genres: [],
+      rateTo: await e.target.value,
+      name: "",
       page: 0
     });
 
@@ -272,54 +208,6 @@ class Search extends React.Component {
     return items
   }
 
-
-  viewSearchGenres() {
-    const items = []
-    let genres = ["Short", "Documentary", "Western", "Drama", "Adventure", "Comedy", "Action", "Sports", "Crime", "Romance", "Mystery", "Spy", "Fantasy", "War", "Horror", "Silent", "Thriller", "Historical", "Musical", "Animated", "Science Fiction"]
-    const columnsFirst = [];
-    for (var i = 0; i < 11; i++) {
-      columnsFirst.push(
-        <Row>
-          <div className={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
-            {genres[i]}
-          </div>
-        </Row>
-      );
-    }
-    items.push(<Col>{columnsFirst}</Col>);
-    const columnsSecond = [];
-    for (let i = 11; i < genres.length; i++) {
-      columnsSecond.push(
-        <Row>
-          <div className={this.state.genres.indexOf(genres[i]) > -1 ? "genre-active" : "genre"} id={genres[i]} onClick={this.findFilmByGenres}>
-            {genres[i]}
-          </div>
-        </Row>
-      );
-
-    }
-    items.push(<Col>{columnsSecond}</Col>);
-    return items;
-  }
-
-  viewYearFirst() {
-    const items = [];
-    for (var i = 1900; i < this.state.yearSecond + 1; i++) {
-      items.push(<Dropdown.Item onClick={this.findFilmByYearFirst} active={i === this.state.yearFirst} id={i}>{i}</Dropdown.Item>);
-    }
-
-    return items;
-  }
-
-  viewYearSecond() {
-    const items = [];
-    for (var i = this.state.yearFirst; i < new Date().getFullYear() + 1; i++) {
-      items.push(<Dropdown.Item onClick={this.findFilmByYearSecond} active={i === this.state.yearSecond} id={i}>{i}</Dropdown.Item>);
-    }
-
-    return items;
-  }
-
   render() {
     return (
       <div >
@@ -335,55 +223,16 @@ class Search extends React.Component {
                 key='Secondary'
                 variant='secondary'
               >
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "title" && !this.state.desc} id="0">Title</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "titleOrg" && !this.state.desc} id="1">Title Orginal</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "year" && !this.state.desc} id="2">Year</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "name" && !this.state.desc} id="0">Name</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "nameFull" && !this.state.desc} id="1">Name Full</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "birthDate" && !this.state.desc} id="2">Birth Date</Dropdown.Item>
                 <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "rate" && !this.state.desc} id="3">Rate</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "title" && this.state.desc} id="4">Title Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "titleOrg" && this.state.desc} id="5">Title Orginal Desc</Dropdown.Item>
-                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "year" && this.state.desc} id="6">Year Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "name" && this.state.desc} id="4">Name Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "nameFull" && this.state.desc} id="5">Name Full Desc</Dropdown.Item>
+                <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "birthDate" && this.state.desc} id="6">Birth Date Desc</Dropdown.Item>
                 <Dropdown.Item onClick={this.sortChange} active={this.state.sortBy === "rate" && this.state.desc} id="7">Rate Desc</Dropdown.Item>
               </DropdownButton>
-              <h4 style={{ display: 'flex', justifyContent: 'center' }}>Filters</h4>
-              <div style={{ display: 'flex', justifyContent: 'left', paddingLeft: '10px' }} >
-                {this.viewSearchGenres()}
-              </div>
-              <h4 style={{ display: 'flex', justifyContent: 'center', marginTop: "20px" }}>Years</h4>
-              <Row>
-                <Col>
-                  <h4 style={{ display: 'flex', justifyContent: 'center' }}>For:</h4>
-                </Col>
-                <Col>
-                  <h4 style={{ display: 'flex', justifyContent: 'center' }}>To:</h4>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <DropdownButton
-                    as={ButtonGroup}
-                    className='sort'
-                    size="xs"
-                    title={this.state.yearFirst}
-                    key='Secondary'
-                    variant='secondary'
-                  >
-                    {this.viewYearFirst()}
-                  </DropdownButton>
-                </Col>
-                <Col><DropdownButton
-                  as={ButtonGroup}
-                  className='sort'
-                  size="xs"
-                  title={this.state.yearSecond}
-                  key='Secondary'
-                  variant='secondary'
-                >
-                  {this.viewYearSecond()}
-
-                </DropdownButton>
-                </Col>
-              </Row>
               <h4 style={{ display: 'flex', justifyContent: 'center', marginTop: "20px" }}>Rate</h4>
               <Row>
                 <Col>
@@ -400,7 +249,7 @@ class Search extends React.Component {
             </div>
             <Col>
               <div className='search-input'>
-                <Form.Control onChange={this.findFilmByTitle} type="text" placeholder="Search" />
+                <Form.Control onChange={this.findActorsByName} type="text" placeholder="Search" />
               </div>
               <div>
                 {Array.isArray(this.state.data) && this.state.data.length > 0 ? (
@@ -423,9 +272,9 @@ class Search extends React.Component {
                         </div>
                       </Col>
                     </Row>
-                    {this.state.data.map(film => (
+                    {this.state.data.map(actor => (
                       <div>
-                        <FilmSimpleItem item={film} />
+                        <ActorSimpleItem item={actor} />
                       </div>
                     ))}
                     <Row>
@@ -461,4 +310,4 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+export default SearchActors;

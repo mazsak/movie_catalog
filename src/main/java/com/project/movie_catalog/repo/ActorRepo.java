@@ -11,4 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ActorRepo extends MongoRepository<Actor, String> {
 
     Page<Actor> findAllByNameContainingIgnoreCase(Pageable pageable, String title);
+
+    Page<Actor> findAllByRateBetween(Pageable pageable, float rateFirst, float rateSecond);
+
 }

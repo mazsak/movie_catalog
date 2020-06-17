@@ -26,6 +26,7 @@ class NavBar extends React.Component {
                     <Navbar.Brand href="/">Movie's Catalog</Navbar.Brand>
                     <Nav className="mr-auto">
                         <Nav.Link href="/films">Films</Nav.Link>
+                        <Nav.Link href="/actors">Actors</Nav.Link>
                         <Nav.Link href="/top">Top 100</Nav.Link>
                         {this.state.isLogin ? (
                             <Nav.Link href="/catalog">My catalog</Nav.Link>
