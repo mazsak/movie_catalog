@@ -11,18 +11,18 @@ class RestController {
         const token = Cookie.get("token") ? Cookie.get("token").replace("Bearer ", "") : null;
         if (token !== null) {
             var decoded = jwt_decode(token).sub.split(",");
-            console.log("decode",decoded);
+            console.log("decode", decoded);
             return await {
                 username: decoded[0],
                 mail: decoded[1],
                 role: decoded[2]
+            }
         }
-        }
-        return await null;
+        return {};
     }
 
     async checkLogin() {
-        const item = await this.decodeUser().then((r)=>{
+        const item = await this.decodeUser().then((r) => {
             if (Object.keys(r).length !== 0 && r.constructor === Object) {
                 return {
                     isLogin: r !== null,
@@ -54,6 +54,15 @@ class RestController {
                 body, headers)
             console.log("Response", response);
             return response.data
+        } catch (error) {
+            console.error("ERROR", error);
+        }
+    }
+
+    async DELETE(path, body, headers) {
+        try {
+            await axios.delete(URL + path,
+                body, headers)
         } catch (error) {
             console.error("ERROR", error);
         }
@@ -138,7 +147,7 @@ class RestController {
 
     async addComment(comment) {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
-        const item = await this.decodeUser().then((r)=>{
+        const item = await this.decodeUser().then((r) => {
             if (Object.keys(r).length !== 0 && r.constructor === Object) {
                 return {
                     user: r,
@@ -157,10 +166,24 @@ class RestController {
             await this.POST("/comments", comment, config);
         }
     }
+
+    async removeFilm(id) {
+        console.log('removw', id)
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        if (token !== null) {
+            const config = {
+                headers: {
+                    Authorization: token
+                }
+            };
+            await this.DELETE("/films/" + id, {}, config);
+        }
+    }
+
     async getCommentsByUsername() {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
         const username = Cookie.get("username") ? Cookie.get("username") : null;
-        const item = await this.decodeUser().then((r)=>{
+        const item = await this.decodeUser().then((r) => {
             if (Object.keys(r).length !== 0 && r.constructor === Object) {
                 return {
                     user: r,
