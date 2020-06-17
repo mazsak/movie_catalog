@@ -120,22 +120,14 @@ class RestController {
 
     async addComment(comment) {
         const token = Cookie.get("token") ? Cookie.get("token") : null;
-        const username = Cookie.get("username") ? Cookie.get("username") : null;
-        if (username !== null && token !== null) {
+        if (comment.name !== null && token !== null) {
             const config = {
                 headers: {
                     "Content-Type": 'application/json',
                     Authorization: token
                 }
             };
-            const commentNew = {
-                name: username,
-                rate: comment.rate,
-                comment: comment.comment,
-                date: comment.date,
-                idFilm: comment.id
-            };
-            console.log("token", token, "username", username, "comment", comment, "config", config)
+            console.log("add comment","username", comment.name, "comment", comment, "config", config)
             await this.POST("/comments", comment , config);
         }
     }

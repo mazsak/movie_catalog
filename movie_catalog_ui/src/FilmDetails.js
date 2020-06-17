@@ -6,6 +6,7 @@ import { Row, Col, Button, Carousel, Card, Form } from 'react-bootstrap';
 import { BsFilm } from "react-icons/bs";
 import { BsFillStarFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import Cookie from "js-cookie"
 
 class FilmDetails extends React.Component {
 
@@ -16,6 +17,7 @@ class FilmDetails extends React.Component {
       date: new Date().getDate() + "-" + (parseInt(new Date().getMonth()) + 1) + "-" + new Date().getFullYear(),
       comment: "",
       rate: 0,
+      username: Cookie.get("username") ? Cookie.get("username") : null,
       item: {}
     };
     this.getFilm();
@@ -38,13 +40,17 @@ class FilmDetails extends React.Component {
   async addComment() {
     if (this.state.comment !== "") {
       await rest.addComment({
-        name: "",
+        name: this.state.username,
         rate: this.state.rate,
         comment: this.state.comment,
         date: this.state.date,
         idFilm: this.state.id
+
       });
-      // window.location= "http://localhost:3000/films/details/"+this.state.id;
+      this.setState({
+        comment: ""
+      })
+
       this.getFilm();
     }
   }
@@ -53,7 +59,7 @@ class FilmDetails extends React.Component {
     const items = [];
     for (var i = 0; i < this.state.item.cast.length; i++) {
       items.push(
-        <Col>
+        <div style={{width:'190px', float: 'left'}}>
           <Card bg='dark' style={{ width: '180px' }} class='item-film' text='white'>
             <Card.Img style={{ width: '180px', height: '200px' }} src={this.state.item.cast[i].poster} />
             <Card.Body>
@@ -61,7 +67,7 @@ class FilmDetails extends React.Component {
               <Card.Text style={{ justifyContent: 'center' }} xs='auto'>{this.state.item.cast[i].role}</Card.Text>
             </Card.Body>
           </Card>
-        </Col>
+        </div>
       );
     }
     return items;
@@ -73,13 +79,10 @@ class FilmDetails extends React.Component {
       items.push(
         <Row>
           <Card bg='dark' text='white' style={{ width: '100%', margin: '5px' }}>
-            <Card.Header style={{ fontWeight: 'bold' }} >{this.state.comments[i].name}</Card.Header>
+            <Card.Header style={{ fontWeight: 'bold' }} >{this.state.comments[i].name}({this.state.comments[i].date.replace(/-/g, ".")})</Card.Header>
             <Card.Body>
               {/* <Card.Title>{variant} Card Title </Card.Title> */}
               <Card.Text>{this.state.comments[i].comment}</Card.Text>
-              <Card.Text>
-                <small style={{ float: 'right' }} className="text-muted">{this.state.comments[i].date}</small>
-              </Card.Text>
             </Card.Body>
           </Card>
         </Row>
@@ -93,12 +96,12 @@ class FilmDetails extends React.Component {
     if (Object.keys(this.state.item).length !== 0 && this.state.item.constructor === Object) {
       return (
         <div >
-          <div class='container'>
-            <div class='item-film'>
-              <Row style={{ float: 'right' }}>
+            <div style={{ float: 'right' }}>
                 <Button style={{ margin: '15px' }} variant="secondary" onClick={this.register}>Register</Button>
                 <Button style={{ margin: '15px', marginRight: '30px' }} variant="secondary" onClick={this.register}>Register</Button>
-              </Row>
+            </div>
+          <div class='container'>
+            <div class='item-film'>
               <Row style={{ paddingTop: '15px' }}>
                 <Col xs='auto'>
                   <Link to={"/films/details/" + this.state.id} style={{ marginTop: '20px', color: 'white' }}>
@@ -161,19 +164,16 @@ class FilmDetails extends React.Component {
                 <p style={{ margin: '50px', marginTop: '30px' }}>{this.state.item.description}</p>
               </Row>
             </div>
-          </div>
-          <Row>
+          <div style={{overflowX: 'scroll'}}>
             {this.viewActors()}
-          </Row>
-          <div class='container'>
+          </div>
             <Row>
               <Card bg='dark' text='white' style={{ width: '100%', margin: '5px' }}>
-                <Card.Header style={{ fontWeight: 'bold' }} >My name</Card.Header>
+                    <Card.Header style={{ fontWeight: 'bold' }} >{this.state.username}({this.state.date.replace(/-/g, ".")})</Card.Header>
                 <Card.Body>
                   <Card.Text>
-                    <Form.Control as="textarea" rows="3" onChange={comment => this.setState({ comment: comment.target.value })} />
+                    <Form.Control rows="3" value={this.state.comment} onKeyPress={e => {if(e.key === "Enter"){this.addComment()}}} onChange={comment => this.setState({ comment: comment.target.value })} />
                     <Button style={{ marginTop: '15px', float: 'reight' }} variant="secondary" onClick={this.addComment}>Add comment</Button>
-                    <small style={{ float: 'right', marginTop: '20px' }} className="text-muted">{this.state.date}</small>
                   </Card.Text>
                 </Card.Body>
               </Card>
