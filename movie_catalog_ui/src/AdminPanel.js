@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from './NavBar';
 import { Row, Col, ListGroup, Tab, Tabs, Alert, Button, Form, Pagination } from 'react-bootstrap';
 import rest from './index';
-import ListUpdate from './ListUpdate';
+import ListUpdateFilms from './ListUpdateFilms';
 
 class AdminPanel extends React.Component {
 
@@ -21,7 +21,7 @@ class AdminPanel extends React.Component {
         <div class='container'>
           <Tabs defaultActiveKey="profile" activeKey={this.state.key} onSelect={(key) => this.setState({ key: key })}>
             <Tab class="panel" eventKey="list_films" title="List films">
-              <ListUpdate />
+              <ListUpdateFilms />
             </Tab>
             <Tab class="panel" eventKey="list_actors" title="List actors">
               <h6>casd3</h6>

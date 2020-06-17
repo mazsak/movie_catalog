@@ -154,13 +154,6 @@ class FilmDetails extends React.Component {
                       <Col>
                         <Button style={{ margin: '5px', width: '80%' }} variant="secondary" onClick={this.watched}>Add watched</Button>
                       </Col>
-                      {this.state.isAdmin ? (
-                        <Col>
-                          <Button style={{ margin: '5px', width: '80%' }} variant="secondary" onClick={this.removeFilm}>Remove film</Button>
-                        </Col>
-                      ) : (
-                          <div />
-                        )}
                     </Row>
                   ) : (
                       <div />
