@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ActorServiceImpl extends BasicServiceImpl<Actor, ActorForm, ActorRepo, ActorMapper, String>
@@ -22,6 +25,15 @@ public class ActorServiceImpl extends BasicServiceImpl<Actor, ActorForm, ActorRe
 
     public ActorServiceImpl(ActorRepo actorRepo, ActorMapper actorMapper) {
         super(actorRepo, actorMapper);
+    }
+
+    @Override
+    public List<ActorForm> findAllTop() {
+        return mapper.mapToDTOList(repo.findAll().stream()
+                .filter(film -> NumberUtils.isNumber(film.getRate()))
+                .sorted(Comparator.comparing(Actor::getRate).reversed())
+                .limit(100)
+                .collect(Collectors.toList()));
     }
 
     @Override

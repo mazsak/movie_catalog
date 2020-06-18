@@ -2,9 +2,15 @@ package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.ActorForm;
 import com.project.movie_catalog.form.ActorPageSimpleForm;
+import com.project.movie_catalog.model.Film;
 import com.project.movie_catalog.service.ActorService;
 import com.project.movie_catalog.service.ActorServiceImpl;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/actors")
@@ -23,6 +29,11 @@ public class ActorController {
                                             @RequestParam(defaultValue = "name") String sortBy) {
 
         return actorService.findAll(page, size, sortBy);
+    }
+
+    @GetMapping("/top")
+    public List<ActorForm> getAll() {
+        return actorService.findAllTop();
     }
 
     @GetMapping("/{id}")

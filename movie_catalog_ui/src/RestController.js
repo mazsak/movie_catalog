@@ -134,6 +134,16 @@ class RestController {
         return await this.GET("/top?page=" + page + "&size=" + size + "&sortBy=" + sortBy + "&desc=" + desc);
     }
 
+    async getTop() {
+        console.log('get page films', URL + "/top/all");
+        return await this.GET("/top/all");
+    }
+
+    async getTopActors() {
+        console.log('get page films', URL + "/top/all");
+        return await this.GET("/actors/top");
+    }
+
     async login(login, password) {
         console.log('register', URL + '/users/login')
         try {

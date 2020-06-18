@@ -2,6 +2,7 @@ package com.project.movie_catalog.controller;
 
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
+import com.project.movie_catalog.form.FilmSimpleForm;
 import com.project.movie_catalog.service.FilmService;
 import com.project.movie_catalog.service.FilmServiceImpl;
 import com.project.movie_catalog.service.TopService;
@@ -28,6 +29,11 @@ public class TopController {
                                           @RequestParam(defaultValue = "true") boolean desc) {
 
         return topService.findAll(page, size, sortBy, desc);
+    }
+
+    @GetMapping("/all")
+    public List<FilmSimpleForm> getAll() {
+        return topService.findAllTop();
     }
 
     @RequestMapping(value = "/filter", params = "title", method = RequestMethod.GET)

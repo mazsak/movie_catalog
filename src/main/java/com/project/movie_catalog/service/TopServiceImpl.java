@@ -3,6 +3,7 @@ package com.project.movie_catalog.service;
 import com.google.common.collect.Lists;
 import com.project.movie_catalog.form.FilmForm;
 import com.project.movie_catalog.form.FilmPageSimpleForm;
+import com.project.movie_catalog.form.FilmSimpleForm;
 import com.project.movie_catalog.mapper.FilmMapper;
 import com.project.movie_catalog.mapper.FilmSimpleMapper;
 import com.project.movie_catalog.model.Film;
@@ -30,6 +31,12 @@ public class TopServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, F
     public TopServiceImpl(final FilmRepo filmRepo, final FilmMapper mapper, FilmSimpleMapper filmSimpleMapper) {
         super(filmRepo, mapper);
         this.filmSimpleMapper = filmSimpleMapper;
+    }
+
+
+    @Override
+    public List<FilmSimpleForm> findAllTop() {
+        return filmSimpleMapper.mapToDTOList(findTop());
     }
 
     @Override
@@ -349,7 +356,7 @@ public class TopServiceImpl extends BasicServiceImpl<Film, FilmForm, FilmRepo, F
         return PageRequest.of(page, size, sort);
     }
 
-    private List<Film> findTop() {
+    public List<Film> findTop() {
         return repo.findAll().stream()
                 .filter(film -> NumberUtils.isNumber(film.getRate()))
                 .sorted(Comparator.comparing(Film::getRate).reversed())

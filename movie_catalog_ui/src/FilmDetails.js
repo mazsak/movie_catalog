@@ -109,7 +109,7 @@ class FilmDetails extends React.Component {
         </div>
       );
 
-      if (i % 4 === 3) {
+      if (i % 6 === 5) {
         itemsPage.push(
           <Carousel.Item>
             {items}
