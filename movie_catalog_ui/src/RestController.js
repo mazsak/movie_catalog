@@ -280,6 +280,19 @@ class RestController {
         }
     }
 
+    async createFilm(film){
+        const token = Cookie.get("token") ? Cookie.get("token") : null;
+        if(token!==null && film!==null){
+            const config = {headers:{
+                Authorization:token
+            }}
+            this.POST("/films", film, config)
+        }
+    }
+
+    async getActorById(id) {
+        return await this.GET("/actors/" + id);
+    }
 }
 
 export default RestController;

@@ -2,10 +2,8 @@ package com.project.movie_catalog.service;
 
 import com.project.movie_catalog.form.ActorForm;
 import com.project.movie_catalog.form.ActorPageSimpleForm;
-import com.project.movie_catalog.form.FilmPageSimpleForm;
 import com.project.movie_catalog.mapper.ActorMapper;
 import com.project.movie_catalog.model.Actor;
-import com.project.movie_catalog.model.Film;
 import com.project.movie_catalog.repo.ActorRepo;
 import org.apache.commons.lang.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ActorServiceImpl extends BasicServiceImpl<Actor, ActorForm, ActorRepo, ActorMapper, String>

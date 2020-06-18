@@ -62,6 +62,7 @@ class ListUpdateActors extends React.Component {
       totalPages: Number(items.totalPages),
       data: items.actors
     });
+    console.log("actors", items.actors);
   }
 
   async findFilmByName(e) {
@@ -143,6 +144,7 @@ class ListUpdateActors extends React.Component {
                     <ActorSimpleItem item={actor} />
                   </Col>
                   <Col xs='auto' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px' }}>
+                    {console.log("actor",actor)}
                     <Button variant='danger' onClick={this.removeActor} id={actor.id}><AiFillDelete /></Button>
                   </Col>
                   <Col xs='auto' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '180px' }}>

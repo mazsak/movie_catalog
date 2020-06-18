@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Alert, Form, Button, Col, Dropdown, ButtonGroup, DropdownButton } from 'react-bootstrap';
 import { BsPersonFill } from "react-icons/bs";
+import rest from "./index";
 
 class AddFilm extends React.Component {
 
@@ -32,6 +33,23 @@ console.log("add film",this.state);
     }
 
     async addFilm(){
+        await rest.createFilm(this.state);
+        this.setState({
+            title: "",
+            titleOrg: "",
+            premiere: "",
+            premiereLocal: "",
+            rate: "",
+            votes: "",
+            year: 0,
+            duration:0,
+            poster:"",
+            genres:[],
+            allGenres:"",
+            cast:[],
+            description:"",
+        });
+        window.location= "http://localhost:3000/admin";
         console.log("film", this.state);
     }
 

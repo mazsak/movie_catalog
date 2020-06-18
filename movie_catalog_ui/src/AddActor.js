@@ -18,8 +18,13 @@ class AddActor extends React.Component {
             nameFull: "",
             height: 0,
         };
+        if(this.state.is!==null){
+            this.getActor();
+        }
 
         this.addActor = this.addActor.bind(this);
+        this.getActor = this.getActor.bind(this);
+        console.log("state",this.state)
     }
 
     async addActor(){
@@ -37,6 +42,16 @@ class AddActor extends React.Component {
             nameFull: "",
             height: 0,
         });
+        window.location= "http://localhost:3000/admin";
+    }
+
+    async getActor(){
+        const actor = await rest.getActorById(this.state.id);
+        this.setState({
+            ...actor
+        });
+        console.log("actor new", actor);
+        console.log("state new", this.state);
     }
 
     render() {
@@ -105,7 +120,7 @@ class AddActor extends React.Component {
                         </Form.Control>
                     </Col>
                     <Col>
-                        <Form.Control onChange={height => this.setState({height: height})} min={0} max={300} type="number" placeholder="Height" />
+                        <Form.Control onChange={height => this.setState({height: height})} min={0} max={300} type="number" placeholder="Height" defaultValue={this.state.height}/>
                     </Col>
                 </Row>
                 <Row style={{ marginRight: '10px', marginTop: '20px', float: 'right' }}>

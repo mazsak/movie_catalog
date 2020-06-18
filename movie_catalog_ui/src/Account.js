@@ -15,7 +15,8 @@ class Account extends React.Component {
       newPasswordRepetition:"",
       newMail:"",
       errorUpdate: false,
-      user:null
+      user:null,
+      username:""
     };
       this.getUser();
     }
@@ -26,6 +27,7 @@ class Account extends React.Component {
       console.log("user",userDetails);
       this.setState({
         user: userDetails,
+        username: userDetails.username,
       });
     }  
 
@@ -34,7 +36,7 @@ class Account extends React.Component {
       <div >
         <div class='container'>
         <div style={{ marginTop: "20px", textAlign: "center", color:"white"}}>
-              Username
+          <h1>Hello, {this.state.username}</h1>
         </div>
       <div style={{ marginTop: "200px" }}>
             <Row>
@@ -47,7 +49,7 @@ class Account extends React.Component {
                           </Alert>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
-                          <span>mail</span>
+                          <span>Mail</span>
                         </Row>
                         <Row style={{ marginLeft: '10px', marginRight: '10px' }}>
                           <Form.Control onChange={pass => this.setState({ newMail: pass.target.value })} type="email" placeholder="mail" />
