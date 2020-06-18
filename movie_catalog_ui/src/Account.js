@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from './NavBar';
 import { Col, Row, Form, Button, Tabs, Tab, Alert } from 'react-bootstrap';
 import rest from './index';
-
+import Cookie from "js-cookie"
 
 class Account extends React.Component {
 
@@ -37,6 +37,10 @@ class Account extends React.Component {
         <div class='container'>
         <div style={{ marginTop: "20px", textAlign: "center", color:"white"}}>
           <h1>Hello, {this.state.username}</h1>
+          <Button onClick={cookie => {
+            Cookie.remove("token");
+            window.location= "http://localhost:3000/";
+            }}>Logout</Button>
         </div>
       <div style={{ marginTop: "200px" }}>
             <Row>
