@@ -17,7 +17,7 @@ class FilmDetails extends React.Component {
       id: this.props.match.params.id,
       date: new Date().getDate() + "-" + (parseInt(new Date().getMonth()) + 1) + "-" + new Date().getFullYear(),
       comment: "",
-      rate: 0,
+      rate: 1,
       username: "",
       item: {},
       comments: {},
@@ -75,7 +75,8 @@ class FilmDetails extends React.Component {
 
       });
       this.setState({
-        comment: ""
+        comment: "",
+        rate: 1
       })
 
       this.getFilm();
@@ -93,7 +94,8 @@ class FilmDetails extends React.Component {
   }
 
   viewActors() {
-    const items = [];
+    const itemsPage = [];
+    let items = [];
     for (var i = 0; i < this.state.item.cast.length; i++) {
       items.push(
         <div style={{ width: '190px', float: 'left' }}>
@@ -106,32 +108,62 @@ class FilmDetails extends React.Component {
           </Card>
         </div>
       );
+
+      if (i % 4 === 3) {
+        itemsPage.push(
+          <Carousel.Item>
+            {items}
+          </Carousel.Item>
+        );
+        items = [];
+      }
     }
-    return items;
+    if (items.length !== 0){
+      itemsPage.push(
+        <Carousel.Item>
+          {items}
+        </Carousel.Item>
+      );
+      items = [];
+    }
+    return itemsPage;
   }
 
   viewComments() {
     const items = [];
     for (var i = this.state.comments.length - 1; i >= 0; i--) {
       items.push(
-        <Row>
-          <div class='item-film' style={{ padding: '30px', paddingBottom: '10px' }}>
-            <h5>
-              {this.state.comments[i].name}  ({this.state.comments[i].date.replace(/-/g, ".")})
+        <div class='item-film' style={{ padding: '30px', paddingBottom: '10px' }}>
+          <Row>
+            <Col>
+              <h5>
+                {this.state.comments[i].name}  ({this.state.comments[i].date.replace(/-/g, ".")})
             </h5>
+            </Col>
+            {this.viewRate(this.state.comments[i].rate)}
+          </Row>
+          <Row style={{ padding: '30px', paddingBottom: '10px' }}>
             <h6>
               <Card.Text>{this.state.comments[i].comment}</Card.Text>
             </h6>
-          </div>
-        </Row>
+          </Row>
+        </div>
       );
     }
     return items;
 
   }
 
-  async viewChangeRate() { 
-    return [(<div/>)];
+  viewRate(rate) {
+    const items = [];
+    for (var i = 0; i < 10; i++) {
+      items.push(
+        <Col xs="auto">
+          <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: i + 1 })} id={i + 1} color={rate >= (i + 1) ? "yellow" : "gray"} size="20px" />
+        </Col>
+      );
+    }
+    return items;
   }
 
   render() {
@@ -184,7 +216,9 @@ class FilmDetails extends React.Component {
               </div>
             </Row>
             <Row>
-              {/* actors */}
+              <Carousel style={{width:'100%'}}>
+                {this.viewActors()}
+              </Carousel>
             </Row>
             <Row>
               <div class='item-film'>
@@ -193,23 +227,46 @@ class FilmDetails extends React.Component {
               </h3>
               </div>
               {this.state.isLogin ? (
-                <div class='item-film'>
-                  <Form.Group controlId="exampleForm.ControlTextarea1" style={{ padding: '30px', paddingBottom: '10px' }}>
+                <div class='item-film' style={{ padding: '30px', paddingBottom: '10px' }}>
+                  <Row>
                     <Col>
-                    <Form.Label>
-                        <h5>
-                          {this.state.username}
-                        </h5>
-                    </Form.Label>
+                      <h5>
+                        {this.state.username}
+                      </h5>
                     </Col>
-                    {/* <Col>
-                    <Form.Label>
-                    {this.viewChangeRate()}
-                    </Form.Label>
-                    </Col> */}
-                    <Form.Control as="textarea" rows="3" value={this.state.comment} onChange={comment => this.setState({ comment: comment.target.value })} />
-                    <Button style={{ margin: '10px', float: 'right', width: '100px' }} variant='secondary' type="submit" onClick={this.addComment}>Add</Button>
-                  </Form.Group>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 1 })} color={this.state.rate >= 1 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 2 })} color={this.state.rate >= 2 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 3 })} color={this.state.rate >= 3 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 4 })} color={this.state.rate >= 4 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 5 })} color={this.state.rate >= 5 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 6 })} color={this.state.rate >= 6 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 7 })} color={this.state.rate >= 7 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 8 })} color={this.state.rate >= 8 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 9 })} color={this.state.rate >= 9 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                    <Col xs="auto">
+                      <BsFillStarFill style={{ cursor: 'pointer' }} onClick={star => this.setState({ rate: 10 })} color={this.state.rate >= 10 ? "yellow" : "gray"} size="20px" />
+                    </Col>
+                  </Row>
+                  <Form.Control as="textarea" rows="3" value={this.state.comment} onChange={comment => this.setState({ comment: comment.target.value })} />
+                  <Button style={{ margin: '10px', float: 'right', width: '100px' }} variant='secondary' type="submit" onClick={this.addComment}>Add</Button>
                 </div>
               ) : (
                   <div />
